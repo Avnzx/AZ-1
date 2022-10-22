@@ -4,3 +4,7 @@
 # Mono Ignores
 .mono/
 data_*/
+
+
+# Documentation ignores
+Documentation/*.html

@@ -7,7 +7,7 @@ public abstract partial class GenericSingleton<T> : Node where T: Node, new() {
 	public static T instance => lazyInstance.Value;
 
 	private static T CreateObject() {
-		Node thisobj = instance;
+		Node thisobj = lazyInstance.Value;
 		thisobj.Name = typeof(T).FullName;
 		thisobj.GetTree().Root.AddChild(instance);
         return instance;
