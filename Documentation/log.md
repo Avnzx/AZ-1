@@ -18,3 +18,28 @@
       - Figure out how to do air sim (Airgear?)
       - Figure out how to do planet orbits *efficiently*
       - Decouple the camera from being a player so we can have TV Screens unlike SE
+### Progress report
+  - Create project and begin a new godot scene
+
+## Solving Problems
+  - Large distances from world origin **will** cause issues with FPPE (Float Point Precision Error)
+    - Split the world into large clusters (a very small resemblance to MC chunking system but avoid FPPE)
+      - [Implementation Details](https://blog.marekrosa.org/2014/12/)
+
+
+# Progress
+- General
+  - [ ] Chunking system
+  - [ ] Player Movement and Camera
+    - [ ] Fall damage / General Velocity Damage
+    - [ ] Player movement is limited
+      - [ ] If grounded then do not rotate vertically when looking up and down
+      - [ ] If not grounded freelook as long as there is ΔV left to consume
+        - [ ] Else limit range of look to like ±30°
+- [ ] Planets
+  - [ ] Planet Gravity
+  - [ ] Planet Orbits
+  - [ ] Voxel planets
+- [ ] Graphics
+  - [ ] Star cubemap as background
+- [ ] Audio 

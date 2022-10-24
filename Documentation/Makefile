@@ -1,5 +1,7 @@
+SHELL := /bin/bash
+
 makedocs: 
-	md2html log.md > log.html 
+	md2html --github log.md > log.html 
 view: makedocs
 	firefox log.html	
 clean:
