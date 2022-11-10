@@ -1,16 +1,16 @@
 # Journal
 ## 2022-10-21
-  - Think about a game, pulling ideas from games like Space engineers (thematically and graphical dream) , Aurora 4x (for the depth of gameplay), From the depths (for the advanced physics simulations and freedoms) 
+  - Think about a game, pulling ideas from games like Space engineers (thematically and graphical dream) , Aurora 4x (for the depth of gameplay), From the depths (for the advanced physics simulations and freedoms)
     - Very little from Aurora, maybe also look into how we can make orbits fun
       - Orbital maneuvers? Like Kerbal Space Program?
   - Aircraft physics
   - In depth weapons systems
-  - In depth propulsion systems 
+  - In depth propulsion systems
     - Fusion torches require power, resources, cooling
     - Possibly implement something like the Elite Frame Shift Drive
       - Exclude witchspace as it gives too many freedoms and would make the project too large
       - Include *supercruise* as it enables travel at speed but still leaves the player vulnerable to encounters and such
-        - *Supercruise interceptor?, AI Pulling players out of supercruise? Players pulling players out of supercruise?*   
+        - *Supercruise interceptor?, AI Pulling players out of supercruise? Players pulling players out of supercruise?*
   - Player is free to move like FtD and SE
     - Player does things to kickstart the major processes like SE
     - Maybe make production of things more factorio-like than SE like
@@ -20,6 +20,16 @@
       - Decouple the camera from being a player so we can have TV Screens unlike SE
 ### Progress report
   - Create project and begin a new godot scene
+
+## 2022-10-24
+  - Should support N-body physics if time allows for such
+    - Basic Kepler's laws if unable to do so
+
+
+
+
+
+
 
 ## Solving Problems
   - Large distances from world origin **will** cause issues with FPPE (Float Point Precision Error)
@@ -39,7 +49,16 @@
 - [ ] Planets
   - [ ] Planet Gravity
   - [ ] Planet Orbits
+    - [ ] Wikipedia [N-Body Simulation](https://en.wikipedia.org/wiki/N-body_simulation)
+    - [ ] GitHub [Simulation projects](https://github.com/topics/orbital-simulation)
   - [ ] Voxel planets
 - [ ] Graphics
   - [ ] Star cubemap as background
-- [ ] Audio 
+- [ ] Audio
+- [ ] Save Reload System
+  - [ ] Save and reload planets
+
+# Useful Resources
+  - [nVidia GPU Gems (CUDA TARGET) - Physics Sim Chapter + N-Body](https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda)
+  - Simple implementation of [astrophys universe](https://github.com/notakamihe/Unity-Star-Systems-and-Galaxies)
+  - Sebastian Lague's [series](https://github.com/SebLague/Procedural-Planets) on procedural planet generation

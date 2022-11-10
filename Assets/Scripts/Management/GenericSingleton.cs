@@ -2,7 +2,6 @@ using Godot;
 using System;
 
 public abstract partial class GenericSingleton<T> : Node where T: Node, new() {
-
 	private static readonly Lazy<T> lazyInstance = new Lazy<T>(CreateObject);
 	public static T instance => lazyInstance.Value;
 
