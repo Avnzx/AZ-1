@@ -19,12 +19,13 @@
       - Figure out how to do planet orbits *efficiently*
       - Decouple the camera from being a player so we can have TV Screens unlike SE
 ### Progress report
-  - Create project and begin a new godot scene
-
+- Create project and begin a new godot scene
 ## 2022-10-24
-  - Should support N-body physics if time allows for such
-    - Basic Kepler's laws if unable to do so
-
+- Should support N-body physics if time allows for such
+  - Basic Kepler's laws if unable to do so
+## 2022-12-06
+- Begin pulling ideas for inventory management systems from SE, Mindustry, and Factorio
+  - Find a developer's creation of factorio belts on [github](https://github.com/emeraldpowder/FactorioBelts)
 
 
 
@@ -55,10 +56,32 @@
 - [ ] Graphics
   - [ ] Star cubemap as background
 - [ ] Audio
+- [ ] AI players
+  - [ ] Can pilot ships
+  - [ ] Can engage in foot combat w/guns
+  - [ ] Can pilot rovers
 - [ ] Save Reload System
   - [ ] Save and reload planets
+- [ ] Resource Management
+  - [ ] Basic transmission of items into and out of blocks
 
 # Useful Resources
   - [nVidia GPU Gems (CUDA TARGET) - Physics Sim Chapter + N-Body](https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda)
   - Simple implementation of [astrophys universe](https://github.com/notakamihe/Unity-Star-Systems-and-Galaxies)
   - Sebastian Lague's [series](https://github.com/SebLague/Procedural-Planets) on procedural planet generation
+  
+# Creation of documentation (delete after maybe?)
+  - [CTAN Animation Package](https://gitlab.com/agrahn/animate)
+
+# Documentation of submodules
+## Pipeline (/conveyor) system
+- Conveyor networks need to be analysed to find possible paths
+  - Single conveyors can be grouped into transport groups, with 2 I/O ports
+  - Do something like a layer 3 router to optimise paths? 
+  - Time must be taken and the maximum throughput of a path must be determined
+
+
+# Main ideas
+- Make a game with the complexity and shipbuilding of space engineers and factorio
+- Make a game with good AI that is legitimately a threat to the player
+  - To the level where playing against AI is fun and a constant threat

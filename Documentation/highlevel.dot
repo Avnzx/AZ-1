@@ -1,0 +1,49 @@
+digraph G {
+    fontsize=12
+    node [fontname="Source Code Variable,sans-serif"]
+    
+    StartGame;
+    
+    subgraph clusterNormalGame {
+        style="filled";  color="lightgrey";
+        label = "Normal Game Distribution"
+        CheckClient;
+        PresentStartMenu;
+        PresentStartMenu -> OptionsMenu;
+        PresentStartMenu -> QuitGame;
+        PresentStartMenu -> JoinServer;
+        PresentStartMenu -> StartMixedClient;
+    
+        CheckClient -> PresentStartMenu;
+        OptionsMenu -> PresentStartMenu;
+    }
+    subgraph clusterDedicatedServer {
+        style="filled";  color="lightgrey";
+        label = "Dedicated Server Distribution"
+        CheckServer;
+    }
+
+    subgraph clusterServer {
+        style="filled";  color="lightpink";
+        Server;
+        Server -> Server[label="Process"];
+    }
+
+    subgraph clusterClient {
+        style="filled";  color="lightpink";
+        Client;
+        Client -> Client[label="Process"];
+    }
+    
+    StartGame -> CheckClient;
+    StartGame -> CheckServer;
+
+    
+    CheckServer -> Server;
+    JoinServer -> Client;
+    StartMixedClient -> Server;
+    StartMixedClient -> Client;
+    
+    Server -> EndProcess [label="QUIT"];
+    Client -> EndProcess [label="QUIT"];
+}

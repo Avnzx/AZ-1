@@ -1,0 +1,93 @@
+digraph G {
+  fontname="Source Code Variable,sans-serif"
+  fontsize=12
+  node [fontname="Source Code Variable,sans-serif",]
+
+  edge [fontname="Source Code Variable,sans-serif"]
+  layout=dot
+  concentrate=true
+  subgraph clusterMixed {
+    label="Singleplayer / Mixed client \n Runs BOTH the client and the server listening on localhost";
+    style="filled"
+    subgraph clusterClient {
+      label="Client"; 
+      style="filled";  color="white";
+      OShift [label="Continuous Floating Origin"]
+      Renderer [label="Client renderer \n (f32)"]
+      FarRender [label="Faraway obj renderer"]
+      NearRender [label="Nearby obj renderer"]
+      Renderer -> FarRender;
+      Renderer -> NearRender;
+           
+      {rank="same"; Renderer;}
+  
+      subgraph clusterPlayer{
+        label="Player \n !Player Camera's translation is ALWAYS (0,0,0)!"
+        style="filled"; color="lightgray";
+        InputSys [label="Input System"]
+        PTranslation
+        PRotation // decide whether to also use CFO-R
+        //PHydrogen
+        //PElectricity
+        POnboardComputer
+        PTools
+    
+        {rank="same"; PTranslation; PRotation;}  
+
+        subgraph "clusterPlayerData" {
+          style=filled; color=white;
+          PHydrogen;
+          PElectricity;
+          SelectedTool;
+          Inventory;
+        }
+    
+        PRotation -> PHydrogen [label="RCS \n Has fuel?"];
+        PHydrogen -> PRotation [label="Y/N"];
+        PTranslation -> PHydrogen [label="RCS \n Has fuel?"];
+        PHydrogen -> PTranslation [label="Y/N"];  
+      
+        PTools -> PElectricity;
+        PElectricity -> PTools;  
+        POnboardComputer -> PElectricity;  
+        PElectricity -> POnboardComputer;
+
+        PTools -> PElectricity [label="Decrement \n Electricity"]
+
+        InputSys -> PTranslation;
+        InputSys -> PRotation;
+        InputSys -> POnboardComputer;
+        InputSys -> PTools [label="Execute"];
+    
+      }
+  
+      OShift -> Renderer [label="Position"];
+    }
+  
+
+
+
+
+
+
+
+
+
+
+    subgraph clusterServer {
+      label="Server";
+      style="filled";  color="white";
+      PhyServ [label="Physics Server"]
+      UniverseStor [label="Universe Storage \n (64 bit transforms)"]
+      IntegServ [label="REBOUND Solver",URL="https://github.com/hannorein/rebound"]
+      PhyServ -> IntegServ;
+  
+      // Run coarse simulations until the player looks at a specific octree child, increase the density of the sim to make it smooth / lerp between the poses for rendering
+      subgraph clusterPhysicsSimulation{
+        label = "Celestial physics \n simulation loop"
+        UniverseStor -> IntegServ [label="Transform and Velocity"];
+        IntegServ -> UniverseStori [label="Transform and Velocity"]; 
+      }
+    }
+  }
+}
