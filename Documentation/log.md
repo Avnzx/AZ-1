@@ -47,7 +47,8 @@
   - Large distances from world origin **will** cause issues with FPPE (Float Point Precision Error)
     - Can be solved by Floating Origin described by [Dr. Chris Thorne](https://www.researchgate.net/profile/Chris-Thorne-2)
     - Split the world into large clusters (a very small resemblance to MC chunking system but avoid FPPE)
-      - [Implementation Details](https://blog.marekrosa.org/2014/12/)
+      - [Space Engineers' Implementation](https://blog.marekrosa.org/2014/12/)
+      - [Floating Origin](https://www.researchgate.net/publication/331628217_Using_a_Floating_Origin_to_Improve_Fidelity_and_Performance_of_Large_Distributed_Virtual_Worlds) series of papers by Dr. Chris Thorne.
 
 
 # Progress
@@ -101,6 +102,10 @@
 
 
 # Main ideas
+- The game doesn't go heavy on plot
+  - Relies on light environmental storytelling and short snippets of text
+    - Simulation games like Minecraft, Factorio, Space Engineers, follow a similar style
+    - Reduces authoring workload while keeping the game fun by not lore-dumping (large chunks of text shown to the player which cause disengagement)
 - Make a game with the complexity and shipbuilding of space engineers and factorio
 - Make a game with good AI that is legitimately a threat to the player
   - To the level where playing against AI is fun and a constant threat
