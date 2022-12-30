@@ -1,0 +1,6 @@
+[gd_resource type="World3D" load_steps=2 format=3]
+
+[ext_resource type="Environment" path="res://Assets/Environments/defaultenv.tres" id="1_nab5k"]
+
+[resource]
+environment = ExtResource("1_nab5k")

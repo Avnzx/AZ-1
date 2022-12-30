@@ -26,8 +26,11 @@
 ## 2022-12-06
 - Begin pulling ideas for inventory management systems from SE, Mindustry, and Factorio
   - Find a developer's creation of factorio belts on [github](https://github.com/emeraldpowder/FactorioBelts)
-
-
+## 2022-12-30
+- Find [spacescape](https://github.com/petrocket/spacescape), an MIT-licensed space-cubemap generator
+  - Allows me to make programatically generated sky images
+  - Generate skybox and use python [cube2sphere](https://github.com/Xyene/cube2sphere) to convert it into a panoramasky as **godot cannot take cubemaps**
+  - requires `convert -rotate 180 in.exr out.exr` on the top and bottom faces as spacescape outputs them in the wrong order for cube2sphere by default
 
 
 
@@ -65,10 +68,12 @@
 - [ ] Resource Management
   - [ ] Basic transmission of items into and out of blocks
 
-# Useful Resources
+# Useful Resources (and uses in game)
   - [nVidia GPU Gems (CUDA TARGET) - Physics Sim Chapter + N-Body](https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda)
   - Simple implementation of [astrophys universe](https://github.com/notakamihe/Unity-Star-Systems-and-Galaxies)
   - Sebastian Lague's [series](https://github.com/SebLague/Procedural-Planets) on procedural planet generation
+- [Spacescape](https://github.com/petrocket/spacescape)
+  - Main space background 
   
 # Creation of documentation (delete after maybe?)
   - [CTAN Animation Package](https://gitlab.com/agrahn/animate)
