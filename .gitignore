@@ -8,3 +8,5 @@ data_*/
 
 # Documentation ignores
 Documentation/*.html
+Documentation/requirements/parta+2.pdf
+Documentation/requirements/partb.pdf

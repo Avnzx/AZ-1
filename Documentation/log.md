@@ -1,4 +1,4 @@
-# Journal
+# Journal / Log
 ## 2022-10-21
   - Think about a game, pulling ideas from games like Space engineers (thematically and graphical dream) , Aurora 4x (for the depth of gameplay), From the depths (for the advanced physics simulations and freedoms)
     - Very little from Aurora, maybe also look into how we can make orbits fun
@@ -31,12 +31,21 @@
   - Allows me to make programatically generated sky images
   - Generate skybox and use python [cube2sphere](https://github.com/Xyene/cube2sphere) to convert it into a panoramasky as **godot cannot take cubemaps**
   - requires `convert -rotate 180 in.exr out.exr` on the top and bottom faces as spacescape outputs them in the wrong order for cube2sphere by default
+## 2022-12-31
+- Use ideas from [Dr. Chris Thorne](https://www.researchgate.net/profile/Chris-Thorne-2)'s papers to implement a form of floating origin
 
-
+```markdown
+.
+└── Viewport
+    ├── Player Camera
+    └── World Root
+        └── Object (e.g. an asteroid or ship) 
+```
 
 
 ## Solving Problems
   - Large distances from world origin **will** cause issues with FPPE (Float Point Precision Error)
+    - Can be solved by Floating Origin described by [Dr. Chris Thorne](https://www.researchgate.net/profile/Chris-Thorne-2)
     - Split the world into large clusters (a very small resemblance to MC chunking system but avoid FPPE)
       - [Implementation Details](https://blog.marekrosa.org/2014/12/)
 
@@ -47,8 +56,12 @@
   - [ ] Player Movement and Camera
     - [ ] Fall damage / General Velocity Damage
     - [ ] Player movement is limited
+			- [ ] All done via *forces* as player weight matters
+				- [ ] Should be able to have target inertia relative to nearest object / planet
       - [ ] If grounded then do not rotate vertically when looking up and down
       - [ ] If not grounded freelook as long as there is ΔV left to consume
+				- [ ] Use an acceleration to look so it *feels* like you are using real RCS
+					- [ ] Should (rotational) deceleration be instant?
         - [ ] Else limit range of look to like ±30°
 - [ ] Planets
   - [ ] Planet Gravity
@@ -73,7 +86,8 @@
   - Simple implementation of [astrophys universe](https://github.com/notakamihe/Unity-Star-Systems-and-Galaxies)
   - Sebastian Lague's [series](https://github.com/SebLague/Procedural-Planets) on procedural planet generation
 - [Spacescape](https://github.com/petrocket/spacescape)
-  - Main space background 
+  - Main space background
+- [Community Godot Shaders](https://godotshaders.com/)
   
 # Creation of documentation (delete after maybe?)
   - [CTAN Animation Package](https://gitlab.com/agrahn/animate)

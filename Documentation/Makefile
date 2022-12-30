@@ -9,3 +9,8 @@ view: makedocs
 clean:
 	rm *.html
 	rm *.svg
+
+# for the assignment
+parta:
+    
+partb:
