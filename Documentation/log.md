@@ -26,7 +26,6 @@
 ## 2022-12-06
 - Begin pulling ideas for inventory management systems from SE, Mindustry, and Factorio
   - Find a developer's creation of factorio belts on [github](https://github.com/emeraldpowder/FactorioBelts)
-<<<<<<< Updated upstream
 ## 2022-12-30
 - Find [spacescape](https://github.com/petrocket/spacescape), an MIT-licensed space-cubemap generator
   - Allows me to make programatically generated sky images
@@ -103,18 +102,13 @@
   - [nVidia GPU Gems (CUDA TARGET) - Physics Sim Chapter + N-Body](https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda)
   - Simple implementation of [astrophys universe](https://github.com/notakamihe/Unity-Star-Systems-and-Galaxies)
   - Sebastian Lague's [series](https://github.com/SebLague/Procedural-Planets) on procedural planet generation
-<<<<<<< Updated upstream
 - [Spacescape](https://github.com/petrocket/spacescape)
   - Main space background
 - [Community Godot Shaders](https://godotshaders.com/)
-  
-# Creation of documentation (delete after maybe?)
-=======
-  - [FLECS](https://www.flecs.dev/flecs/) for a C/C++ ECS system that is able to work with Godot
+- [FLECS](https://www.flecs.dev/flecs/) for a C/C++ ECS system that is able to work with Godot
 		- ECS allows for a large (10-100x) speed increase in processing as it reduces events such as cache misses and is data oriented
 
-  # Creation of documentation (del after maybe?)
->>>>>>> Stashed changes
+# Creation of documentation (del after maybe?)
   - [CTAN Animation Package](https://gitlab.com/agrahn/animate)
 
 # Documentation of submodules

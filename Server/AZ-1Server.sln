@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AZ-1", "AZ-1.csproj", "{7E45EE33-D791-479F-BE31-36B91FDEFAD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFCC}") = "AZ-1Server", "AZ-1Server.csproj", "{7E45AE33-D791-479F-BE31-36B91FDEFAD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
