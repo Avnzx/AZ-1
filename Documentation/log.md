@@ -26,6 +26,7 @@
 ## 2022-12-06
 - Begin pulling ideas for inventory management systems from SE, Mindustry, and Factorio
   - Find a developer's creation of factorio belts on [github](https://github.com/emeraldpowder/FactorioBelts)
+<<<<<<< Updated upstream
 ## 2022-12-30
 - Find [spacescape](https://github.com/petrocket/spacescape), an MIT-licensed space-cubemap generator
   - Allows me to make programatically generated sky images
@@ -41,6 +42,22 @@
     └── World Root
         └── Object (e.g. an asteroid or ship) 
 ```
+=======
+## 2023-01-25
+- Finalise the structuring of the client and server architecture that is required to combat floating point origin
+  - Server computes nearly everything
+    - Due to engine limitations **two** godot projects will be used (server, client)
+    - Server uses high precision numbers (64/128bit) and uses an absolute coordinate system
+      - Sends it to the client in client-relative coordinates (remote player is 0,0,0) to combat FPPE on the client
+        - By default most game engines use F32 (godot can be recompiled with F64), but **all GPU's** use F32
+  - Client is a near perfect thin client 
+    - Current arch still allowing for the client to be thickened later to act similarly to Quake and contemporary games that can still be played even after losing a server connection
+## 2023-01-30
+- Implement basic client and server that can communicate
+
+
+
+>>>>>>> Stashed changes
 
 
 ## Solving Problems
@@ -86,11 +103,18 @@
   - [nVidia GPU Gems (CUDA TARGET) - Physics Sim Chapter + N-Body](https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda)
   - Simple implementation of [astrophys universe](https://github.com/notakamihe/Unity-Star-Systems-and-Galaxies)
   - Sebastian Lague's [series](https://github.com/SebLague/Procedural-Planets) on procedural planet generation
+<<<<<<< Updated upstream
 - [Spacescape](https://github.com/petrocket/spacescape)
   - Main space background
 - [Community Godot Shaders](https://godotshaders.com/)
   
 # Creation of documentation (delete after maybe?)
+=======
+  - [FLECS](https://www.flecs.dev/flecs/) for a C/C++ ECS system that is able to work with Godot
+		- ECS allows for a large (10-100x) speed increase in processing as it reduces events such as cache misses and is data oriented
+
+  # Creation of documentation (del after maybe?)
+>>>>>>> Stashed changes
   - [CTAN Animation Package](https://gitlab.com/agrahn/animate)
 
 # Documentation of submodules
