@@ -41,7 +41,6 @@
     └── World Root
         └── Object (e.g. an asteroid or ship) 
 ```
-=======
 ## 2023-01-25
 - Finalise the structuring of the client and server architecture that is required to combat floating point origin
   - Server computes nearly everything
@@ -51,12 +50,9 @@
         - By default most game engines use F32 (godot can be recompiled with F64), but **all GPU's** use F32
   - Client is a near perfect thin client 
     - Current arch still allowing for the client to be thickened later to act similarly to Quake and contemporary games that can still be played even after losing a server connection
-## 2023-01-30
-- Implement basic client and server that can communicate
 
 
 
->>>>>>> Stashed changes
 
 
 ## Solving Problems
@@ -69,12 +65,13 @@
 
 # Progress
 - General
-  - [ ] Chunking system
+  - ~~Chunking system~~ (Rejected)
   - [ ] Player Movement and Camera
     - [ ] Fall damage / General Velocity Damage
     - [ ] Player movement is limited
 			- [ ] All done via *forces* as player weight matters
-				- [ ] Should be able to have target inertia relative to nearest object / planet
+				- [ ] ~~Should be able to have target inertia relative to nearest object / planet~~ (Rejected)
+        - [ ] Should have velocity of planets and objects when sent, be relative to the player
       - [ ] If grounded then do not rotate vertically when looking up and down
       - [ ] If not grounded freelook as long as there is ΔV left to consume
 				- [ ] Use an acceleration to look so it *feels* like you are using real RCS
@@ -86,17 +83,22 @@
     - [ ] Wikipedia [N-Body Simulation](https://en.wikipedia.org/wiki/N-body_simulation)
     - [ ] GitHub [Simulation projects](https://github.com/topics/orbital-simulation)
   - [ ] Voxel planets
+  - [ ] Optimise planet orbits with a Barnes Hut tree
 - [ ] Graphics
   - [ ] Star cubemap as background
+  - [ ] Particle effects in godot for things like thrusters
 - [ ] Audio
 - [ ] AI players
   - [ ] Can pilot ships
   - [ ] Can engage in foot combat w/guns
   - [ ] Can pilot rovers
 - [ ] Save Reload System
-  - [ ] Save and reload planets
+  - [ ] Save and reload planets 
+    - [ ] Get position and velocity working
+    - [ ] Get planet textures working
 - [ ] Resource Management
   - [ ] Basic transmission of items into and out of blocks
+  - [ ] Mining resources with voxel deformation like space engineers
 
 # Useful Resources (and uses in game)
   - [nVidia GPU Gems (CUDA TARGET) - Physics Sim Chapter + N-Body](https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda)

@@ -1,0 +1,14 @@
+digraph G {
+  fontname="Source Code Variable,sans-serif"
+  fontsize=12
+  node [fontname="Source Code Variable,sans-serif",]
+  edge [fontname="Source Code Variable,sans-serif"]
+  layout=dot
+ 
+  usr [label="User",shape="rectangle",height="1.5",width="2"]
+  game [label="Game System",shape="circle"]
+  {rank = same; usr; game;}
+
+  usr -> game [label="keyboard and mouse input"]
+  game -> usr [label="\n\ngraphical output\n audio output"]
+}

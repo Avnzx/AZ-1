@@ -1,13 +1,51 @@
 \documentclass{article}
 
 A-rc
-# Problem Statement and Initial Design Specification
-# Gantt Chart (initial)
-# Screen Designs
-# Storyboard (initial)
-# Context Diagram
-# Discussion of Selected Programming Language
-# Social and Ethical Considerations
+\section{Problem Statement and Initial Design Specification}
+There are currently few cross-platform open-world space games that allow for the building of complex systems and vessels, in a multiplayer scenario. Software such as Space Engineers have limited performance on platforms such as Linux or PS4, as they cannot run DirectX (only Xbox and Microsoft Windows can run DirectX). As well as having limited performance due to limitations of DirectX. Currently there are no massively open world space games that run on Vulkan (improved performance and compatibility in comparison to DirectX). While games such as From the Depths that allow for complex control systems, run into limitations with the physics engine they use, as they are limited to 32 bit floating point numbers by virtue of using the unity game engine. Using godot allows for the game to be supported into the future (Unity deprecating support for most of the features popular games use, forcing developers to port features or stay locked to an older version of the game engine).
+
+Thus, novel solutions that can act as a jumping off point for games to be developed with an improved engine capable of multiplayer and large world support are needed. As currently all implementations such as the Frostbite engine (Keen Software House, used in Space Engineers) are proprietary and only support specific platforms and vendors.
+
+
+
+\section{Gantt Chart (initial)}
+
+
+\section{Screen Designs}
+
+
+\section{Storyboard (initial)}
+
+
+\section{Context Diagram}
+
+
+
+\section{Discussion of Selected Programming Language}
+This project will utilise C# (Mono), GDScript (Godot Engine integrated language), and C++.
+
+Both the server and client will be written using the languages mentioned above, as both will be developed using the godot game engine (as it is capable of producing builds optimised for servers with no graphics output). C# is intended to be the main language as it offers many advantages over writing the entire project in a traditionally compiled language. As this allows for rapid prototyping and debugging without having to wait for compile times that may be in the tens of minutes. This is due to C# being JIT compiled. It is also the primary language due to my familiarity with the language and use in previous projects, as well as the widespread use of C# in games and thus available documentation, tutorials, and pitfalls (anything that uses the Unity game engine, and many other indipendent games such as Aurora C#).  
+
+GDScript will be used for parts of the game that can be more efficiently written in the game-engine native language. As it is created by and for the godot engine it has been shown to be faster than C# in certain tasks (execution time is lower). It is also an interpreted language removing the need for long compile times. Examples of places in which GDScript beats C# in performance include code which must deal with large numbers of tuples (generally 3D Vectors), as there are machine code optimisations that cannot be applied to C# available in GDScript (PackedVector3). 
+
+C++ Will be used sparingly, in performance critical sections of code. This is due to the long compile times of C++ projects (even with incremental compilers), the complexity of setting up the GDExtension system, and the balance of runtime speed VS development time (more bugs and more difficult to use as it is closer to hardware). The GDExtension system is a part of Godot 4.0 rewritten to allow the use of any language (especially Rust and C++) to be compiled as part of a godot game. C++ Will be used for segments such as the floating origin re-origin code, as it needs to complete many operations incredibly quickly. The use of C++ in these sections also allows for the use of software-only accelerated quad-floating precision numbers (128 bit floats, through GCC libquadmath on 32 bit or 64 bit hardware).
+
+The godot engine for this project will be different on the server and client, as the client can use the release version of the Godot engine, but the server side necessitates the need for a custom build of the godot engine (with \quote{float=64} passed) to allow for the use of 64 bit coordinates at the minimum.  
+
+
+
+\section{Social and Ethical Considerations}
+
+Copyright
+
+Accessibility
+
+ing the Mono compiler (due to running on Linux).
+
+
+
+
+
 
 A
 # Functions and Modules (>=5)
