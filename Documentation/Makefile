@@ -13,5 +13,9 @@ clean:
 # for the assignment
 parta:
 	dot parta/context.dot -Tsvg > context.svg
+	dot parta/storyboard.dot -Tsvg > storyboard.svg
+	inkscape parta/storyboard.svg -o parta/storyboard.png
+	inkscape parta/context.svg -o parta/context.png
+	latexmk -xelatex parta.tex
     
 partb:

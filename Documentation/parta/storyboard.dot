@@ -1,0 +1,42 @@
+digraph G {
+  fontname="Source Code Variable,sans-serif"
+  fontsize=12
+  node [fontname="Source Code Variable,sans-serif",shape="rectangle",height="1.8",width="3.2"]
+  edge [fontname="Source Code Variable,sans-serif"]
+  layout=dot
+  forcelabels=true
+  
+  main [image="mainmenu.png" imagescale=true fixedsize=true,xlabel="Main Menu"]
+  newgame [image="newgamemenu.png" imagescale=true fixedsize=true,xlabel="New Game \n Menu"]
+  joingame [image="joinmenu.png" imagescale=true fixedsize=true,xlabel="Join Game \n Menu"]
+  gameview [image="gameview.png" imagescale=true fixedsize=true,xlabel="Game View"]
+  pause [image="pausemenu.png" imagescale=true fixedsize=true,xlabel="Pause Menu"]
+  credits [image="creditsmenu.png" imagescale=true fixedsize=true,xlabel="Credits Menu"]
+  options [image="optionsmenu.png" imagescale=true fixedsize=true,xlabel="Options Menu"]
+  gameshipstat [image="gameshipmenu.png" imagescale=true fixedsize=true,xlabel="Game Ship \n Stats Menu"]
+  
+  gameshipstat -> gameview 
+  gameview -> gameshipstat
+  gameview -> pause 
+  pause -> gameview 
+  newgame -> gameview 
+  joingame -> gameview
+  
+  main -> joingame
+  joingame -> main
+  
+  main -> newgame
+  newgame -> main
+  
+  main -> options
+  options -> main
+  
+  options -> pause
+  pause -> options
+  
+  pause -> main
+  
+  main -> credits
+  credits -> main
+  
+}

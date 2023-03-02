@@ -1,60 +1,150 @@
-\documentclass{article}
+\documentclass[12pt]{article}
+\usepackage{graphicx,tikz,pgfgantt}
+\usepackage[a4paper]{geometry}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+%\usepackage[OT1]{fontenc} 
+\usepackage{helvet}
+\usepackage[export]{adjustbox}
+\usepackage{wrapfig}
+\usepackage{array}
+\usepackage{float}
+\usepackage{csquotes}
+\usepackage{array,ltxtable,longtable,tabularx}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{wallpaper}
 
-A-rc
+\hypersetup{
+    colorlinks=false,
+    urlcolor=cyan,
+    pdftitle={Forward Frontier},
+}
+
+%\renewcommand{\headheight}{15pt}
+\renewcommand{\familydefault}{\sfdefault}
+\graphicspath{ {./parta}{images} }
+\geometry{a4paper}
+%\usepackage[backend=biber,style=bath]{biblatex}
+%\usepackage{subfiles}
+%\addbibresource{bibliography.bib}
+%\addbibresource{bibliography}
+\title{Forward Frontier}
+\newcommand{\authorid}{ID: 35141200}
+
+\author{\authorid}
+
+\pagestyle{fancy}
+\fancyhf{}
+
+\rhead{\emph{\authorid}}
+\cfoot{\emph{\thepage}}
+\lhead{\leftmark}
+\renewcommand{\footrulewidth}{1pt}
+
+
+
+
+
+\begin {document}
+%A rc
 \section{Problem Statement and Initial Design Specification}
-There are currently few cross-platform open-world space games that allow for the building of complex systems and vessels, in a multiplayer scenario. Software such as Space Engineers have limited performance on platforms such as Linux or PS4, as they cannot run DirectX (only Xbox and Microsoft Windows can run DirectX). As well as having limited performance due to limitations of DirectX. Currently there are no massively open world space games that run on Vulkan (improved performance and compatibility in comparison to DirectX). While games such as From the Depths that allow for complex control systems, run into limitations with the physics engine they use, as they are limited to 32 bit floating point numbers by virtue of using the unity game engine. Using godot allows for the game to be supported into the future (Unity deprecating support for most of the features popular games use, forcing developers to port features or stay locked to an older version of the game engine).
+There are currently few cross platform open world space games that allow for the building of complex systems and vessels, in a multiplayer scenario. Software such as Space Engineers have limited performance on platforms such as Linux or PS4, as they cannot run DirectX (only Xbox and Microsoft Windows can run DirectX). As well as having limited performance due to limitations of DirectX. Currently there are no massively open world space games that run on Vulkan (improved performance and compatibility in comparison to DirectX). While games such as From the Depths that allow for complex control systems, run into limitations with the physics engine they use, as they are limited to 32 bit floating point numbers by virtue of using the unity game engine. Using godot allows for the game to be supported into the future (Unity deprecating support for most of the features popular games use, forcing developers to port features or stay locked to an older version of the game engine).
 
 Thus, novel solutions that can act as a jumping off point for games to be developed with an improved engine capable of multiplayer and large world support are needed. As currently all implementations such as the Frostbite engine (Keen Software House, used in Space Engineers) are proprietary and only support specific platforms and vendors.
+\subsection{User Specifications}
+\begin{itemize}
+\item Responsive controls and remapable control scheme
+\item User interface that allows for filtering
+\item Ingame tutorial for each major system in the game
+\item Personal details are used properly
+\item Network connections don't suddenly drop out
+\end{itemize}
+
+\subsection{Developer Specifications}
+\begin{itemize}
+\item Developed using an agile development approach
+\item Data structures can be efficiently serialised for sending over the network
+\item Server and Client FPS must not drop below 60 on an intel i7 1165G7 or equivalent
+\item API documentation for modding is exposed with a tool such as Doxygen
+\item Server and Client must be able to run under Vulkan or DirectX without bugs
+\item Server and Client must be able to run on both Windows and Linux without bugs
+\item Server to Client communications must be over IPC on the same machine, and Websockets or UDP on internet
+\item Server and Client communications must be tolerant to at least 50ms of latency and 10 p.c. packet loss
+\item Server must not use more than 16GB of RAM
+\item Client must not use more than 8GB of RAM
+\end{itemize}
+
 
 
 
 \section{Gantt Chart (initial)}
+\includegraphics[width=\textwidth]{./parta/project.gan_page0}
+
 
 
 \section{Screen Designs}
+\includegraphics[width=\textwidth]{./parta/mainmenu.png}
+\includegraphics[width=\textwidth]{./parta/optionsmenu.png}
+\includegraphics[width=\textwidth]{./parta/creditsmenu.png}
+\includegraphics[width=\textwidth]{./parta/gameview.png}
+\includegraphics[width=\textwidth]{./parta/gameshipmenu.png}
+\includegraphics[width=\textwidth]{./parta/joinmenu.png}
+\includegraphics[width=\textwidth]{./parta/newgamemenu.png}
+\includegraphics[width=\textwidth]{./parta/pausemenu.png}
 
 
 \section{Storyboard (initial)}
+\includegraphics[width=\textwidth]{./parta/storyboard.png}
+
 
 
 \section{Context Diagram}
-
+\includegraphics[width=\textwidth]{./parta/context.png}
 
 
 \section{Discussion of Selected Programming Language}
-This project will utilise C# (Mono), GDScript (Godot Engine integrated language), and C++.
+This project will utilise C\# (Mono), GDScript (Godot Engine integrated language), and C++.
 
-Both the server and client will be written using the languages mentioned above, as both will be developed using the godot game engine (as it is capable of producing builds optimised for servers with no graphics output). C# is intended to be the main language as it offers many advantages over writing the entire project in a traditionally compiled language. As this allows for rapid prototyping and debugging without having to wait for compile times that may be in the tens of minutes. This is due to C# being JIT compiled. It is also the primary language due to my familiarity with the language and use in previous projects, as well as the widespread use of C# in games and thus available documentation, tutorials, and pitfalls (anything that uses the Unity game engine, and many other indipendent games such as Aurora C#).  
+Both the server and client will be written using the languages mentioned above, as both will be developed using the godot game engine (as it is capable of producing builds optimised for servers with no graphics output). C\# is intended to be the main language as it offers many advantages over writing the entire project in a traditionally compiled language. As this allows for rapid prototyping and debugging without having to wait for compile times that may be in the tens of minutes. This is due to C\# being JIT compiled. It is also the primary language due to my familiarity with the language and use in previous projects, as well as the widespread use of C\# in games and thus available documentation, tutorials, and pitfalls (anything that uses the Unity game engine, and many other indipendent games such as Aurora C\#).  
 
-GDScript will be used for parts of the game that can be more efficiently written in the game-engine native language. As it is created by and for the godot engine it has been shown to be faster than C# in certain tasks (execution time is lower). It is also an interpreted language removing the need for long compile times. Examples of places in which GDScript beats C# in performance include code which must deal with large numbers of tuples (generally 3D Vectors), as there are machine code optimisations that cannot be applied to C# available in GDScript (PackedVector3). 
+GDScript will be used for parts of the game that can be more efficiently written in the game engine native language. As it is created by and for the godot engine it has been shown to be faster than C\# in certain tasks (execution time is lower). It is also an interpreted language removing the need for long compile times. Examples of places in which GDScript beats C\# in performance include code which must deal with large numbers of tuples (generally 3D Vectors), as there are machine code optimisations that cannot be applied to C\# available in GDScript (PackedVector3). 
 
-C++ Will be used sparingly, in performance critical sections of code. This is due to the long compile times of C++ projects (even with incremental compilers), the complexity of setting up the GDExtension system, and the balance of runtime speed VS development time (more bugs and more difficult to use as it is closer to hardware). The GDExtension system is a part of Godot 4.0 rewritten to allow the use of any language (especially Rust and C++) to be compiled as part of a godot game. C++ Will be used for segments such as the floating origin re-origin code, as it needs to complete many operations incredibly quickly. The use of C++ in these sections also allows for the use of software-only accelerated quad-floating precision numbers (128 bit floats, through GCC libquadmath on 32 bit or 64 bit hardware).
+C++ Will be used sparingly, in performance critical sections of code. This is due to the long compile times of C++ projects (even with incremental compilers), the complexity of setting up the GDExtension system, and the balance of runtime speed VS development time (more bugs and more difficult to use as it is closer to hardware). The GDExtension system is a part of Godot 4.0 rewritten to allow the use of any language (especially Rust and C++) to be compiled as part of a godot game. C++ Will be used for segments such as the floating origin reorigin code, as it needs to complete many operations incredibly quickly. The use of C++ in these sections also allows for the use of software only accelerated quad floating precision numbers (128 bit floats, through GCC libquadmath on 32 bit or 64 bit hardware).
 
-The godot engine for this project will be different on the server and client, as the client can use the release version of the Godot engine, but the server side necessitates the need for a custom build of the godot engine (with \quote{float=64} passed) to allow for the use of 64 bit coordinates at the minimum.  
+The godot engine for this project will be different on the server and client, as the client can use the release version of the Godot engine, but the server side necessitates the need for a custom build of the godot engine (with float=64 passed) to allow for the use of 64 bit coordinates at the minimum.  
 
 
 
 \section{Social and Ethical Considerations}
+\subsection{Copyright}
+Assets such as code, textures, videos, and sounds must all be credited to their original author if under a commons license. Else proper attribution or non use in the game may be required to comply with licensing terms. This includes code uploaded to sites such as stackoverflow as the website EULA signifies any code posted is under their copyright. 
 
-Copyright
+This project also must be licensed with an open source, or source available license due to the code libraries planned to be in use (GNU and Godot). This will make security more difficult as the encryption code can be seen in public view easily, and reversed trivially to decrypt sensitive user information. This would also allow for cheating in the game as flaws could be exploited by cheaters. Though this is somewhat counteracted by an open source license that allows anyone (i.e. security researchers) to look at the code and fix the offending statements.
 
-Accessibility
+\subsection{Accessibility}
+The accessibility of this project exacerbates the digital divide, as the minimum performance bar of a computer is quite high for this style of game. Due to the many simultaneous threads processing at any one time, only higher performance computers will be able to run this software. However efforts can be made to optimise slower parts of the game to lower the hardware lower entry limit.
 
-ing the Mono compiler (due to running on Linux).
+Accessibility such as hearing impairment can also be accounted for with systems such as closed captions in the case of character speech, or systems that subtitle environmental sounds and the direction they originate relative to the player (e.g. Minecraft) as an aid. Visual impairments are difficult to accomodate in this genre as they mainly consist of environments that are difficult to portray on devices such as a braille console or aided through pure audio. This can be somewhat helped by the compatibility of this software with popular screen readers and custom output to allow for navigation in space.  
+
+\subsection{Security}
+Details about connected clients such as IP addresses or other sensitive data can be used maliciously by other clients if the Server does not keep such details secure (e.g. GTA Online). Encryption can prevent this kind of attack, as well as warning the user when they are connecting to non official servers (operated by other users), as details can still be retrieved by server operators. Encryption of data in saved files can also combat this, to prevent third parties breaking into official servers and retrieving user details. 
+
+\subsection{Gender Discrimination}
+Due to the nature of online games, gender discrimination of users is prevalent. Thus the exclusion of services such as VoIP or ingame chat may be desirable for some users. This can also be implemented in features such as the ability to block specific other users' communications (e.g. Valve online services) or the ability to apply specific filters to only allow certain messages by default (e.g. Discord communications platform). 
 
 
 
 
+\end{document}
+%A
+%# Functions and Modules (>=5)
+%# Psuedocode and system flowchart
+%# IPO Chart
+%# Structure Chart
+%# Data Flow Diagram (simplified)
+%# Files used and Data structures
+%# Data Dictionary (all 8 columns)
+%# Platform / OS Considerations
 
-
-A
-# Functions and Modules (>=5)
-# Psuedocode and system flowchart
-# IPO Chart
-# Structure Chart
-# Data Flow Diagram (simplified)
-# Files used and Data structures
-# Data Dictionary (all 8 columns)
-# Platform / OS Considerations
-
-\usepackage{subfiles}
+%\usepackage{subfiles}
