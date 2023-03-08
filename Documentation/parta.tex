@@ -18,22 +18,36 @@
 \usepackage{fontspec}
 \usepackage{xltabular}
 \usepackage{minted} % code formatting and highlighting
+\usepackage{pdflscape}
 % \setmainfont{TeX Gyre Heros}
+
+
+% \fancypagestyle{lscapedplain}{%
+%   \fancyhf{}
+%   \fancyfoot{%
+%     \tikz[remember picture,overlay]
+%       \node[outer sep=1cm,above,rotate=90] at (current page.east) {\thepage};}
+% }
+
 
 \newenvironment{alscape}[1]%
 {%
-    \cleardoublepage
-    \savegeometry{prelandscape}
-    \KOMAoptions{paper=landscape,DIV=10,#1}
-    \recalctypearea
-    \bgroup% begins a group
+    \begin{landscape}
+    % \cleardoublepage
+    % \savegeometry{prelandscape}
+    % \KOMAoptions{paper=landscape,DIV=10,#1}
+    % \recalctypearea
+    % \bgroup% begins a group
+    % \pagestyle{lscapedplain}
 }%
 {%
-    \cleardoublepage
-    \egroup% ends a group
-    \KOMAoptions{paper=portrait}
-    \recalctypearea
-    \loadgeometry{prelandscape}
+    \end{landscape}
+    % \cleardoublepage
+    % \egroup% ends a group
+    % \KOMAoptions{paper=portrait}
+    % \recalctypearea
+    % \loadgeometry{prelandscape}
+    % \pagestyle{fancy}
 } 
 
 \hypersetup{
@@ -61,6 +75,7 @@
 \rhead{\emph{\authorid}}
 \cfoot{\emph{\thepage}}
 \lhead{\leftmark}
+
 \renewcommand{\footrulewidth}{1pt}
 
 
@@ -79,6 +94,7 @@ There are currently few cross platform open world space games that allow for the
 \item Network connections don't suddenly drop out
 \item Graphics look nice, are high quality
 \item Audio sounds nice and has volume controls
+\item Easy to use and intuitive UI
 \end{itemize}
 
 \subsection{Developer Specifications}
@@ -93,14 +109,19 @@ There are currently few cross platform open world space games that allow for the
 \item Server and Client communications must be tolerant to at least 50ms of latency and 10 p.c. packet loss
 \item Server must not use more than 16GB of RAM
 \item Client must not use more than 8GB of RAM
+\item Must use the GDExtensions system to optimise performance in a language such as C++
+\item Planet motion must be done via N-body physics and accelerated via a barnes-hut treeRenderer
+\item Skeumorphic menu icons to make it more intuitive
+\item Provide graphics settings that allow it to run on lower end hardware better
+\item Ensure Audio does not "pop" or "crackle"
 \end{itemize}
 \begin{alscape}{DIV=8}
     \par\refstepcounter{section}% Increase section counter
     \sectionmark{Gantt Chart (initial)}% Add section mark (header)
     \addcontentsline{toc}{section}{\protect\numberline{\thesection}Gantt Chart (initial)}% add to TOC
-    \begin{figure}[h]
+    \begin{figure}[h!]
         %\setcapwidth{0.6\textwidth}
-        \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{./parta/project.gan_page0}}%
+        \makebox[\textwidth][c]{\includegraphics[width=1.4\linewidth]{./parta/project.gan_page0}}%
     \end{figure}
 \end{alscape}
 
@@ -156,6 +177,7 @@ Details about connected clients such as IP addresses or other sensitive data can
 \subsection{Gender Discrimination}
 Due to the nature of online games, gender discrimination of users is prevalent. Thus the exclusion of services such as VoIP or ingame chat may be desirable for some users. This can also be implemented in features such as the ability to block specific other users' communications (e.g. Valve online services) or the ability to apply specific filters to only allow certain messages by default (e.g. Discord communications platform). 
 
+\clearpage
 \section{Functions and Modules}
 \subsection{Modules}
 \begin{xltabular}[c]{\textwidth}{| X | X |}
@@ -165,9 +187,9 @@ Module & Description \\
 Renderer & Contains code required to  \\ \hline
 GameServer & Contains code required to  \\ \hline
 GameClient & Contains code required to  \\ \hline
-Renderer & Contains code required to  \\ \hline
-Renderer & Contains code required to  \\ \hline
-Renderer & Contains code required to  \\ \hline
+WorldGenerator & Contains code required to  \\ \hline
+AudioManager & Contains code required to  \\ \hline
+MovePlayer & Contains the code required to make the player move around as the player never moves from 0,0,0, but the world moves around them. Also contains the functions for calculating the speed the player should be going at given if they have the resources to move and what vehicle they are in to determine the speed and handling of their craft.  \\ \hline
 \end{xltabular}
 
 \subsection{Functions}
@@ -175,14 +197,15 @@ Renderer & Contains code required to  \\ \hline
     \hline \\
 Function & Module & Description \\
     \hline \hline \\
- & Renderer & Contains code required to  \\ \hline
- & GameServer & Contains code required to  \\ \hline
- & GameClient & Contains code required to  \\ \hline
- & Renderer & Contains code required to  \\ \hline
- & Renderer & Contains code required to  \\ \hline
- & Renderer & Contains code required to  \\ \hline
+Level of Detail Manager & Renderer & Contains code required to  \\ \hline
+Process Planets & GameServer & Contains code required to  \\ \hline
+Process collisions & GameClient & Contains code required to  \\ \hline
+Connect to Server & Join Game & Contains code required to  \\ \hline
+Switch Weapons & WeaponManager & Contains code required to  \\ \hline
+Process Relative Coordinates & Server & This function is required to send the correct relativistic coordinates to a certain client on a regular basis. It uses the WorldOctree to get all of the nearby objects and decides whether the player would be able to see it before sending everything over the network in an attempt to save some network bandwidth. Also saving a significant amount of processing power being used on the client.  \\ \hline
 \end{xltabular}
 
+\clearpage
 \section{Psuedocode and Flowchart}
 \subsection{Psuedocode}
 \definecolor{LightGray}{gray}{0.9}
@@ -228,51 +251,89 @@ END getRelativePositions
 \end{minted}
 
 \subsection{Algorithm Flowchart}
+\includegraphics[width=0.6\textwidth]{./parta/flowchart.mmd.png}
+\clearpage
 
-\section{IPO Chart}
+\section{IPO Chart (Server Module)}
 \begin{xltabular}[c]{\textwidth}{| X | X | X |}
     \hline \\
-Input & Process & Output \\
-    \hline \hline \\
-stuff & stuff & stuff \\
+Input & Process & Output \\ \hline \\
+Configured settings for generation of a new planetary system for the purpose of simulation (User Input) & Call the GenerateWorld submodule to generate each planet, each Non-player-character, and the entire game universe. Start the physics simulation thread for N-body simulation & Map displayed on screen as player is put into the scene \\ \hline
+Simulation thread is updated & Calculate all the new locations of the planets and check if there were any player ship collisions with any objects & Killing the players if they collided or stopping the planets' movement if they crash into one another (dynamically crashing them into one another is out of scope). \\ \hline
+Player input event has ocurred & Calculate how far they are allowed to move and kick them if exceeded. Update the objects in their vicinity to provide faster simulation & User sees the game run smoothly \\ 
     \hline
 \end{xltabular}
 
 
+\clearpage
 \section{Structure Chart}
-sdf
+% \includegraphics[width=0.6\textwidth]{./parta/flowchart.mmd.png}
 
-
+\clearpage
 \section{Data Flow Diagram}
-ddd
+\includegraphics[width=\textwidth]{./parta/DFD.drawio.png}
+
+\clearpage
 \section{Files and Data Structures}
 \begin{xltabular}[c]{\textwidth}{| X | X | X |}
     \hline \\
 File Name & Type or Structure & Description \\
     \hline \hline \\
-starmap.exr & Generated OpenEXR panorama sky image. & stuff \\
+starmap.exr & Generated OpenEXR panorama sky image & Used as the space background of the entire game to add light to make it more visually appealing to the user. \\
+savedata.bson & BSON, Binary JSON data format  & Save file generated by the autosave mechanism, serialised data to BSON format to improve speed of Serialisation/deserialisation and storage space used up. \\
+shipdata.bson & BSON, Binary JSON data format & File generated at game compile time to pack all of the ship data resources into one file that can be loaded at runtime to check things such as the stats of a ship, to determine the fire rate and the amount of damage a player can take before they get destroyed. \\
     \hline
 \end{xltabular}
 
+% \textbf{Example:}
+% \{
+%     "states" : \{
+%     "stationaryShoot" : \{
+%     "behaviour" : \["shoot radialShotgun 2", "stateChangeTime waitTimer 6
+%     wait"\]
+%     \},
+%     "wait" : \{
+%     "behaviour" : \["stateChangeTime waitTimer 6 stationaryShoot"\]\}
+%     \}
+% \},
+% "defaultState" : "stationaryShoot",
+%     "projectiles" : \{
+%         "radialShotgun" : \{
+%         "type" : "Radial",
+%         "shotCount" : 1,
+%         "direction" : 90,
+%         "projDesc": \{
+%         "target" : "players",
+%         "speed" : 20,
+%         "size" : 16,
+%         "lifetime" : 3000,
+%         "damage" : 5
+%         \}
+%     \}
+% \}
 
+\clearpage
+\begin{alscape}{DIV=8}
 \section{Data Dictionary}
-\begin{xltabular}[c]{\textwidth}{| X | X | X | X | X | X | X | X |}
+\begin{xltabular}[h!]{\linewidth}{|X|X|X|X|X|X|X|X|}
     \hline \\
 Data Item & Data Type & Format & Number of Bytes required for storage & Size for display & Description  & Example & Validation \\
     \hline \hline \\
-Planet & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-Online Username & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-Planet & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-Planet & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-Planet & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-Planet & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-Planet & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-Planet & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-Planet & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-Planet & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
+Player Name & string & NNNNNNNNNNNNNNNNNNNN & 20 & 20 & A unique name for each player to pick & Avnzx & Name must not exist in the system, name must only consist of valid UTF-8 characters, cannot be comprised only of UTF-8 "invisible" characters \\ \hline
+Planet & Planet (custom) & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
+FuelAmount & floating point & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
+Object ID & stuff & stuff & stuff & stuff & SHA256Sum representing an object that must be sent from the server to the client or the client to the server. Utilised for any communication, as well as modding to determine what resources need to be transferred between the systems. Will be utilised e.g. when downloading mods for a server it will check for the correct SHA256Sum's and deploy them onto your computer if you do not have them. & e79352f60b20180370436003d76bbce59ce86a29288e1ba2322cbb06ade3e871 & Not Validated as is automatically generated by the system, will be checked for corruption \\ \hline
+MovementSpeed & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
+PlayersRegistered & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
+PlayerOctreePose & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
+WorldOctree & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
+CurrentTime & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
+PlanetPositionDifference & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
     \hline
 \end{xltabular}
+\end{alscape}
 
+\clearpage
 \section{Platform and OS Considerations}
 The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) CPU that is able to do accelerated math and must have fast primary memory (RAM) to be able to run the game server at high frame rates. Due to these feature older (32 bit) computers will not be able to run the \textbf{server}, but will be able to run the client, as a compromise has been made to allow for further compatibility. \\
 
@@ -280,10 +341,14 @@ The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) 
 
 \noindent As a 3d game that uses various textures and assets, the memory requirements force the minimum memory required to approximately 8GB for the game, thus 16GB for the computer in total. The recommended processor is an i7 1165G7 as it is a 64 bit accelerated CPU and is able to do the calculations required to run this project within 16.666 milliseconds. (The average frame rate of computer monitors, thus the minimum requirement to make it look smooth). \\
 
-\noindent An additional requirement comes from the protocol design for the online part of the game. As the server must communicate with the client every frame with updated positions, the latency required is within 50ms. Due to more advanced jitter and loss compensation algorithms such as Counter Strike and Quake being difficult to achieve with a large number of systems. These lag compensation algorithms also introduce more overhead on each client as they must store and process much more data. Given the difficulty and the costs and benefits it has been decided against.
+\noindent An additional requirement comes from the protocol design for the online part of the game. As the server must communicate with the client every frame with updated positions, the latency required is within 50ms. Due to more advanced jitter and loss compensation algorithms such as Counter Strike and Quake being difficult to achieve with a large number of systems. These lag compensation algorithms also introduce more overhead on each client as they must store and process much more data. Given the difficulty and the costs and benefits it has been decided against. \\ 
 
+\noindent The storage requirements for this game, due to the use of the Godot game engine. Are quite low in comparison to other games. In total this game is expected to reach a full 3d environment while staying under a 10GiB download, to allow for uncompressed assets that may potentially work better on lower end hardware, and to reduce compression artifacting. The 10GiB size allows for a number of assets while still allowing for individuals with a less stable connection to retrieve the game files, as well as for individuals on limited data plans. As many AAA titles reach sizes nearing 100GiB.
+
+\clearpage
+\begin{alscape}{DIV=8}
 \section{Logbook}
-\begin{xltabular}[c]{\textwidth}{| X | X | X | X | X |}
+\begin{xltabular}[c]{\textwidth}{|X|X|X|X|X|}
     \hline \\
 Date & Description & Problems Encountered & What I need to do & Completion signoff \\ \hline
 
@@ -291,6 +356,11 @@ FIX & Figure out how to get godot to use higher precision floating point numbers
 FIX & FIX & FIX & FIX & FIX \\
     \hline
 \end{xltabular}
+\end{alscape}
+
+
+\subsection{Bibliography}
+
 
 \end{document}
 %A
