@@ -1,11 +1,17 @@
-SHELL := /bin/bash
+.PHONY: view
+view: parta makedocs
 
-makedocs:
+viewcurrent: parta
+	evince parta.pdf & 
+
+makedocs: parta
 	md2html --github log.md > log.html
 	#dot organisation.dot -Tsvg > organisation.svg
 	#dot highlevel.dot -Tsvg > highlevel.svg
+
 view: makedocs
 	firefox log.html
+
 clean:
 	rm *.html
 	rm *.svg
@@ -18,4 +24,4 @@ parta:
 	inkscape parta/context.svg -o parta/context.png
 	latexmk -xelatex parta.tex
     
-partb:
+# partb:

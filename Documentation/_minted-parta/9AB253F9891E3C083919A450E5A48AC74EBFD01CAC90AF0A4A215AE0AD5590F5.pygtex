@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{BEGIN} \PYG{n}{getClosestPlayer}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{y}\PYG{p}{)}
+    \PYG{n}{Let} \PYG{n}{distanceX} \PYG{o}{=} \PYG{n}{Players}\PYG{o}{.}\PYG{n}{x}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{x}
+    \PYG{n}{Let} \PYG{n}{distanceY} \PYG{o}{=} \PYG{n}{Players}\PYG{o}{.}\PYG{n}{y}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{y}
+    \PYG{n}{Let} \PYG{n}{minimumDistance} \PYG{o}{=} \PYG{n}{sqrt}\PYG{p}{(}\PYG{n}{distanceX} \PYG{o}{**} \PYG{l+m+mi}{2} \PYG{o}{+} \PYG{n}{distanceY} \PYG{o}{**} \PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{n}{Let} \PYG{n}{closestPlayer} \PYG{o}{=} \PYG{n}{Players}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}
+    \PYG{n}{FOR} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{2} \PYG{n}{to} \PYG{n}{length} \PYG{n}{of} \PYG{n}{Players} \PYG{n}{STEP} \PYG{l+m+mi}{1}
+    \PYG{n}{distanceX} \PYG{o}{=} \PYG{n}{Players}\PYG{o}{.}\PYG{n}{x}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{x}
+    \PYG{n}{distanceY} \PYG{o}{=} \PYG{n}{Players}\PYG{o}{.}\PYG{n}{y}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{y}
+    \PYG{n}{Let} \PYG{n}{distance} \PYG{o}{=} \PYG{n}{sqrt}\PYG{p}{(}\PYG{n}{distanceX} \PYG{o}{**} \PYG{l+m+mi}{2} \PYG{o}{+} \PYG{n}{distanceY} \PYG{o}{**} \PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{n}{IF} \PYG{n}{distance} \PYG{o}{\PYGZlt{}} \PYG{n}{minimumDistance} \PYG{n}{THEN}
+    \PYG{n}{minimumDistance} \PYG{o}{=} \PYG{n}{distance}
+    \PYG{n}{closestPlayer} \PYG{o}{=} \PYG{n}{Players}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)}
+    \PYG{n}{ENDIF}
+    \PYG{n}{NEXT} \PYG{n}{i}
+    \PYG{n}{RETURN} \PYG{n}{closestPlayer}
+\PYG{n}{END} \PYG{n}{getClosestPlayer}
+\end{Verbatim}
