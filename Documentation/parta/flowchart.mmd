@@ -1,0 +1,57 @@
+%%{ init: { 'flowchart': { 'curve': 'stepAfter', 'useMaxWidth': true } } }%%
+flowchart TB
+bg(["BEGIN getRelativePositions(playerID, worldOctree)"])
+ed([END getRelativePositions])
+
+let1["Let playerOctreePose = playerID.octreeNode"]
+let2["Let ObjectsArray() = playerOctreePose.getParent().getParent().getParent().getParent().Objects"]
+let3["Let objectAmount = length of ObjectsArray"]
+let4["DIM relativePositions(objectAmount) as RelativePositionContainer"]
+let5["Let indexOffset = 0"]
+
+bigif{"((relativePositions(j).TranslationX ^ 2 +
+ relativePositions(j).TranslationY ^ 2 +
+ relativePositions(j).TranslationZ ^ 2) 
+ / ObjectsArray(j).sizeMeters) 
+ < 3"}
+
+forinit["Let i = 0"]
+forcheck{"i >= objectAmount"}
+forinc["i = i + 1"]
+
+
+defj["Let j = i + indexOffset"]
+
+relpos1["relativePositions(j).TranslationX = 
+ObjectsArray(j).TranslationX - playerOctreePose.TranslationX"]
+relpos2["relativePositions(j).TranslationY = 
+ObjectsArray(j).TranslationY - playerOctreePose.TranslationY"]
+relpos3["relativePositions(j).TranslationZ = 
+ObjectsArray(j).TranslationZ - playerOctreePose.TranslationZ"]
+
+bg --> let1 --> let2 --> let3 --> let4 --> let5 --> forinit --> forcheck  -- False --> defj --> relpos1 --> relpos2 --> relpos3 --> bigif  -- False --> objID --> addn1 --> addn2 --> addn3 --> addn4
+
+incoffset["indexOffset = indexOffset + 1"]
+objID["relativePositions(j).ObjectID = 
+ObjectsArray(j).ID"]
+addn1["relativePositions(j).RotationW = 
+playerOctreePose.RotationW.lookingAt(ObjectsArray(j).RotationW)"]   
+addn2["relativePositions(j).RotationX = 
+playerOctreePose.RotationX.lookingAt(ObjectsArray(j).RotationX)"] 
+addn3["relativePositions(j).RotationY = 
+playerOctreePose.RotationY.lookingAt(ObjectsArray(j).RotationY)"]
+addn4["relativePositions(j).RotationZ = 
+playerOctreePose.RotationZ.lookingAt(ObjectsArray(j).RotationZ)"]
+
+
+bigif -- True --> incoffset
+bigif
+
+addn4 & incoffset --> forinc
+
+forinc --> forcheck
+
+forcheck -- True --------------> return
+return --> ed
+
+return["RETURN relativePositions"]
