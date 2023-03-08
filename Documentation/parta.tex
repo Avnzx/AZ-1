@@ -157,12 +157,30 @@ Details about connected clients such as IP addresses or other sensitive data can
 Due to the nature of online games, gender discrimination of users is prevalent. Thus the exclusion of services such as VoIP or ingame chat may be desirable for some users. This can also be implemented in features such as the ability to block specific other users' communications (e.g. Valve online services) or the ability to apply specific filters to only allow certain messages by default (e.g. Discord communications platform). 
 
 \section{Functions and Modules}
+\subsection{Modules}
+\begin{xltabular}[c]{\textwidth}{| X | X |}
+    \hline \\
+Module & Description \\
+    \hline \hline \\
+Renderer & Contains code required to  \\ \hline
+GameServer & Contains code required to  \\ \hline
+GameClient & Contains code required to  \\ \hline
+Renderer & Contains code required to  \\ \hline
+Renderer & Contains code required to  \\ \hline
+Renderer & Contains code required to  \\ \hline
+\end{xltabular}
+
+\subsection{Functions}
 \begin{xltabular}[c]{\textwidth}{| X | X | X |}
     \hline \\
-Name & Description \\
+Function & Module & Description \\
     \hline \hline \\
-Renderer & Contains code required to  \\
-    \hline
+ & Renderer & Contains code required to  \\ \hline
+ & GameServer & Contains code required to  \\ \hline
+ & GameClient & Contains code required to  \\ \hline
+ & Renderer & Contains code required to  \\ \hline
+ & Renderer & Contains code required to  \\ \hline
+ & Renderer & Contains code required to  \\ \hline
 \end{xltabular}
 
 
@@ -170,22 +188,44 @@ Renderer & Contains code required to  \\
 \subsection{Psuedocode}
 \definecolor{LightGray}{gray}{0.9}
 \begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,bgcolor=LightGray,fontsize=\footnotesize,linenos]{python}
-BEGIN getClosestPlayer(x, y)
-    Let distanceX = Players.x(1) - x
-    Let distanceY = Players.y(1) - y
-    Let minimumDistance = sqrt(distanceX ** 2 + distanceY ** 2)
-    Let closestPlayer = Players(1)
-    FOR i = 2 to length of Players STEP 1
-    distanceX = Players.x(i) - x
-    distanceY = Players.y(i) - y
-    Let distance = sqrt(distanceX ** 2 + distanceY ** 2)
-    IF distance < minimumDistance THEN
-    minimumDistance = distance
-    closestPlayer = Players(i)
-    ENDIF
+DIM RECORD RelativePositionContainer
+    ObjectID as Integer
+    TranslationX as Real
+    TranslationY as Real
+    TranslationZ as Real
+    RotationW as Real
+    RotationX as Real
+    RotationY as Real
+    RotationZ as Realstring
+END RECORD
+
+BEGIN getRelativePositions(playerID, worldOctree)
+    Let playerOctreePose = playerID.octreeNode
+    Let Objects() = playerOctreePose.getParent().getParent().getParent().getParent().getParent().getParent().Objects
+
+    Let objectAmount = length of Objects
+    DIM relativePositions(objectAmount) as RelativePositionContainer
+
+    Let indexOffset = 0
+
+    FOR i = 0 to objectAmount STEP 1
+        Let j = i + indexOffset
+
+        relativePositions(j).TranslationX = Objects(j).TranslationX - playerOctreePose.TranslationX
+        relativePositions(j).TranslationY = Objects(j).TranslationY - playerOctreePose.TranslationY
+        relativePositions(j).TranslationZ = Objects(j).TranslationZ - playerOctreePose.TranslationZ
+        IF ((relativePositions(j).TranslationX ^ 2 + relativePositions(j).TranslationY ^ 2 + relativePositions(j).TranslationZ ^ 2) / Objects(j).sizeMeters) < 3 THEN
+            indexOffset = indexOffset + 1
+        ELSE
+            relativePositions(j).ObjectID = Objects(j).ID
+            relativePositions(j).RotationW = playerOctreePose.RotationW.lookingAt(Objects(j).RotationW)   
+            relativePositions(j).RotationX = playerOctreePose.RotationX.lookingAt(Objects(j).RotationX) 
+            relativePositions(j).RotationY = playerOctreePose.RotationY.lookingAt(Objects(j).RotationY) 
+            relativePositions(j).RotationZ = playerOctreePose.RotationZ.lookingAt(Objects(j).RotationZ) 
+        ENDIF        
     NEXT i
-    RETURN closestPlayer
-END getClosestPlayer
+    RETURN relativePositions
+END getRelativePositions
 \end{minted}
 
 \subsection{System Flowchart}
