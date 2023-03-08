@@ -186,7 +186,7 @@ Function & Module & Description \\
 \section{Psuedocode and Flowchart}
 \subsection{Psuedocode}
 \definecolor{LightGray}{gray}{0.9}
-\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,bgcolor=LightGray,fontsize=\footnotesize,linenos,breaklines]{python}
+\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,bgcolor=LightGray,fontsize=\footnotesize,linenos,breaklines,escapeinside=||]{python}
 DIM RECORD RelativePositionContainer
     ObjectID as Integer
     TranslationX as Real
@@ -200,7 +200,7 @@ END RECORD
 
 BEGIN getRelativePositions(playerID, worldOctree)
     Let playerOctreePose = playerID.octreeNode
-    Let ObjectsArray() = playerOctreePose.getParent().getParent().getParent().getParent().Objects
+    Let ObjectsArray() = playerOctreePose.|\underline{getParent}|().|\underline{getParent}|().|\underline{getParent}|().|\underline{getParent}|().Objects
 
     Let objectAmount = length of ObjectsArray
     DIM relativePositions(objectAmount) as RelativePositionContainer
@@ -217,10 +217,10 @@ BEGIN getRelativePositions(playerID, worldOctree)
             indexOffset = indexOffset + 1
         ELSE
             relativePositions(j).ObjectID = ObjectsArray(j).ID
-            relativePositions(j).RotationW = playerOctreePose.RotationW.lookingAt(ObjectsArray(j).RotationW)   
-            relativePositions(j).RotationX = playerOctreePose.RotationX.lookingAt(ObjectsArray(j).RotationX) 
-            relativePositions(j).RotationY = playerOctreePose.RotationY.lookingAt(ObjectsArray(j).RotationY) 
-            relativePositions(j).RotationZ = playerOctreePose.RotationZ.lookingAt(ObjectsArray(j).RotationZ) 
+            relativePositions(j).RotationW = playerOctreePose.RotationW.|\underline{lookingAt}|(ObjectsArray(j).RotationW)   
+            relativePositions(j).RotationX = playerOctreePose.RotationX.|\underline{lookingAt}|(ObjectsArray(j).RotationX) 
+            relativePositions(j).RotationY = playerOctreePose.RotationY.|\underline{lookingAt}|(ObjectsArray(j).RotationY) 
+            relativePositions(j).RotationZ = playerOctreePose.RotationZ.|\underline{lookingAt}|(ObjectsArray(j).RotationZ) 
         ENDIF        
     NEXT i
     RETURN relativePositions
