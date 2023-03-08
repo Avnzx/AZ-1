@@ -227,7 +227,7 @@ BEGIN getRelativePositions(playerID, worldOctree)
 END getRelativePositions
 \end{minted}
 
-\subsection{System Flowchart}
+\subsection{Algorithm Flowchart}
 
 \section{IPO Chart}
 \begin{xltabular}[c]{\textwidth}{| X | X | X |}
@@ -276,7 +276,11 @@ Planet & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
 \section{Platform and OS Considerations}
 The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) CPU that is able to do accelerated math and must have fast primary memory (RAM) to be able to run the game server at high frame rates. Due to these feature older (32 bit) computers will not be able to run the \textbf{server}, but will be able to run the client, as a compromise has been made to allow for further compatibility. \\
 
-\noindent Devices and platforms that do not expose a high-performance API that is available for open source integration will also be excluded. For the scope of this project that excludes macOS, iPadOS, and iOS from being able to run the game, as they do not provide an OpenGL, Vulkan or DirectX layer (as the Godot game engine only supports these API's). Due to this the platforms that will be able to run the client are: Windows 7 (or newer), Any Linux distribution using X11 or XWayland, such as ubuntu 18.04+, Debian 10+, and any BSD with X11/XWayland with support for Vulkan. Devices like Apple macbooks are not included as they do not support OpenGL or Vulkan, and require the use of the \texttt{Metal} graphics API. Godot does not support this API.
+\noindent Devices and platforms that do not expose a high-performance API that is available for open source integration will also be excluded. For the scope of this project that excludes macOS, iPadOS, and iOS from being able to run the game, as they do not provide an OpenGL, Vulkan or DirectX layer (as the Godot game engine only supports these API's). Due to this the platforms that will be able to run the client are: Windows 7 (or newer), Any Linux distribution using X11 or XWayland, such as ubuntu 18.04+, Debian 10+, and any BSD with X11/XWayland with support for Vulkan. Devices like Apple macbooks are not included as they do not support OpenGL or Vulkan, and require the use of the \texttt{Metal} graphics API. Godot does not support this API. \\
+
+\noindent As a 3d game that uses various textures and assets, the memory requirements force the minimum memory required to approximately 8GB for the game, thus 16GB for the computer in total. The recommended processor is an i7 1165G7 as it is a 64 bit accelerated CPU and is able to do the calculations required to run this project within 16.666 milliseconds. (The average frame rate of computer monitors, thus the minimum requirement to make it look smooth). \\
+
+\noindent An additional requirement comes from the protocol design for the online part of the game. As the server must communicate with the client every frame with updated positions, the latency required is within 50ms. Due to more advanced jitter and loss compensation algorithms such as Counter Strike and Quake being difficult to achieve with a large number of systems. These lag compensation algorithms also introduce more overhead on each client as they must store and process much more data. Given the difficulty and the costs and benefits it has been decided against.
 
 \section{Logbook}
 \begin{xltabular}[c]{\textwidth}{| X | X | X | X | X |}
