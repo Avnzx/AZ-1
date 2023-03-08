@@ -183,11 +183,10 @@ Function & Module & Description \\
  & Renderer & Contains code required to  \\ \hline
 \end{xltabular}
 
-
 \section{Psuedocode and Flowchart}
 \subsection{Psuedocode}
 \definecolor{LightGray}{gray}{0.9}
-\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,bgcolor=LightGray,fontsize=\footnotesize,linenos]{python}
+\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,bgcolor=LightGray,fontsize=\footnotesize,linenos,breaklines]{python}
 DIM RECORD RelativePositionContainer
     ObjectID as Integer
     TranslationX as Real
@@ -201,9 +200,9 @@ END RECORD
 
 BEGIN getRelativePositions(playerID, worldOctree)
     Let playerOctreePose = playerID.octreeNode
-    Let Objects() = playerOctreePose.getParent().getParent().getParent().getParent().getParent().getParent().Objects
+    Let ObjectsArray() = playerOctreePose.getParent().getParent().getParent().getParent().Objects
 
-    Let objectAmount = length of Objects
+    Let objectAmount = length of ObjectsArray
     DIM relativePositions(objectAmount) as RelativePositionContainer
 
     Let indexOffset = 0
@@ -211,17 +210,17 @@ BEGIN getRelativePositions(playerID, worldOctree)
     FOR i = 0 to objectAmount STEP 1
         Let j = i + indexOffset
 
-        relativePositions(j).TranslationX = Objects(j).TranslationX - playerOctreePose.TranslationX
-        relativePositions(j).TranslationY = Objects(j).TranslationY - playerOctreePose.TranslationY
-        relativePositions(j).TranslationZ = Objects(j).TranslationZ - playerOctreePose.TranslationZ
-        IF ((relativePositions(j).TranslationX ^ 2 + relativePositions(j).TranslationY ^ 2 + relativePositions(j).TranslationZ ^ 2) / Objects(j).sizeMeters) < 3 THEN
+        relativePositions(j).TranslationX = ObjectsArray(j).TranslationX - playerOctreePose.TranslationX
+        relativePositions(j).TranslationY = ObjectsArray(j).TranslationY - playerOctreePose.TranslationY
+        relativePositions(j).TranslationZ = ObjectsArray(j).TranslationZ - playerOctreePose.TranslationZ
+        IF ((relativePositions(j).TranslationX ^ 2 + relativePositions(j).TranslationY ^ 2 + relativePositions(j).TranslationZ ^ 2) / ObjectsArray(j).sizeMeters) < 3 THEN
             indexOffset = indexOffset + 1
         ELSE
-            relativePositions(j).ObjectID = Objects(j).ID
-            relativePositions(j).RotationW = playerOctreePose.RotationW.lookingAt(Objects(j).RotationW)   
-            relativePositions(j).RotationX = playerOctreePose.RotationX.lookingAt(Objects(j).RotationX) 
-            relativePositions(j).RotationY = playerOctreePose.RotationY.lookingAt(Objects(j).RotationY) 
-            relativePositions(j).RotationZ = playerOctreePose.RotationZ.lookingAt(Objects(j).RotationZ) 
+            relativePositions(j).ObjectID = ObjectsArray(j).ID
+            relativePositions(j).RotationW = playerOctreePose.RotationW.lookingAt(ObjectsArray(j).RotationW)   
+            relativePositions(j).RotationX = playerOctreePose.RotationX.lookingAt(ObjectsArray(j).RotationX) 
+            relativePositions(j).RotationY = playerOctreePose.RotationY.lookingAt(ObjectsArray(j).RotationY) 
+            relativePositions(j).RotationZ = playerOctreePose.RotationZ.lookingAt(ObjectsArray(j).RotationZ) 
         ENDIF        
     NEXT i
     RETURN relativePositions
