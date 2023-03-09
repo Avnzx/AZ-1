@@ -184,11 +184,11 @@ Due to the nature of online games, gender discrimination of users is prevalent. 
     \hline \\
 Module & Description \\
     \hline \hline \\
-Renderer & Contains code required to  \\ \hline
-GameServer & Contains code required to  \\ \hline
-GameClient & Contains code required to  \\ \hline
-WorldGenerator & Contains code required to  \\ \hline
-AudioManager & Contains code required to  \\ \hline
+Renderer & The renderer module contains the parts of the client that are dedicated to rendering the game onto the screen. This involves functionality related to swapping out high detail assets to low detail assets based on distance (lower Level Of Detail). It contains other such optimisations and postprocessing effects like particle shaders and a helper to clip the Z buffer at a specific depth (as Vulkan is glitchy)  \\ \hline
+GameServer & The Game Server module contains all of the code that runs the server, this runs the universe simulation, checks players' legitimacy (speed limits), and gives the player's client all the objects required to run the game at any given moment (the game requires a server to act as a central manager of coordinates and resources).  \\ \hline
+GameClient & The Game Client module is intended to run standalone on computers that the server may not be running on. It contains an executable version of the server but can be run in a mode where it connects to an external internet server. The client uses 32 bit floating point numbers to maximise compatibility and for use with current generation graphics cards  \\ \hline
+WorldGenerator & The worldgenerator module is intended to contain methods to generate the game world, with methods for generating randomised planets, non-player-characters, and events such as asteroid collisions. It is only called when a new game is created.  \\ \hline
+AudioManager & The audiomanager is a global singleton that handles all of the audio work that the game client has to do, as this means that it can more easily respect the users' preferences in terms of sound settings.  \\ \hline
 MovePlayer & Contains the code required to make the player move around as the player never moves from 0,0,0, but the world moves around them. Also contains the functions for calculating the speed the player should be going at given if they have the resources to move and what vehicle they are in to determine the speed and handling of their craft.  \\ \hline
 \end{xltabular}
 
@@ -197,11 +197,11 @@ MovePlayer & Contains the code required to make the player move around as the pl
     \hline \\
 Function & Module & Description \\
     \hline \hline \\
-Level of Detail Manager & Renderer & Contains code required to  \\ \hline
-Process Planets & GameServer & Contains code required to  \\ \hline
-Process collisions & GameClient & Contains code required to  \\ \hline
-Connect to Server & Join Game & Contains code required to  \\ \hline
-Switch Weapons & WeaponManager & Contains code required to  \\ \hline
+Level of Detail Manager & Renderer & The LOD manager is a function that transforms the distance and size of objects to be rendered into a "visibility" score. This score allows for assets that cannot or can barely be seen to have their textures swapped for lower quality - or no textures at all. Allowing for far greater optimisation of the rendering pipeline.  \\ \hline
+Process Planets & GameServer & The process planets function is a part of the server, and is called during main simulation. It runs the N-body simulation (accelerated by a Barnes-Hut Octree) and retrieves the new position and velocity vectors of each body.  \\ \hline
+Process collisions & GameClient & This function is also part of the main simulation thread and works to detect collisions between players and planets, players and ships, or ships and planets. This only runs on the server side due to the need for an absolute coordinate system somewhere in the mix (as explained by Dr. Chris Thorne)  \\ \hline
+Connect to Server & Join Game & The connect to server function optionally connects to servers protected with a password, as well as configuring the local game client to work with the configuration of the remote game server.  \\ \hline
+Switch Weapons & WeaponManager & The switch weapons function allows for the player to switch the weapons on the ship that they are currently using. This prevents the player from equipping weapons they do not own.   \\ \hline
 Process Relative Coordinates & Server & This function is required to send the correct relativistic coordinates to a certain client on a regular basis. It uses the WorldOctree to get all of the nearby objects and decides whether the player would be able to see it before sending everything over the network in an attempt to save some network bandwidth. Also saving a significant amount of processing power being used on the client.  \\ \hline
 \end{xltabular}
 
@@ -260,18 +260,20 @@ END getRelativePositions
 Input & Process & Output \\ \hline \\
 Configured settings for generation of a new planetary system for the purpose of simulation (User Input) & Call the GenerateWorld submodule to generate each planet, each Non-player-character, and the entire game universe. Start the physics simulation thread for N-body simulation & Map displayed on screen as player is put into the scene \\ \hline
 Simulation thread is updated & Calculate all the new locations of the planets and check if there were any player ship collisions with any objects & Killing the players if they collided or stopping the planets' movement if they crash into one another (dynamically crashing them into one another is out of scope). \\ \hline
-Player input event has ocurred & Calculate how far they are allowed to move and kick them if exceeded. Update the objects in their vicinity to provide faster simulation & User sees the game run smoothly \\ 
+Player input event has ocurred & Calculate how far they are allowed to move and kick them if exceeded. Update the objects in their vicinity to provide faster simulation & User sees the game run smoothly as the simulation keeps updating. \\ 
     \hline
 \end{xltabular}
 
 
 \clearpage
+\begin{alscape}{DIV=8}
 \section{Structure Chart}
-% \includegraphics[width=0.6\textwidth]{./parta/flowchart.mmd.png}
+\includegraphics[width=\linewidth]{./parta/Structure Chart.drawio.png}
 
 \clearpage
 \section{Data Flow Diagram}
 \includegraphics[width=\textwidth]{./parta/DFD.drawio.png}
+\end{alscape}
 
 \clearpage
 \section{Files and Data Structures}
@@ -319,16 +321,25 @@ shipdata.bson & BSON, Binary JSON data format & File generated at game compile t
     \hline \\
 Data Item & Data Type & Format & Number of Bytes required for storage & Size for display & Description  & Example & Validation \\
     \hline \hline \\
-Player Name & string & NNNNNNNNNNNNNNNNNNNN & 20 & 20 & A unique name for each player to pick & Avnzx & Name must not exist in the system, name must only consist of valid UTF-8 characters, cannot be comprised only of UTF-8 "invisible" characters \\ \hline
-Planet & Planet (custom) & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-FuelAmount & floating point & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-Object ID & stuff & stuff & stuff & stuff & SHA256Sum representing an object that must be sent from the server to the client or the client to the server. Utilised for any communication, as well as modding to determine what resources need to be transferred between the systems. Will be utilised e.g. when downloading mods for a server it will check for the correct SHA256Sum's and deploy them onto your computer if you do not have them. & e79352f60b20180370436003d76bbce59ce86a29288e1ba2322cbb06ade3e871 & Not Validated as is automatically generated by the system, will be checked for corruption \\ \hline
-MovementSpeed & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-PlayersRegistered & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-PlayerOctreePose & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-WorldOctree & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-CurrentTime & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
-PlanetPositionDifference & stuff & stuff & stuff & stuff & stuff & stuff & stuff \\ \hline
+Player Name & string & NNN\-NNNN\-NNNNN\-NNN\-NNNNN & 20 & 20 & A unique name for each player to pick & Avnzx & Name must not exist in the system, name must only consist of valid UTF-8 characters, cannot be comprised only of UTF-8 "invisible" characters \\ \hline
+
+Planet & Planet (custom) &  & 1024 &  & A container type that stores all of the data about a single planet, these will be user together to simulate the entire system. They hold units such as mass and size to determine their gravitational influence & (2000000\_kg, 1000\_m, 1000\_J, 2\_mps, (0,1,0)) & Input validation when the user tweaks these values will be done with a mask to prevent the user from entering incorrect values to the fields. Combined with range checking for variables such as radius. \\ \hline
+
+FuelAmount & floating point & NN.NN & 4 & 4 & Amount of fuel in the player's suit or the current ship they are in, expressed as a percentage & 89.95p.c. & No input validation as produced by the system. \\ \hline
+
+Object ID & 256 bit integer & ooo\-oooo\-ooo\-oooooo\-oooo\-ooooooo\-ooooo\-oooooo\-oooo\-oooooo\-ooo\-ooooo\-ooo\-ooooo & 32 & 64 & SHA256Sum representing an object that must be sent from the server to the client or the client to the server. Utilised for any communication, as well as modding to determine what resources need to be transferred between the systems. Will be utilised e.g. when downloading mods for a server it will check for the correct SHA256Sum's and deploy them onto your computer if you do not have them. & e79352\-f60b201\-803704\-36003d\-76bbc\-e59ce\-86a2\-9288\-e1ba\-2322\-cbb0\-6ade\-3e871 & Not Validated as is automatically generated by the system, will be checked for corruption \\ \hline
+
+MovementSpeed & floating point & NNNNNN.NN & 8 & 8 & Speed in metres per second shown to the user & 888888.88ms & Produced by the system \\ \hline
+
+Players Registered & integer & NNN & 1 & 3 & This variable holds the number of players registered on the server's backend, used for mainly debugging. & 020 & Not validated as it is produced by the system \\ \hline
+
+Player OctreePose & Vector4 & XX.XX YY.YY ZZ.ZZ NNNN & 32 & 16 & Stores the 3d pose of the object as well as the ID of its parent in the octree & 20.00,21.00,45.01,2449 & No validation as it is produced by the system \\ \hline
+
+World Octree & Octree &  & 10000000 &  & The world octree holds the entire gameworld and every object in an octree (splitting up 3d space into smaller and smaller cubes, 2x2x2 split.) To optimise distance calculations and  & Complex data type & Internal system data type \\ \hline
+
+Current Time & unsigned integer 64 bit & NNNNNNNN\-NNNNNNNN & 8 & 16 & Stores the current time in UNIX time, since the epoch & 293992192 & No input validation as this is always assumed to be correct from the timeservers it is retrieved from. \\ \hline
+
+Planet Position Difference & double floating point & NNNNNNNNN.NN & 8 & 11 & Used for estimated time of arrival, represents the distance from the player on or off a ship to the planet they have targeted & 183782993.21 metres & No validation as this is not a user inputted value \\
     \hline
 \end{xltabular}
 \end{alscape}
@@ -351,9 +362,36 @@ The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) 
 \begin{xltabular}[c]{\textwidth}{|X|X|X|X|X|}
     \hline \\
 Date & Description & Problems Encountered & What I need to do & Completion signoff \\ \hline
+% FIX & FIX & FIX & FIX & FIX \\\hline
 
-FIX & Figure out how to get godot to use higher precision floating point numbers, in order to combat FPPE more accurately & Godot cannot handle higher than 64 bit numbers even with libraries like libquadmath and require massive core rewrites to achieve any further. To enable 64 bit mode the game engine must be recompiled. Due to the project using C\# the game engine and bindings must all be regenerated specifically for the server & Create a custom build script that can automatically download the engine source code and build my game alongside it. Consider looking into other solutions to use external libraries to achieve this. & in progress \\ \hline
-FIX & FIX & FIX & FIX & FIX \\
+2022-10-21 & Come up with ideas for game and make a start on the documentation (log). Decided to make a game taking inspiration from others such as space engineers, Aurora 4x (strategy game with depth of gameplay), From the depths (innovative build system and physics simulation). Think about including features from the likes of Elite dangerous and adding a "supercruise" to allow the player to travel the large universe quickly while still being fun and a good experience. Consider adding weapons such as in From the Depths and Space engineers to make interest in the game. & Godot had issues with large scale games and visual jitter & Research why this is the case and start progress on the programming side & Done \\
+& 
+Created the godot scene to start the game & & & \\
+\hline
+
+2022-10-24 & Research how to do planetary simulations and come up on N-body simulations, as well as a way to make them faster. (Barnes-hut tree) & Floating Point Precision error will have a large influence on the game, and it needs to be fixed. & Implement N-body simulation into my game and get it working. Continue to research other physics such as air physics. Which may be able to be used from an open source library used in the FOSS flight simulator Air Gear. Combat floating point precision error (FPPE) & In Progress \\\hline
+
+2022-12-30 & Continue to research methods to combat floating point precision error due to the apparent difficulty of gaining a solution. Am not able to find a solution describing what Dr. Chris Thorne describes anywhere on the internet nor in his thesis & I am unable to find an implementation or clarity about the implementation of floating origin the "proper" way & Look for an implementation of continuous floating origin and implement it into the software & In Progress \\\hline
+
+2022-12-31 & Change to having 2 godot projects due to my research that shows it is not possible to do such a thing. Along with the added benefit of being able to use different precisions on the different platforms. Allowing for greater backwards compatibility & The two godot projects need different versions of the engine, requiring the compilation of the engine twice and my game twice (once for the server once for the client) & Need to change the build system used and change the version of the engine & Done \\\hline
+
+2023-01-25 & Complete the walkthrough and language choice for my chosen game engine, game, and language. Decide on godot due to the flexibility of the engine and the upcoming Godot 4 engine that allows for the use of the Vulkan API and performance benefits. Have switched to the alpha 4.0 branch of Godot to gain features such as tags in 3d space & FIX & FIX & FIX \\\hline
+
+2023-02-06 & Complete the screen design for check 1 and research how to implement the updated godot UI system into a game& The documentation for the godot UI system is not high quality & Implement the updated godot UI system & In Progress \\\hline
+
+2023-02-09 & Figure out how to get godot to use higher precision floating point numbers, in order to combat FPPE more accurately & Godot cannot handle higher than 64 bit numbers even with libraries like libquadmath and require massive core rewrites to achieve any further. To enable 64 bit mode the game engine must be recompiled. Due to the project using C\# the game engine and bindings must all be regenerated specifically for the server & Create a custom build script that can automatically download the engine source code and build my game alongside it. Consider looking into other solutions to use external libraries to achieve this. & in progress \\ \hline
+
+2023-02-11 & Programatically generate the background and scenery for the game using Spacescape. & As godot cannot take cubemaps the background needs to be converted from a cubemap into 6 flat surfaces, then it can be "rolled" onto a spheremap that godot can take through its PanoramaSky. The cubemap is the wrong way around and requires extra tweaking & Fix the cubemap so the faces are not misaligned & Done, using imagemagick \texttt{convert -rotate 180 in.exr out.exr} on the top and bottom faces fixes the issue \\\hline
+
+2023-02-14 & Finished the documentation to be mostly ready for check 1, apart from not finding the proforma for the logbook and having issues with the LaTeX compiler due to small mistakes. & Stop using latex due to the uneccessary complexity. & Get the Check 1 Submission ready & Partially Done \\\hline
+
+2023-02-24 & Attempt to recompile the godot engine to try and get 64 bit floating point support & The feature is not documented in public and there are no instructions on how to build a custom version of the engine (to this degree). & Figure out how to recompile the engine with floating point support and Mono support for C\#, as well as recompiling the C\# bindings to make it compatible with the engine & In Progress \\\hline
+
+2023-02-25 & Complete most of the documentation required to submit part 1, including the data dictionary, structure chart, and data flow diagram. Clean up some sections such as developer design specifications and attempt to fix the landscape page in LaTeX. Research the possibility of using GNU Make to build godot and the documentation. & Could not sucessfully flip the page in LaTeX without compile errors & Ask on the LaTeX forums for help with this and research further in using LaTeX with the Make build system. & Done \\\hline
+
+2023-03-03 & Start using the godot stable branch, complete the IPO chart and psuedocode for one of my main modules. Attempt to start a system flowchart of the process & The godot stable branch has less documentation on how to compile it and has removed support for certain C\# language features & Find the new way to use godot and C\# with a custom version of the engine & In Progress \\\hline
+
+2023-03-08 & Fixed the context diagram to fit with the new Structure chart to include external servers. Completed finishing touches and converted logbook to proforma format before submission. & My logbook was not created with the proforma in mind and required a large ammount of effort and a significant ammount of wasted effort to convert it. Next time I need to start the conversion process earlier as well as  & Submit part A & Done \\
     \hline
 \end{xltabular}
 \end{alscape}
@@ -361,6 +399,21 @@ FIX & FIX & FIX & FIX & FIX \\
 
 \subsection{Bibliography}
 
+
+https://www.researchgate.net/profile/Chris\-Thorne\-2 \\
+https://github.com/Xyene/cube2sphere \\
+https://github.com/petrocket/spacescape \\
+https://github.com/emeraldpowder/FactorioBelts \\
+https://blog.marekrosa.org/2014/12 \\
+https://www.researchgate.net/publication/331628217\_Using\_a\_Floating\_Origin\_to\_Improve\_Fidelity\_and\_Performance\_of\_Large\_Distributed\_Virtual\_Worlds \\
+https://en.wikipedia.org/wiki/N\-body\_simulation \\
+https://github.com/topics/orbital\-simulation \\
+https://gitlab.com/agrahn/animate \\
+https://www.flecs.dev/flecs \\
+https://godotshaders.com \\
+https://github.com/notakamihe/Unity\-Star\-Systems\-and\-Galaxies \\
+https://github.com/SebLague/Procedural\-Planets \\
+https://developer.nvidia.com/gpugems/gpugems3/part\-v\-physics\-simulation/chapter\-31\-fast\-n\-body\-simulation\-cuda \\
 
 \end{document}
 %A

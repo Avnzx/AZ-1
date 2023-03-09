@@ -7,8 +7,12 @@ digraph G {
  
   usr [label="User",shape="rectangle",height="1.5",width="2"]
   game [label="Game System",shape="circle"]
-  {rank = same; usr; game;}
+  esrv [label="Possible External Internet Game Server", shape="rectangle"]
+  {rank = same; usr; game; esrv;}
 
   usr -> game [label="keyboard and mouse input"]
   game -> usr [label="\n\ngraphical output\n audio output"]
+  game -> esrv [label="Player Requested Velocity, \n Player Speed, \n Player health, \n telemetry"]
+  esrv -> game [label="Position calculations, \n all game objects, \n all server communications"]
+
 }

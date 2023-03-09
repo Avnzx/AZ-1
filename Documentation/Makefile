@@ -22,6 +22,7 @@ parta:
 	dot parta/storyboard.dot -Tsvg > storyboard.svg
 	inkscape parta/storyboard.svg -o parta/storyboard.png
 	inkscape parta/context.svg -o parta/context.png
+	mmdc -e png -i parta/flowchart.mmd -s 4
 	latexmk -xelatex parta.tex
     
 # partb:
