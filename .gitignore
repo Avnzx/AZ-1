@@ -12,6 +12,13 @@ Documentation/requirements/parta+2.pdf
 Documentation/requirements/partb.pdf
 Documentation/*Documentation.pdf
 Documentation/requirements*
+*.aux
+*.fls
+Documentation/*.log
+Documentation/*.pdf
+*.synctex*
+
+
 
 # Build system ignores
 .sconsign.dblite
