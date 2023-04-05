@@ -10,6 +10,8 @@ data_*/
 Documentation/*.html
 Documentation/requirements/parta+2.pdf
 Documentation/requirements/partb.pdf
+Documentation/*Documentation.pdf
+Documentation/requirements*
 
 # Build system ignores
 .sconsign.dblite
