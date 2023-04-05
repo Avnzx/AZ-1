@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+from SCons.Script import *
+
+
+EnsureSConsVersion(3, 0, 0)
+EnsurePythonVersion(3, 9)
+
+import os
+from SCons.Node.FS import *
+
+env = Environment(ENV = os.environ)
+
+def makegodot():
+  customgdargs: dict = {"precision": "double", "module_mono_enabled": "yes"}
+  for key in ARGUMENTS:
+    if key.startswith("gds_"):
+      customgdargs[key[4:]] = ARGUMENTS[key]
+
+  customgdargsstr: str = ""
+
+  for key in customgdargs:
+    customgdargsstr += key + "=" + str(customgdargs[key]) + " "
+
+  print(f"scons $SOURCES {customgdargsstr}")
+
+  env.Command('gdengine', 'godot/SConstruct', f"scons -f $SOURCE.file {customgdargsstr}", chdir=1)
+  # env['SCONS_ROOT'] = Dir('#/Server/godot/')
+  # print (Dir('#').abspath)
+  # env.SConscript('godot/SConstruct')
+
+makegodot()
+# ARGUMENTS.set()
+# env.SConscript('godot/SConstruct')
