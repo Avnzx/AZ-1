@@ -1,0 +1,430 @@
+\documentclass[12pt, DIV=calc]{scrartcl}
+\usepackage{graphicx,tikz,pgfgantt}
+\usepackage[a4paper, includeheadfoot, margin=2cm, headheight=20pt]{geometry}
+\usepackage{geometry}
+\usepackage{bookmark} % no more reruns plez
+\usepackage{xcolor}
+% \usepackage[utf8]{inputenc}
+%\usepackage[OT1]{fontenc} 
+\usepackage{helvet}
+\usepackage[export]{adjustbox}
+\usepackage{wrapfig}
+\usepackage{array}
+\usepackage{float}
+\usepackage{csquotes}
+\usepackage{array,ltxtable,longtable,tabularx}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{wallpaper}
+\usepackage{fontspec}
+\usepackage{xltabular}
+\usepackage{minted} % code formatting and highlighting
+\usepackage{pdflscape}
+% \setmainfont{TeX Gyre Heros}
+
+
+% \fancypagestyle{lscapedplain}{%
+%   \fancyhf{}
+%   \fancyfoot{%
+%     \tikz[remember picture,overlay]
+%       \node[outer sep=1cm,above,rotate=90] at (current page.east) {\thepage};}
+% }
+
+
+\newenvironment{alscape}[1]%
+{%
+    \begin{landscape}
+    % \cleardoublepage
+    % \savegeometry{prelandscape}
+    % \KOMAoptions{paper=landscape,DIV=10,#1}
+    % \recalctypearea
+    % \bgroup% begins a group
+    % \pagestyle{lscapedplain}
+}%
+{%
+    \end{landscape}
+    % \cleardoublepage
+    % \egroup% ends a group
+    % \KOMAoptions{paper=portrait}
+    % \recalctypearea
+    % \loadgeometry{prelandscape}
+    % \pagestyle{fancy}
+} 
+
+\hypersetup{
+    colorlinks=false,
+    urlcolor=cyan,
+    pdftitle={Forward Frontier},
+}
+
+%\renewcommand{\headheight}{15pt}
+\renewcommand{\familydefault}{\sfdefault}
+\graphicspath{ {./parta}{images} }
+% \geometry{a4paper}
+%\usepackage[backend=biber,style=bath]{biblatex}
+%\usepackage{subfiles}
+%\addbibresource{bibliography.bib}
+%\addbibresource{bibliography}
+\title{Forward Frontier}
+\newcommand{\authorid}{ID: 35141200}
+
+\author{\authorid}
+
+\pagestyle{fancy}
+\fancyhf{}
+
+\rhead{\emph{\authorid}}
+\cfoot{\emph{\thepage}}
+\lhead{\leftmark}
+
+\renewcommand{\footrulewidth}{1pt}
+
+
+\begin {document}
+%A rc
+\section{Problem Statement and Initial Design Specification}
+There are currently few cross platform open world space games that allow for the building of complex systems and vessels, in a multiplayer scenario. Software such as Space Engineers have limited performance on platforms such as Linux or PS4, as they cannot run DirectX (only Xbox and Microsoft Windows can run DirectX). As well as having limited performance due to limitations of DirectX. Currently there are no massively open world space games that run on Vulkan (improved performance and compatibility in comparison to DirectX). While games such as From the Depths that allow for complex control systems, run into limitations with the physics engine they use, as they are limited to 32 bit floating point numbers by virtue of using the unity game engine. Using godot allows for the game to be supported into the future (Unity deprecating support for most of the features popular games use, forcing developers to port features or stay locked to an older version of the game engine). \\
+
+\noindent Thus, novel solutions that can act as a jumping off point for games to be developed with an improved engine capable of multiplayer and large world support are needed. As currently all implementations such as the Frostbite engine (Keen Software House, used in Space Engineers) are proprietary and only support specific platforms and vendors.
+\subsection{User Specifications}
+\begin{itemize}
+\item Responsive controls and remapable control scheme
+\item User interface that allows for filtering
+\item Ingame tutorial for each major system in the game
+\item Personal details are used properly
+\item Network connections don't suddenly drop out
+\item Graphics look nice, are high quality
+\item Audio sounds nice and has volume controls
+\item Easy to use and intuitive UI
+\end{itemize}
+
+\subsection{Developer Specifications}
+\begin{itemize}
+\item Developed using an agile development approach
+\item Data structures can be efficiently serialised for sending over the network
+\item Server and Client FPS must not drop below 60 on an intel i7 1165G7 or equivalent
+\item API documentation for modding is exposed with a tool such as Doxygen
+\item Server and Client must be able to run under Vulkan or DirectX without bugs
+\item Server and Client must be able to run on both Windows and Linux without bugs
+\item Server to Client communications must be over IPC on the same machine, and Websockets or UDP on internet
+\item Server and Client communications must be tolerant to at least 50ms of latency and 10 p.c. packet loss
+\item Server must not use more than 16GB of RAM
+\item Client must not use more than 8GB of RAM
+\item Must use the GDExtensions system to optimise performance in a language such as C++
+\item Planet motion must be done via N-body physics and accelerated via a barnes-hut treeRenderer
+\item Skeumorphic menu icons to make it more intuitive
+\item Provide graphics settings that allow it to run on lower end hardware better
+\item Ensure Audio does not "pop" or "crackle"
+\end{itemize}
+\begin{alscape}{DIV=8}
+    \par\refstepcounter{section}% Increase section counter
+    \sectionmark{Gantt Chart (initial)}% Add section mark (header)
+    \addcontentsline{toc}{section}{\protect\numberline{\thesection}Gantt Chart (initial)}% add to TOC
+    \begin{figure}[h!]
+        %\setcapwidth{0.6\textwidth}
+        \makebox[\textwidth][c]{\includegraphics[width=1.4\linewidth]{./parta/project.gan_page0}}%
+    \end{figure}
+\end{alscape}
+
+
+
+\section{Screen Designs}
+\includegraphics[width=\textwidth]{./parta/mainmenu.png}
+\includegraphics[width=\textwidth]{./parta/optionsmenu.png}
+\includegraphics[width=\textwidth]{./parta/creditsmenu.png}
+\includegraphics[width=\textwidth]{./parta/gameview.png}
+\includegraphics[width=\textwidth]{./parta/gameshipmenu.png}
+\includegraphics[width=\textwidth]{./parta/joinmenu.png}
+\includegraphics[width=\textwidth]{./parta/newgamemenu.png}
+\includegraphics[width=\textwidth]{./parta/pausemenu.png}
+
+
+\section{Storyboard (initial)}
+\includegraphics[width=\textwidth]{./parta/storyboard.png}
+
+
+
+\section{Context Diagram}
+\includegraphics[width=\textwidth]{./parta/context.png}
+
+
+\section{Discussion of Selected Programming Language}
+This project will utilise C\# (Mono), GDScript (Godot Engine integrated language), and C++. \\
+
+\noindent Both the server and client will be written using the languages mentioned above, as both will be developed using the godot game engine (as it is capable of producing builds optimised for servers with no graphics output). C\# is intended to be the main language as it offers many advantages over writing the entire project in a traditionally compiled language. As this allows for rapid prototyping and debugging without having to wait for compile times that may be in the tens of minutes. This is due to C\# being JIT compiled. It is also the primary language due to my familiarity with the language and use in previous projects, as well as the widespread use of C\# in games and thus available documentation, tutorials, and pitfalls (anything that uses the Unity game engine, and many other indipendent games such as Aurora C\#). \\
+
+\noindent GDScript will be used for parts of the game that can be more efficiently written in the game engine native language. As it is created by and for the godot engine it has been shown to be faster than C\# in certain tasks (execution time is lower). It is also an interpreted language removing the need for long compile times. Examples of places in which GDScript beats C\# in performance include code which must deal with large numbers of tuples (generally 3D Vectors), as there are machine code optimisations that cannot be applied to C\# available in GDScript (PackedVector3). \\
+
+\noindent C++ Will be used sparingly, in performance critical sections of code. This is due to the long compile times of C++ projects (even with incremental compilers), the complexity of setting up the GDExtension system, and the balance of runtime speed VS development time (more bugs and more difficult to use as it is closer to hardware). The GDExtension system is a part of Godot 4.0 rewritten to allow the use of any language (especially Rust and C++) to be compiled as part of a godot game. C++ Will be used for segments such as the floating origin reorigin code, as it needs to complete many operations incredibly quickly. The use of C++ in these sections also allows for the use of software only accelerated quad floating precision numbers (128 bit floats, through GCC libquadmath on 32 bit or 64 bit hardware). \\
+
+\noindent The godot engine for this project will be different on the server and client, as the client can use the release version of the Godot engine, but the server side necessitates the need for a custom build of the godot engine (with \texttt{float=64} passed) to allow for the use of 64 bit coordinates at the minimum.  
+
+
+
+\section{Social and Ethical Considerations}
+\subsection{Copyright}
+Assets such as code, textures, videos, and sounds must all be credited to their original author if under a commons license. Else proper attribution or non use in the game may be required to comply with licensing terms. This includes code uploaded to sites such as stackoverflow as the website EULA signifies any code posted is under their copyright. \\ 
+
+\noindent This project also must be licensed with an open source, or source available license due to the code libraries planned to be in use (GNU and Godot). This will make security more difficult as the encryption code can be seen in public view easily, and reversed trivially to decrypt sensitive user information. This would also allow for cheating in the game as flaws could be exploited by cheaters. Though this is somewhat counteracted by an open source license that allows anyone (i.e. security researchers) to look at the code and fix the offending statements.
+
+\subsection{Accessibility}
+The accessibility of this project exacerbates the digital divide, as the minimum performance bar of a computer is quite high for this style of game. Due to the many simultaneous threads processing at any one time, only higher performance computers will be able to run this software. However efforts can be made to optimise slower parts of the game to lower the hardware lower entry limit. \\
+
+\noindent Accessibility such as hearing impairment can also be accounted for with systems such as closed captions in the case of character speech, or systems that subtitle environmental sounds and the direction they originate relative to the player (e.g. Minecraft) as an aid. Visual impairments are difficult to accomodate in this genre as they mainly consist of environments that are difficult to portray on devices such as a braille console or aided through pure audio. This can be somewhat helped by the compatibility of this software with popular screen readers and custom output to allow for navigation in space.  
+
+\subsection{Security}
+Details about connected clients such as IP addresses or other sensitive data can be used maliciously by other clients if the Server does not keep such details secure (e.g. GTA Online). Encryption can prevent this kind of attack, as well as warning the user when they are connecting to non official servers (operated by other users), as details can still be retrieved by server operators. Encryption of data in saved files can also combat this, to prevent third parties breaking into official servers and retrieving user details. 
+
+\subsection{Gender Discrimination}
+Due to the nature of online games, gender discrimination of users is prevalent. Thus the exclusion of services such as VoIP or ingame chat may be desirable for some users. This can also be implemented in features such as the ability to block specific other users' communications (e.g. Valve online services) or the ability to apply specific filters to only allow certain messages by default (e.g. Discord communications platform). 
+
+\clearpage
+\section{Functions and Modules}
+\subsection{Modules}
+\begin{xltabular}[c]{\textwidth}{| X | X |}
+    \hline \\
+Module & Description \\
+    \hline \hline \\
+Renderer & The renderer module contains the parts of the client that are dedicated to rendering the game onto the screen. This involves functionality related to swapping out high detail assets to low detail assets based on distance (lower Level Of Detail). It contains other such optimisations and postprocessing effects like particle shaders and a helper to clip the Z buffer at a specific depth (as Vulkan is glitchy)  \\ \hline
+GameServer & The Game Server module contains all of the code that runs the server, this runs the universe simulation, checks players' legitimacy (speed limits), and gives the player's client all the objects required to run the game at any given moment (the game requires a server to act as a central manager of coordinates and resources).  \\ \hline
+GameClient & The Game Client module is intended to run standalone on computers that the server may not be running on. It contains an executable version of the server but can be run in a mode where it connects to an external internet server. The client uses 32 bit floating point numbers to maximise compatibility and for use with current generation graphics cards  \\ \hline
+WorldGenerator & The worldgenerator module is intended to contain methods to generate the game world, with methods for generating randomised planets, non-player-characters, and events such as asteroid collisions. It is only called when a new game is created.  \\ \hline
+AudioManager & The audiomanager is a global singleton that handles all of the audio work that the game client has to do, as this means that it can more easily respect the users' preferences in terms of sound settings.  \\ \hline
+MovePlayer & Contains the code required to make the player move around as the player never moves from 0,0,0, but the world moves around them. Also contains the functions for calculating the speed the player should be going at given if they have the resources to move and what vehicle they are in to determine the speed and handling of their craft.  \\ \hline
+\end{xltabular}
+
+\subsection{Functions}
+\begin{xltabular}[c]{\textwidth}{| X | X | X |}
+    \hline \\
+Function & Module & Description \\
+    \hline \hline \\
+Level of Detail Manager & Renderer & The LOD manager is a function that transforms the distance and size of objects to be rendered into a "visibility" score. This score allows for assets that cannot or can barely be seen to have their textures swapped for lower quality - or no textures at all. Allowing for far greater optimisation of the rendering pipeline.  \\ \hline
+Process Planets & GameServer & The process planets function is a part of the server, and is called during main simulation. It runs the N-body simulation (accelerated by a Barnes-Hut Octree) and retrieves the new position and velocity vectors of each body.  \\ \hline
+Process collisions & GameClient & This function is also part of the main simulation thread and works to detect collisions between players and planets, players and ships, or ships and planets. This only runs on the server side due to the need for an absolute coordinate system somewhere in the mix (as explained by Dr. Chris Thorne)  \\ \hline
+Connect to Server & Join Game & The connect to server function optionally connects to servers protected with a password, as well as configuring the local game client to work with the configuration of the remote game server.  \\ \hline
+Switch Weapons & WeaponManager & The switch weapons function allows for the player to switch the weapons on the ship that they are currently using. This prevents the player from equipping weapons they do not own.   \\ \hline
+Process Relative Coordinates & Server & This function is required to send the correct relativistic coordinates to a certain client on a regular basis. It uses the WorldOctree to get all of the nearby objects and decides whether the player would be able to see it before sending everything over the network in an attempt to save some network bandwidth. Also saving a significant amount of processing power being used on the client.  \\ \hline
+\end{xltabular}
+
+\clearpage
+\section{Psuedocode and Flowchart}
+\subsection{Psuedocode}
+\definecolor{LightGray}{gray}{0.9}
+\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,bgcolor=LightGray,fontsize=\footnotesize,linenos,breaklines,escapeinside=||]{python}
+DIM RECORD RelativePositionContainer
+    ObjectID as Integer
+    TranslationX as Real
+    TranslationY as Real
+    TranslationZ as Real
+    RotationW as Real
+    RotationX as Real
+    RotationY as Real
+    RotationZ as Realstring
+END RECORD
+
+BEGIN getRelativePositions(playerID, worldOctree)
+    Let playerOctreePose = playerID.octreeNode
+    Let ObjectsArray() = playerOctreePose.|\underline{getParent}|().|\underline{getParent}|().|\underline{getParent}|().|\underline{getParent}|().Objects
+
+    Let objectAmount = length of ObjectsArray
+    DIM relativePositions(objectAmount) as RelativePositionContainer
+
+    Let indexOffset = 0
+
+    FOR i = 0 to objectAmount STEP 1
+        Let j = i + indexOffset
+
+        relativePositions(j).TranslationX = ObjectsArray(j).TranslationX - playerOctreePose.TranslationX
+        relativePositions(j).TranslationY = ObjectsArray(j).TranslationY - playerOctreePose.TranslationY
+        relativePositions(j).TranslationZ = ObjectsArray(j).TranslationZ - playerOctreePose.TranslationZ
+        IF ((relativePositions(j).TranslationX ^ 2 + relativePositions(j).TranslationY ^ 2 + relativePositions(j).TranslationZ ^ 2) / ObjectsArray(j).sizeMeters) < 3 THEN
+            indexOffset = indexOffset + 1
+        ELSE
+            relativePositions(j).ObjectID = ObjectsArray(j).ID
+            relativePositions(j).RotationW = playerOctreePose.RotationW.|\underline{lookingAt}|(ObjectsArray(j).RotationW)   
+            relativePositions(j).RotationX = playerOctreePose.RotationX.|\underline{lookingAt}|(ObjectsArray(j).RotationX) 
+            relativePositions(j).RotationY = playerOctreePose.RotationY.|\underline{lookingAt}|(ObjectsArray(j).RotationY) 
+            relativePositions(j).RotationZ = playerOctreePose.RotationZ.|\underline{lookingAt}|(ObjectsArray(j).RotationZ) 
+        ENDIF        
+    NEXT i
+    RETURN relativePositions
+END getRelativePositions
+\end{minted}
+
+\subsection{Algorithm Flowchart}
+\includegraphics[width=0.6\textwidth]{./parta/flowchart.mmd.png}
+\clearpage
+
+\section{IPO Chart (Server Module)}
+\begin{xltabular}[c]{\textwidth}{| X | X | X |}
+    \hline \\
+Input & Process & Output \\ \hline \\
+Configured settings for generation of a new planetary system for the purpose of simulation (User Input) & Call the GenerateWorld submodule to generate each planet, each Non-player-character, and the entire game universe. Start the physics simulation thread for N-body simulation & Map displayed on screen as player is put into the scene \\ \hline
+Simulation thread is updated & Calculate all the new locations of the planets and check if there were any player ship collisions with any objects & Killing the players if they collided or stopping the planets' movement if they crash into one another (dynamically crashing them into one another is out of scope). \\ \hline
+Player input event has ocurred & Calculate how far they are allowed to move and kick them if exceeded. Update the objects in their vicinity to provide faster simulation & User sees the game run smoothly as the simulation keeps updating. \\ 
+    \hline
+\end{xltabular}
+
+
+\clearpage
+\begin{alscape}{DIV=8}
+\section{Structure Chart}
+\includegraphics[width=\linewidth]{./parta/Structure Chart.drawio.png}
+
+\clearpage
+\section{Data Flow Diagram}
+\includegraphics[width=\textwidth]{./parta/DFD.drawio.png}
+\end{alscape}
+
+\clearpage
+\section{Files and Data Structures}
+\begin{xltabular}[c]{\textwidth}{| X | X | X |}
+    \hline \\
+File Name & Type or Structure & Description \\
+    \hline \hline \\
+starmap.exr & Generated OpenEXR panorama sky image & Used as the space background of the entire game to add light to make it more visually appealing to the user. \\
+savedata.bson & BSON, Binary JSON data format  & Save file generated by the autosave mechanism, serialised data to BSON format to improve speed of Serialisation/deserialisation and storage space used up. \\
+shipdata.bson & BSON, Binary JSON data format & File generated at game compile time to pack all of the ship data resources into one file that can be loaded at runtime to check things such as the stats of a ship, to determine the fire rate and the amount of damage a player can take before they get destroyed. \\
+    \hline
+\end{xltabular}
+
+% \textbf{Example:}
+% \{
+%     "states" : \{
+%     "stationaryShoot" : \{
+%     "behaviour" : \["shoot radialShotgun 2", "stateChangeTime waitTimer 6
+%     wait"\]
+%     \},
+%     "wait" : \{
+%     "behaviour" : \["stateChangeTime waitTimer 6 stationaryShoot"\]\}
+%     \}
+% \},
+% "defaultState" : "stationaryShoot",
+%     "projectiles" : \{
+%         "radialShotgun" : \{
+%         "type" : "Radial",
+%         "shotCount" : 1,
+%         "direction" : 90,
+%         "projDesc": \{
+%         "target" : "players",
+%         "speed" : 20,
+%         "size" : 16,
+%         "lifetime" : 3000,
+%         "damage" : 5
+%         \}
+%     \}
+% \}
+
+\clearpage
+\begin{alscape}{DIV=8}
+\section{Data Dictionary}
+\begin{xltabular}[h!]{\linewidth}{|X|X|X|X|X|X|X|X|}
+    \hline \\
+Data Item & Data Type & Format & Number of Bytes required for storage & Size for display & Description  & Example & Validation \\
+    \hline \hline \\
+Player Name & string & NNN\-NNNN\-NNNNN\-NNN\-NNNNN & 20 & 20 & A unique name for each player to pick & Avnzx & Name must not exist in the system, name must only consist of valid UTF-8 characters, cannot be comprised only of UTF-8 "invisible" characters \\ \hline
+
+Planet & Planet (custom) &  & 1024 &  & A container type that stores all of the data about a single planet, these will be user together to simulate the entire system. They hold units such as mass and size to determine their gravitational influence & (2000000\_kg, 1000\_m, 1000\_J, 2\_mps, (0,1,0)) & Input validation when the user tweaks these values will be done with a mask to prevent the user from entering incorrect values to the fields. Combined with range checking for variables such as radius. \\ \hline
+
+FuelAmount & floating point & NN.NN & 4 & 4 & Amount of fuel in the player's suit or the current ship they are in, expressed as a percentage & 89.95p.c. & No input validation as produced by the system. \\ \hline
+
+Object ID & 256 bit integer & ooo\-oooo\-ooo\-oooooo\-oooo\-ooooooo\-ooooo\-oooooo\-oooo\-oooooo\-ooo\-ooooo\-ooo\-ooooo & 32 & 64 & SHA256Sum representing an object that must be sent from the server to the client or the client to the server. Utilised for any communication, as well as modding to determine what resources need to be transferred between the systems. Will be utilised e.g. when downloading mods for a server it will check for the correct SHA256Sum's and deploy them onto your computer if you do not have them. & e79352\-f60b201\-803704\-36003d\-76bbc\-e59ce\-86a2\-9288\-e1ba\-2322\-cbb0\-6ade\-3e871 & Not Validated as is automatically generated by the system, will be checked for corruption \\ \hline
+
+MovementSpeed & floating point & NNNNNN.NN & 8 & 8 & Speed in metres per second shown to the user & 888888.88ms & Produced by the system \\ \hline
+
+Players Registered & integer & NNN & 1 & 3 & This variable holds the number of players registered on the server's backend, used for mainly debugging. & 020 & Not validated as it is produced by the system \\ \hline
+
+Player OctreePose & Vector4 & XX.XX YY.YY ZZ.ZZ NNNN & 32 & 16 & Stores the 3d pose of the object as well as the ID of its parent in the octree & 20.00,21.00,45.01,2449 & No validation as it is produced by the system \\ \hline
+
+World Octree & Octree &  & 10000000 &  & The world octree holds the entire gameworld and every object in an octree (splitting up 3d space into smaller and smaller cubes, 2x2x2 split.) To optimise distance calculations and  & Complex data type & Internal system data type \\ \hline
+
+Current Time & unsigned integer 64 bit & NNNNNNNN\-NNNNNNNN & 8 & 16 & Stores the current time in UNIX time, since the epoch & 293992192 & No input validation as this is always assumed to be correct from the timeservers it is retrieved from. \\ \hline
+
+Planet Position Difference & double floating point & NNNNNNNNN.NN & 8 & 11 & Used for estimated time of arrival, represents the distance from the player on or off a ship to the planet they have targeted & 183782993.21 metres & No validation as this is not a user inputted value \\
+    \hline
+\end{xltabular}
+\end{alscape}
+
+\clearpage
+\section{Platform and OS Considerations}
+The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) CPU that is able to do accelerated math and must have fast primary memory (RAM) to be able to run the game server at high frame rates. Due to these feature older (32 bit) computers will not be able to run the \textbf{server}, but will be able to run the client, as a compromise has been made to allow for further compatibility. \\
+
+\noindent Devices and platforms that do not expose a high-performance API that is available for open source integration will also be excluded. For the scope of this project that excludes macOS, iPadOS, and iOS from being able to run the game, as they do not provide an OpenGL, Vulkan or DirectX layer (as the Godot game engine only supports these API's). Due to this the platforms that will be able to run the client are: Windows 7 (or newer), Any Linux distribution using X11 or XWayland, such as ubuntu 18.04+, Debian 10+, and any BSD with X11/XWayland with support for Vulkan. Devices like Apple macbooks are not included as they do not support OpenGL or Vulkan, and require the use of the \texttt{Metal} graphics API. Godot does not support this API. \\
+
+\noindent As a 3d game that uses various textures and assets, the memory requirements force the minimum memory required to approximately 8GB for the game, thus 16GB for the computer in total. The recommended processor is an i7 1165G7 as it is a 64 bit accelerated CPU and is able to do the calculations required to run this project within 16.666 milliseconds. (The average frame rate of computer monitors, thus the minimum requirement to make it look smooth). \\
+
+\noindent An additional requirement comes from the protocol design for the online part of the game. As the server must communicate with the client every frame with updated positions, the latency required is within 50ms. Due to more advanced jitter and loss compensation algorithms such as Counter Strike and Quake being difficult to achieve with a large number of systems. These lag compensation algorithms also introduce more overhead on each client as they must store and process much more data. Given the difficulty and the costs and benefits it has been decided against. \\ 
+
+\noindent The storage requirements for this game, due to the use of the Godot game engine. Are quite low in comparison to other games. In total this game is expected to reach a full 3d environment while staying under a 10GiB download, to allow for uncompressed assets that may potentially work better on lower end hardware, and to reduce compression artifacting. The 10GiB size allows for a number of assets while still allowing for individuals with a less stable connection to retrieve the game files, as well as for individuals on limited data plans. As many AAA titles reach sizes nearing 100GiB.
+
+\clearpage
+\begin{alscape}{DIV=8}
+\section{Logbook}
+\begin{xltabular}[c]{\textwidth}{|X|X|X|X|X|}
+    \hline \\
+Date & Description & Problems Encountered & What I need to do & Completion signoff \\ \hline
+% FIX & FIX & FIX & FIX & FIX \\\hline
+
+2022-10-21 & Come up with ideas for game and make a start on the documentation (log). Decided to make a game taking inspiration from others such as space engineers, Aurora 4x (strategy game with depth of gameplay), From the depths (innovative build system and physics simulation). Think about including features from the likes of Elite dangerous and adding a "supercruise" to allow the player to travel the large universe quickly while still being fun and a good experience. Consider adding weapons such as in From the Depths and Space engineers to make interest in the game. & Godot had issues with large scale games and visual jitter & Research why this is the case and start progress on the programming side & Done \\
+& 
+Created the godot scene to start the game & & & \\
+\hline
+
+2022-10-24 & Research how to do planetary simulations and come up on N-body simulations, as well as a way to make them faster. (Barnes-hut tree) & Floating Point Precision error will have a large influence on the game, and it needs to be fixed. & Implement N-body simulation into my game and get it working. Continue to research other physics such as air physics. Which may be able to be used from an open source library used in the FOSS flight simulator Air Gear. Combat floating point precision error (FPPE) & In Progress \\\hline
+
+2022-12-30 & Continue to research methods to combat floating point precision error due to the apparent difficulty of gaining a solution. Am not able to find a solution describing what Dr. Chris Thorne describes anywhere on the internet nor in his thesis & I am unable to find an implementation or clarity about the implementation of floating origin the "proper" way & Look for an implementation of continuous floating origin and implement it into the software & In Progress \\\hline
+
+2022-12-31 & Change to having 2 godot projects due to my research that shows it is not possible to do such a thing. Along with the added benefit of being able to use different precisions on the different platforms. Allowing for greater backwards compatibility & The two godot projects need different versions of the engine, requiring the compilation of the engine twice and my game twice (once for the server once for the client) & Need to change the build system used and change the version of the engine & Done \\\hline
+
+2023-01-25 & Complete the walkthrough and language choice for my chosen game engine, game, and language. Decide on godot due to the flexibility of the engine and the upcoming Godot 4 engine that allows for the use of the Vulkan API and performance benefits. Have switched to the alpha 4.0 branch of Godot to gain features such as tags in 3d space & The godot 4.0 alpha branch is unstable and did not have support for C\# compiled out of the box & I need to recompile the game engine to accomodate for C\# compatibility & Done \\\hline
+
+2023-02-06 & Complete the screen design for check 1 and research how to implement the updated godot UI system into a game& The documentation for the godot UI system is not high quality & Implement the updated godot UI system & In Progress \\\hline
+
+2023-02-09 & Figure out how to get godot to use higher precision floating point numbers, in order to combat FPPE more accurately & Godot cannot handle higher than 64 bit numbers even with libraries like libquadmath and require massive core rewrites to achieve any further. To enable 64 bit mode the game engine must be recompiled. Due to the project using C\# the game engine and bindings must all be regenerated specifically for the server & Create a custom build script that can automatically download the engine source code and build my game alongside it. Consider looking into other solutions to use external libraries to achieve this. & in progress \\ \hline
+
+2023-02-11 & Programatically generate the background and scenery for the game using Spacescape. & As godot cannot take cubemaps the background needs to be converted from a cubemap into 6 flat surfaces, then it can be "rolled" onto a spheremap that godot can take through its PanoramaSky. The cubemap is the wrong way around and requires extra tweaking & Fix the cubemap so the faces are not misaligned & Done, using imagemagick \texttt{convert -rotate 180 in.exr out.exr} on the top and bottom faces fixes the issue \\\hline
+
+2023-02-14 & Finished the documentation to be mostly ready for check 1, apart from not finding the proforma for the logbook and having issues with the LaTeX compiler due to small mistakes. & Stop using latex due to the uneccessary complexity. & Get the Check 1 Submission ready & Partially Done \\\hline
+
+2023-02-24 & Attempt to recompile the godot engine to try and get 64 bit floating point support & The feature is not documented in public and there are no instructions on how to build a custom version of the engine (to this degree). & Figure out how to recompile the engine with floating point support and Mono support for C\#, as well as recompiling the C\# bindings to make it compatible with the engine & In Progress \\\hline
+
+2023-02-25 & Complete most of the documentation required to submit part 1, including the data dictionary, structure chart, and data flow diagram. Clean up some sections such as developer design specifications and attempt to fix the landscape page in LaTeX. Research the possibility of using GNU Make to build godot and the documentation. & Could not sucessfully flip the page in LaTeX without compile errors & Ask on the LaTeX forums for help with this and research further in using LaTeX with the Make build system. & Done \\\hline
+
+2023-03-03 & Start using the godot stable branch, complete the IPO chart and psuedocode for one of my main modules. Attempt to start a system flowchart of the process & The godot stable branch has less documentation on how to compile it and has removed support for certain C\# language features & Find the new way to use godot and C\# with a custom version of the engine & In Progress \\\hline
+
+2023-03-08 & Fixed the context diagram to fit with the new Structure chart to include external servers. Completed finishing touches and converted logbook to proforma format before submission. & My logbook was not created with the proforma in mind and required a large ammount of effort and a significant ammount of wasted effort to convert it. Next time I need to start the conversion process earlier as well as  & Submit part A & Done \\
+    \hline
+\end{xltabular}
+\end{alscape}
+
+
+\subsection{Bibliography}
+
+
+https://www.researchgate.net/profile/Chris\-Thorne\-2 \\
+https://github.com/Xyene/cube2sphere \\
+https://github.com/petrocket/spacescape \\
+https://github.com/emeraldpowder/FactorioBelts \\
+https://blog.marekrosa.org/2014/12 \\
+https://www.researchgate.net/publication/331628217\_Using\_a\_Floating\_Origin\_to\_Improve\_Fidelity\_and\_Performance\_of\_Large\_Distributed\_Virtual\_Worlds \\
+https://en.wikipedia.org/wiki/N\-body\_simulation \\
+https://github.com/topics/orbital\-simulation \\
+https://gitlab.com/agrahn/animate \\
+https://www.flecs.dev/flecs \\
+https://godotshaders.com \\
+https://github.com/notakamihe/Unity\-Star\-Systems\-and\-Galaxies \\
+https://github.com/SebLague/Procedural\-Planets \\
+https://developer.nvidia.com/gpugems/gpugems3/part\-v\-physics\-simulation/chapter\-31\-fast\-n\-body\-simulation\-cuda \\
+
+\end{document}
+%A
+%# Functions and Modules (>=5)
+%# Psuedocode and system flowchart
+%# IPO Chart
+%# Structure Chart
+%# Data Flow Diagram (simplified)
+%# Files used and Data structures
+%# Data Dictionary (all 8 columns)
+%# Platform / OS Considerations
+
+%\usepackage{subfiles}

@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+EnsureSConsVersion(4, 0, 0)
+
+import os
+
+env = Environment(ENV = os.environ)
+env.Replace(PDFLATEX='xelatex', BIBTEX='biber')
+env.AppendUnique(PDFLATEXFLAGS='-synctex=1')
+env.AppendUnique(PDFLATEXFLAGS='-shell-escape')
+
+pdf_output = env.PDF(target='main.pdf', source='main.tex')
+env.Precious(pdf_output) # incremental build
+
+env.Clean(pdf_output, '_minted-main')
