@@ -18,10 +18,19 @@ def makegodot():
   for key in customgdargs:
     customgdargsstr += key + "=" + str(customgdargs[key]) + " "
 
-  env.Command(target = 'godot_engine', 
+  env.Command(
+    target = 'godot_engine_binary', 
     source = 'godot/SConstruct', 
-    action = [f'cd Server/godot && scons {customgdargsstr}'])
+    action = [f'cd Server/godot && scons {customgdargsstr}']) # Hacky? Yes, should've used CMake...
+
+  env.Command(
+    target = 'godot_engine_managedlib', 
+    source = 'godot/SConstruct', 
+    action = [f'cd Server/godot && ./modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./bin --precision=double --push-nupkgs-local ../Nuget-Source'])
+
+  env.Command(
+    target = 'godot_engine_gluecode', 
+    source = 'godot/SConstruct', 
+    action = [f'cd Server/godot && ./bin/godot.linuxbsd.editor.double.x86_64.mono --headless --generate-mono-glue modules/mono/glue'])
 
 makegodot()
-# ARGUMENTS.set()
-# env.SConscript('godot/SConstruct')

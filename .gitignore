@@ -22,3 +22,4 @@ Documentation/*.pdf
 
 # Build system ignores
 .sconsign.dblite
+Server/Nuget-Source
