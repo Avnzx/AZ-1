@@ -9,6 +9,4 @@ SConscript('Documentation/SConscript')
 # SConscript('Client/SConscript')
 SConscript('Server/SConscript')
 
-print("args in sconstruct: ", ARGUMENTS)
-
 env.Alias('docs', 'Documentation/SConscript')

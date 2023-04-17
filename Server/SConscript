@@ -1,13 +1,9 @@
 #!/usr/bin/env python
 
-from SCons.Script import *
-
-
 EnsureSConsVersion(3, 0, 0)
 EnsurePythonVersion(3, 9)
 
 import os
-from SCons.Node.FS import *
 
 env = Environment(ENV = os.environ)
 
@@ -22,12 +18,9 @@ def makegodot():
   for key in customgdargs:
     customgdargsstr += key + "=" + str(customgdargs[key]) + " "
 
-  print(f"scons $SOURCES {customgdargsstr}")
-
-  env.Command('gdengine', 'godot/SConstruct', f"scons -f $SOURCE.file {customgdargsstr}", chdir=1)
-  # env['SCONS_ROOT'] = Dir('#/Server/godot/')
-  # print (Dir('#').abspath)
-  # env.SConscript('godot/SConstruct')
+  env.Command(target = 'godot_engine', 
+    source = 'godot/SConstruct', 
+    action = [f'cd Server/godot && scons {customgdargsstr}'])
 
 makegodot()
 # ARGUMENTS.set()
