@@ -18,19 +18,31 @@ def makegodot():
   for key in customgdargs:
     customgdargsstr += key + "=" + str(customgdargs[key]) + " "
 
+
+  # using chdir=path is worse due to non-multithread!
   env.Command(
-    target = 'godot_engine_binary', 
-    source = 'godot/SConstruct', 
-    action = [f'cd Server/godot && scons {customgdargsstr}']) # Hacky? Yes, should've used CMake...
+   target = 'godot_engine_binary', 
+   source = 'godot/SConstruct', 
+   action = [f'cd Server/godot && scons {customgdargsstr}']
+   ) # Hacky? Yes, should've used CMake...
+
+
+  # initial compile => glue codegen (fails) => make pkgs (success) => glue codegen (success)
+  # I assume this is UB and will probably change in upcoming months...
 
   env.Command(
     target = 'godot_engine_managedlib', 
     source = 'godot/SConstruct', 
-    action = [f'cd Server/godot && ./modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./bin --precision=double --push-nupkgs-local ../Nuget-Source'])
+    action = 'cd Server/godot && ./modules/mono/build_scripts/build_assemblies.py --godot-output-dir=./bin --precision=double --push-nupkgs-local ../Nuget-Source')
 
   env.Command(
     target = 'godot_engine_gluecode', 
-    source = 'godot/SConstruct', 
+    source = 'godot/SConstruct',
     action = [f'cd Server/godot && ./bin/godot.linuxbsd.editor.double.x86_64.mono --headless --generate-mono-glue modules/mono/glue'])
 
+  Depends('godot_engine_managedlib','godot_engine_binary')
+  Depends('godot_engine_gluecode','godot_engine_managedlib')
+
+  env.Textfile(target='godot/.gdignore', source=[''])
+    
 makegodot()
