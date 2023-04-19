@@ -10,11 +10,11 @@ config_version=5
 
 [application]
 
-config/name="AZ-1Server"
-run/main_scene="res://Assets/Scenes/main.tscn"
+config/name="AZ-1S"
+run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.0", "C#", "Double Precision", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
 
-project/assembly_name="AZ-1Server"
+project/assembly_name="AZ-1S"

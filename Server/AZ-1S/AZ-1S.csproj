@@ -1,8 +1,8 @@
-<Project Sdk="Godot.NET.Sdk/4.1.0-dev">
+<Project Sdk="Godot.NET.Sdk/4.0.3-rc">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <EnableDynamicLoading>true</EnableDynamicLoading>
-    <RootNamespace>AZ1Server</RootNamespace>
+    <Nullable>enable</Nullable>
+    <RootNamespace>AZ1S</RootNamespace>
   </PropertyGroup>
 </Project>
