@@ -20,6 +20,6 @@ Documentation/*.pdf
 
 
 
-# Build system ignores
+# Build system build artifacts
 .sconsign.dblite
 Server/Nuget-Source

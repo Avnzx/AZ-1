@@ -42,8 +42,5 @@ def makegodot():
 
   Depends('godot_engine_managedlib','godot_engine_binary')
   Depends('godot_engine_gluecode','godot_engine_managedlib')
-
-  env.Textfile(target='godot/.gdignore', source=[''])
-  env.Textfile(target='Nuget-Source/.gdignore', source=[''])
     
 makegodot()
