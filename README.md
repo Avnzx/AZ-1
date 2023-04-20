@@ -6,3 +6,5 @@ The server **must** use a custom version of the godot engine, with Mono and F64 
 
 - The server will be compiled with a custom compiled version of godot, prefix ARGUMENTS with `gds_` to apply them **to the custom godot version**, these will **not** be added to the SERVER, CLIENT, or DOCS
 
+# Brain Damage (for future development)
+- Shared Client/Server code is in the SERVER, symlink is in the CLIENT (target SERVER) to AZ1comlib (AZ-1 common library)
