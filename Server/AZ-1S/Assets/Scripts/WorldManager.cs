@@ -31,9 +31,20 @@ public partial class WorldManager : Node
 						//  Annoying workaround for not being able to edit XYZ fields
 						double[] ab = {0,0,0};
 						ab[i] = -(chunkOffset * (float) FrontierConstants.chunkSize);
+						
+
+						GD.Print("Boundary crossed \n COORD: ", i, " RATIO: ",   temp / FrontierConstants.forgiveness, " OLD: ", chunk.Name ," NEW: ", string.Join('_',currChunk), " ORD: ", obj.Position[i], " NRD: ", ab[i]+obj.Position[i]);
+						
 						obj.Position += new Vector3(ab[0],ab[1],ab[2]);
 
-						GD.Print("Boundary crossed \n COORD: ", i, " RATIO: ",   temp / FrontierConstants.forgiveness, " OLD: ", chunk.Name ," NEW: ", string.Join('_',currChunk));
+						var possibleNode = worldRoot.GetNodeOrNull(string.Join('_',currChunk));
+
+						// FIXME: Testing code
+						if (possibleNode is null) {
+							Node nd = new Node();
+							nd.Name = string.Join('_',currChunk);
+							worldRoot.AddChild(nd);
+						}
 
 						worldRoot.GetNode(string.Join('_',currChunk)).AddChild(obj);
 				}}
