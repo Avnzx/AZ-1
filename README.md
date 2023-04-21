@@ -8,3 +8,8 @@ The server **must** use a custom version of the godot engine, with Mono and F64 
 
 # Brain Damage (for future development)
 - Shared Client/Server code is in the SERVER, symlink is in the CLIENT (target SERVER) to AZ1comlib (AZ-1 common library)
+
+
+# Remember:
+
+- [Node *owner* != Node *parent*](https://www.reddit.com/r/godot/comments/rgti99/node_parents_vs_owner/)

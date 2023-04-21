@@ -1,0 +1,46 @@
+using Godot;
+using System;
+
+public partial class WorldManager : Node
+{
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready() {
+		worldRoot = GetNodeOrNull<Node>("/root/main/world");
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta) {
+		var children = worldRoot!.GetChildren();
+
+		foreach (Node chunk in children) {
+			foreach (Node3D obj in chunk.GetChildren()) {
+				// obj.Transform.Origin.X
+				// TODO: use bit shift (exponent) for speed
+
+				// 2^-19 shift and determine if >1
+
+				// FIXME: Should probably also change node OWNER for serialization
+				for (int i = 0; i < 3; i++) {
+					var temp = obj.Position[i] / (float) FrontierConstants.chunkSize;
+					if (Math.Abs(temp) > FrontierConstants.forgiveness) {
+						chunk.RemoveChild(obj);
+						string[] currChunk = chunk.Name.ToString().Split('_');
+						int chunkOffset = (int) (temp + 0.5d*Math.Sign(temp));
+						currChunk[i] = (int.Parse(currChunk[i]) + chunkOffset).ToString();
+						
+						//  Annoying workaround for not being able to edit XYZ fields
+						double[] ab = {0,0,0};
+						ab[i] = -(chunkOffset * (float) FrontierConstants.chunkSize);
+						obj.Position += new Vector3(ab[0],ab[1],ab[2]);
+
+						GD.Print("Boundary crossed \n COORD: ", i, " RATIO: ",   temp / FrontierConstants.forgiveness, " OLD: ", chunk.Name ," NEW: ", string.Join('_',currChunk));
+
+						worldRoot.GetNode(string.Join('_',currChunk)).AddChild(obj);
+				}}
+			}
+		}
+
+	}
+
+	Node? worldRoot;
+}
