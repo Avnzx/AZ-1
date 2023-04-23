@@ -13,3 +13,8 @@ The server **must** use a custom version of the godot engine, with Mono and F64 
 # Remember:
 
 - [Node *owner* != Node *parent*](https://www.reddit.com/r/godot/comments/rgti99/node_parents_vs_owner/)
+
+
+# Design decisions
+
+- To allow for screens like remote TV's (cameras with remote TV's) each "camera" does not need to have  

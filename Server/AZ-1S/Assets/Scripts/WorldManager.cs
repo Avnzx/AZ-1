@@ -33,7 +33,7 @@ public partial class WorldManager : Node
 						ab[i] = -(chunkOffset * (float) FrontierConstants.chunkSize);
 						
 
-						GD.Print("Boundary crossed \n COORD: ", i, " RATIO: ",   temp / FrontierConstants.forgiveness, " OLD: ", chunk.Name ," NEW: ", string.Join('_',currChunk), " ORD: ", obj.Position[i], " NRD: ", ab[i]+obj.Position[i]);
+						GD.Print("Boundary c/*rossed \n COORD: ", i, " RATIO: ",   temp / FrontierConstants.forgiveness, " OLD: ", chunk.Name ," NEW: ", string.Join('_',currChunk), " ORD: ", obj.Position[i], " NRD: ", ab[i]+obj.Position[i]);
 						
 						obj.Position += new Vector3(ab[0],ab[1],ab[2]);
 

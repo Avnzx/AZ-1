@@ -1,0 +1,15 @@
+using Godot;
+using System;
+
+public partial class MainMenu : MarginContainer
+{
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready() {
+		ConfigManager.GetConfig();
+
+		var enet = new ENetMultiplayerPeer();
+		enet.CreateClient("localhost",9999);
+		this.Multiplayer.MultiplayerPeer = enet;
+
+	}
+}

@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://benigk51uvuc3"]
+[gd_scene load_steps=5 format=3 uid="uid://benigk51uvuc3"]
 
+[ext_resource type="Script" path="res://Assets/Menus/Scripts/MainMenu.cs" id="1_elwj3"]
 [ext_resource type="Script" path="res://Assets/Menus/Scripts/QuitButton.cs" id="1_wqgwj"]
 [ext_resource type="Theme" uid="uid://dgx16pdxowuua" path="res://Assets/Menus/Assets/Theme/menutheme.tres" id="2_81olf"]
 [ext_resource type="Texture2D" uid="uid://cxta7dmjkiga4" path="res://Assets/Menus/Assets/Backgrounds/mainbg-alex-conchillos.jpg" id="2_xk05q"]
@@ -15,6 +16,7 @@ theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
+script = ExtResource("1_elwj3")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 2
