@@ -12,11 +12,21 @@ public partial class ServerManager : Node
 		enet.CreateServer(9999);
 		this.Multiplayer.MultiplayerPeer = enet;
 
+		this.AddChild(new CommManager());
 
-		this.Multiplayer.PeerConnected += (x) => {GD.Print(x.GetType());};
+		this.Multiplayer.PeerConnected += (long x) => {OnPlayerConnect(x);};
+	}
+
+	private void OnPlayerConnect(long id) {
+		GD.Print("Client: ", id, " connected!");
+		GetNode<CommManager>("CommManager").RpcId(id,"GetPlayerID");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)	{
 	}
+
+
+	Node? worldNode;
+
 }

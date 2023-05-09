@@ -10,3 +10,4 @@ SConscript('Documentation/SConscript')
 SConscript('Server/SConscript')
 
 env.Alias('docs', 'Documentation/SConscript')
+env.Alias('everything', ['docs','Server/SConscript'])

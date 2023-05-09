@@ -1,19 +1,24 @@
 [gd_scene load_steps=4 format=3 uid="uid://vwq7wu4ksxx6"]
 
 [ext_resource type="Script" path="res://Assets/Scenes/test.cs" id="1_a6ii2"]
-[ext_resource type="PackedScene" path="res://Assets/Player/Player.tscn" id="1_p6qtq"]
+[ext_resource type="PackedScene" uid="uid://d1cfu305jh4t8" path="res://Assets/Player/Player.tscn" id="1_p6qtq"]
 [ext_resource type="Environment" uid="uid://diage7yiluksp" path="res://Assets/Environments/space_env.tres" id="2_0t2og"]
 
-[node name="Node3D" type="Node"]
+[node name="main" type="Node"]
 script = ExtResource("1_a6ii2")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.74266, 0)
 gi_mode = 2
 use_collision = true
 size = Vector3(24, 1, 20)
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("1_p6qtq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9532, 2.31954, -1.94006)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_0t2og")
+
+[node name="world" type="Node" parent="."]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../world")

@@ -43,4 +43,17 @@ def makegodot():
   Depends('godot_engine_managedlib','godot_engine_binary')
   Depends('godot_engine_gluecode','godot_engine_managedlib')
     
+
+def make_export_templates():
+  env.Command(
+    target = 'godot_export_templates', 
+    source = 'godot/SConstruct',
+    action = [f'cd Server/godot && scons platform=linuxbsd target=template_debug arch=x86_64'])
+  # env.Command(
+  #   target = 'godot_export_templates', 
+  #   source = 'godot/SConstruct',
+  #   action = [f'cd Server/godot && scons platform=linuxbsd target=template_release arch=x86_64'])
+
 makegodot()
+make_export_templates()
+# make_server()

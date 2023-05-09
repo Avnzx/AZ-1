@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <DefineConstants>ISCLIENT</DefineConstants>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>AZ1</RootNamespace>
   </PropertyGroup>

@@ -27,7 +27,7 @@
             "request": "launch",
             "mode": "executable",
             "preLaunchTask": "build",
-            "executable": "/usr/bin/godot",
+            "executable": "/usr/bin/godot-mono",
             // See which arguments are available here:
             // https://docs.godotengine.org/en/stable/getting_started/editor/command_line_tutorial.html
             "executableArguments": [
@@ -41,7 +41,7 @@
             "type": "godot-mono",
             "request": "attach",
             "address": "localhost",
-            "port": 23685
+            "port": 6665
         }
     ]
 }

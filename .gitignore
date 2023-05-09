@@ -23,3 +23,6 @@ Documentation/*.pdf
 # Build system build artifacts
 .sconsign.dblite
 Server/Nuget-Source
+Documentation/_minted-main/
+Server/AZ-1S/export/
+Client/export/

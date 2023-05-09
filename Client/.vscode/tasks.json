@@ -3,7 +3,7 @@
     "tasks": [
         {
             "label": "build",
-            "command": "/usr/bin/godot",
+            "command": "/usr/bin/godot-mono",
             "type": "process",
             "args": [
                 "--build-solutions",
