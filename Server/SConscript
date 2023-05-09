@@ -1,9 +1,13 @@
 #!/usr/bin/env python
+from SCons.Script import EnsureSConsVersion,EnsurePythonVersion,Environment,SConscript,ARGUMENTS
+import os
+import sys
+
 
 EnsureSConsVersion(3, 0, 0)
 EnsurePythonVersion(3, 9)
 
-import os
+
 
 env = Environment(ENV = os.environ)
 
@@ -40,20 +44,54 @@ def makegodot():
     source = 'godot/SConstruct',
     action = [f'cd Server/godot && ./bin/godot.linuxbsd.editor.double.x86_64.mono --headless --generate-mono-glue modules/mono/glue'])
 
-  Depends('godot_engine_managedlib','godot_engine_binary')
-  Depends('godot_engine_gluecode','godot_engine_managedlib')
-    
+  env.Depends('godot_engine_managedlib','godot_engine_binary')
+  env.Depends('godot_engine_gluecode','godot_engine_managedlib')
+  # TODO: Centralise
+  env.Alias('godot','godot_engine_gluecode')
 
 def make_export_templates():
+  customgdargs: dict = {"arch": "x86_64", "platform": "linuxbsd", "target": "debug"}
+  for key in ARGUMENTS:
+    if key.startswith("s_ex_"):
+      customgdargs[key[5:]] = ARGUMENTS[key]
+
   env.Command(
-    target = 'godot_export_templates', 
+    target = 'export_template_server', 
     source = 'godot/SConstruct',
-    action = [f'cd Server/godot && scons platform=linuxbsd target=template_debug arch=x86_64'])
-  # env.Command(
-  #   target = 'godot_export_templates', 
-  #   source = 'godot/SConstruct',
-  #   action = [f'cd Server/godot && scons platform=linuxbsd target=template_release arch=x86_64'])
+    action = [f'cd Server/godot && scons platform={customgdargs["platform"]} target=template_{customgdargs["target"]} arch={customgdargs["arch"]}'])
+
+  # env.Alias('s_ex_windows_release','export_template_server')
+
+  env.Default('export_template_server')
+  env.Depends('export_template_server', 'godot')
+
+
+def export_game():
+  env.Command(
+    target = 'export_game_server', 
+    source = 'godot/SConstruct',
+    action = ['cd Server/AZ-1S && ../godot/bin/godot.linuxbsd.editor.double.x86_64.mono --headless --export-release "Linux/X11" export/AZ-1S.x86_64'])
+
+  env.Depends('export_game_server', 'export_template_server')
+  # TODO: Centralise
+  env.Alias("export_server", "export_game_server")
+
+
+def run_game():
+  env.Command(
+    target = 'run_exported_server_current', 
+    source = 'godot/SConstruct',
+    action = ['cd Server/AZ-1S/export && ./AZ-1S.sh --headless'])
+
+  
+  env.Alias('run_server_test','run_exported_server_current')
+  env.Depends('run_server_test', 'export_server')
+
+
+
 
 makegodot()
 make_export_templates()
+export_game()
+run_game()
 # make_server()

@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from SCons.Script import EnsureSConsVersion,EnsurePythonVersion,Environment,SConscript
+
 
 EnsureSConsVersion(3, 0, 0)
 EnsurePythonVersion(3, 6)

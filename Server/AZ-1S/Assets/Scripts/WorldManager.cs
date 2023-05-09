@@ -29,7 +29,8 @@ public partial class WorldManager : Node
 						currChunk[i] = (int.Parse(currChunk[i]) + chunkOffset).ToString();
 						
 						//  Annoying workaround for not being able to edit XYZ fields
-						double[] ab = {0,0,0};
+						//FIXME: Broken godot version?
+						float[] ab = {0,0,0};
 						ab[i] = -(chunkOffset * (float) FrontierConstants.chunkSize);
 						
 
