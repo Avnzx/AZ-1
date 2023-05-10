@@ -1,10 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://n8x03ly7a6uy"]
+[gd_scene load_steps=2 format=3 uid="uid://n8x03ly7a6uy"]
 
-[ext_resource type="Script" path="res://ServerManager.cs" id="1_b0g66"]
-[ext_resource type="Script" path="res://Assets/Scripts/WorldManager.cs" id="3_b6vim"]
+[ext_resource type="Script" path="res://ServerManager.cs" id="1_tyagu"]
 
 [node name="main" type="Node"]
-script = ExtResource("1_b0g66")
+script = ExtResource("1_tyagu")
 
 [node name="world" type="Node" parent="."]
 
@@ -13,6 +12,3 @@ script = ExtResource("1_b0g66")
 [node name="Node3D" type="Node3D" parent="world/0_0_1"]
 
 [node name="1_0_0" type="Node" parent="world"]
-
-[node name="worldmanager" type="Node" parent="."]
-script = ExtResource("3_b6vim")

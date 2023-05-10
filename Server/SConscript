@@ -50,31 +50,47 @@ def makegodot():
   env.Alias('godot','godot_engine_gluecode')
 
 def make_export_templates():
-  customgdargs: dict = {"arch": "x86_64", "platform": "linuxbsd", "target": "debug"}
+  customgdargs: dict = {"arch": "x86_64", "platform": "linuxbsd", "target": "template_debug", "precision": "double", "module_mono_enabled": "yes"}
   for key in ARGUMENTS:
     if key.startswith("s_ex_"):
       customgdargs[key[5:]] = ARGUMENTS[key]
 
+  customgdargsstr: str = ""
+  for key in customgdargs:
+    customgdargsstr += key + "=" + str(customgdargs[key]) + " "
+
   env.Command(
     target = 'export_template_server', 
     source = 'godot/SConstruct',
-    action = [f'cd Server/godot && scons platform={customgdargs["platform"]} target=template_{customgdargs["target"]} arch={customgdargs["arch"]}'])
+    action = [f'cd Server/godot && scons {customgdargsstr}'])
 
   # env.Alias('s_ex_windows_release','export_template_server')
 
-  env.Default('export_template_server')
   env.Depends('export_template_server', 'godot')
 
 
 def export_game():
+  env.Command(target = 'bruh', source = 'godot/SConstruct', action = ['cd Server/AZ-1S && mkdir -p export && touch .gdignore'])
+
   env.Command(
     target = 'export_game_server', 
     source = 'godot/SConstruct',
-    action = ['cd Server/AZ-1S && ../godot/bin/godot.linuxbsd.editor.double.x86_64.mono --headless --export-release "Linux/X11" export/AZ-1S.x86_64'])
+    action = ['cd Server/AZ-1S && ../godot/bin/godot.linuxbsd.editor.double.x86_64.mono --headless --export-debug "Linux/X11" export/AZ-1S.x86_64'])
 
-  env.Depends('export_game_server', 'export_template_server')
+  sub = env.Substfile('AZ-1S/export/AZ-1S.sh', SUBST_DICT = {'AZ-1S.x86_64"' : 'AZ-1S.x86_64" --headless'})
+
+  env.Command(
+    target = 'fixlauncher', 
+    source = 'godot/SConstruct', 
+    action = 'cd Server/AZ-1S/export && mv AZ-1S AZ-1S.sh && chmod 755 AZ-1S.sh')
+
+  # env.Depends('export_game_server', 'export_template_server')
+  env.Depends('export_game_server','bruh')
+  env.Depends('fixlauncher',sub)
+  env.Depends(sub, 'export_game_server')
   # TODO: Centralise
-  env.Alias("export_server", "export_game_server")
+  env.Alias("export_server", 'fixlauncher')
+  env.Default('export_server')
 
 
 def run_game():
@@ -83,9 +99,9 @@ def run_game():
     source = 'godot/SConstruct',
     action = ['cd Server/AZ-1S/export && ./AZ-1S.sh --headless'])
 
-  
+  # TODO: Centralise
   env.Alias('run_server_test','run_exported_server_current')
-  env.Depends('run_server_test', 'export_server')
+  # env.Depends('run_server_test', 'export_server') # shouldn't be disabled but ehhhhh blame dotnet
 
 
 

@@ -7,6 +7,22 @@ public partial class ServerManager : Node
 	public override void _Ready() {
 		GD.Print("Welcome to Forward Frontier Server Edition \n------------------------------------------");
 
+		GD.Print(OS.GetCmdlineArgs());
+
+		GD.Print(OS.ReadStringFromStdIn()); //WARNING: BLOCKING!
+
+		// foreach (var arg in OS.GetCmdlineArgs()) {
+		// 	if (arg.Find("=") > -1) {
+		// 		string[] keyValue = arg.Split("=");
+		// 		args[keyValue[0].LStrip("--")] = keyValue[1];
+		// 	} else {
+		// 		// Options without an argument will be present in the dictionary,
+		// 		// with the value set to an empty string.
+		// 		args[keyValue[0].LStrip("--")] = "";
+		// 	}
+		// }
+
+
 
 		var enet = new ENetMultiplayerPeer();
 		enet.CreateServer(9999);
@@ -28,5 +44,6 @@ public partial class ServerManager : Node
 
 
 	Node? worldNode;
+	Godot.Collections.Dictionary args = new Godot.Collections.Dictionary();
 
 }
