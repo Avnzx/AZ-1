@@ -70,7 +70,7 @@ def make_export_templates():
 
 
 def export_game():
-  env.Command(target = 'bruh', source = 'godot/SConstruct', action = ['cd Server/AZ-1S && mkdir -p export && touch .gdignore'])
+  env.Command(target = 'bruh', source = 'godot/SConstruct', action = ['cd Server/AZ-1S && mkdir -p export && touch ./export/.gdignore'])
 
   env.Command(
     target = 'export_game_server', 
@@ -84,7 +84,7 @@ def export_game():
     source = 'godot/SConstruct', 
     action = 'cd Server/AZ-1S/export && mv AZ-1S AZ-1S.sh && chmod 755 AZ-1S.sh')
 
-  # env.Depends('export_game_server', 'export_template_server')
+  env.Depends('export_game_server', 'export_template_server')
   env.Depends('export_game_server','bruh')
   env.Depends('fixlauncher',sub)
   env.Depends(sub, 'export_game_server')
