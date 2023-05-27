@@ -30,7 +30,7 @@ public partial class WorldManager : Node
 						
 						//  Annoying workaround for not being able to edit XYZ fields
 						//FIXME: Broken godot version?
-						float[] ab = {0,0,0};
+						double[] ab = {0,0,0};
 						ab[i] = -(chunkOffset * (float) FrontierConstants.chunkSize);
 						
 

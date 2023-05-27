@@ -19,6 +19,3 @@ size = Vector3(24, 1, 20)
 environment = ExtResource("2_0t2og")
 
 [node name="world" type="Node" parent="."]
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../world")

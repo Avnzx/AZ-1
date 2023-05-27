@@ -6,20 +6,25 @@ public partial class ServerManager : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
 		ProcessCmdline(OS.GetCmdlineArgs());
+		// try to load default config file or allow custom path to a serverconfig
 		GD.Print("Welcome to Forward Frontier Server Edition \n------------------------------------------");
 
+		serverConfig = new ServerConfig();
 
 		var enet = new ENetMultiplayerPeer();
-		enet.CreateServer(9999);
+		enet.CreateServer(9898);
 		this.Multiplayer.MultiplayerPeer = enet;
 
 		this.AddChild(new CommManager());
 
 		this.Multiplayer.PeerConnected += (long x) => {OnPlayerConnect(x);};
+		// this.Multiplayer.PeerConnected += (long x) => {OnPlayerConnect(x);};
+
+		
 	}
 
 
-	private System.Collections.Generic.Dictionary<string,string> ProcessCmdline(string[] args) {
+	private void ProcessCmdline(string[] args) {
 		var argdict = new System.Collections.Generic.Dictionary<string,string>();
 
 		foreach (var arg in args) {
@@ -37,12 +42,21 @@ public partial class ServerManager : Node
 				argdict[arg.TrimStart("--".ToCharArray())] = "";
 			}
 		}
-		return argdict;
+
+		//  PROCESSING THE OPTIONS
+		
+		foreach (var arg in argdict) {
+			
+		}
+
 	}
 
 
 	private void OnPlayerConnect(long id) {
 		GD.Print("Client: ", id, " connected!");
+		(string, Godot.Vector3) test = serverConfig!.SpawnChunk;
+		// worldNode.CallDeferred(Node2D.MethodName.Fi)
+		// worldNode.GetNode()
 		GetNode<CommManager>("CommManager").RpcId(id,"GetPlayerID");
 	}
 
@@ -52,5 +66,6 @@ public partial class ServerManager : Node
 
 
 	Node? worldNode;
+	ServerConfig? serverConfig;
 
 }

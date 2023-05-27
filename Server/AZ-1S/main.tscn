@@ -12,3 +12,5 @@ script = ExtResource("1_tyagu")
 [node name="Node3D" type="Node3D" parent="world/0_0_1"]
 
 [node name="1_0_0" type="Node" parent="world"]
+
+[node name="0_0_0" type="Node" parent="world"]
