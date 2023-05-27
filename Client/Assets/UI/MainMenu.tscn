@@ -1,9 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://benigk51uvuc3"]
+[gd_scene load_steps=5 format=3 uid="uid://djd4kuuirktja"]
 
-[ext_resource type="Script" path="res://Assets/Menus/Scripts/MainMenu.cs" id="1_elwj3"]
-[ext_resource type="Script" path="res://Assets/Menus/Scripts/QuitButton.cs" id="1_wqgwj"]
-[ext_resource type="Theme" uid="uid://dgx16pdxowuua" path="res://Assets/Menus/Assets/Theme/menutheme.tres" id="2_81olf"]
-[ext_resource type="Texture2D" uid="uid://cxta7dmjkiga4" path="res://Assets/Menus/Assets/Backgrounds/mainbg-alex-conchillos.jpg" id="2_xk05q"]
+[ext_resource type="Script" path="res://Assets/UI/Scripts/MainMenu.cs" id="1_iw80l"]
+[ext_resource type="Texture2D" uid="uid://cxta7dmjkiga4" path="res://Assets/UI/Assets/Backgrounds/mainbg-alex-conchillos.jpg" id="2_gpdi5"]
+[ext_resource type="Theme" uid="uid://dgx16pdxowuua" path="res://Assets/UI/Assets/Theme/menutheme.tres" id="3_3bxfu"]
+[ext_resource type="Script" path="res://Assets/UI/Scripts/QuitButton.cs" id="4_7wkom"]
 
 [node name="MainMenu" type="MarginContainer"]
 layout_direction = 1
@@ -16,11 +16,11 @@ theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
-script = ExtResource("1_elwj3")
+script = ExtResource("1_iw80l")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 2
-texture = ExtResource("2_xk05q")
+texture = ExtResource("2_gpdi5")
 expand_mode = 2
 flip_h = true
 
@@ -50,7 +50,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 0
 tooltip_text = "TODO: Example Tooltip"
-theme = ExtResource("2_81olf")
+theme = ExtResource("3_3bxfu")
 text = "Continue Game"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
@@ -58,7 +58,7 @@ layout_mode = 2
 
 [node name="NewGameButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
-theme = ExtResource("2_81olf")
+theme = ExtResource("3_3bxfu")
 text = "New Game"
 
 [node name="LoadGameButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
@@ -79,6 +79,6 @@ layout_mode = 2
 [node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer3"]
 layout_mode = 2
 text = "Quit Game"
-script = ExtResource("1_wqgwj")
+script = ExtResource("4_7wkom")
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer3/QuitButton" to="MarginContainer/VBoxContainer/VBoxContainer3/QuitButton" method="_on_pressed"]
