@@ -4,6 +4,7 @@
 \usepackage{geometry}
 \usepackage{bookmark} % no more reruns plez
 \usepackage{xcolor}
+\usepackage{svg} % Loads graphicx
 % \usepackage[utf8]{inputenc}
 %\usepackage[OT1]{fontenc} 
 \usepackage{helvet}
@@ -21,7 +22,8 @@
 \usepackage{minted} % code formatting and highlighting
 \usepackage{pdflscape}
 % \setmainfont{TeX Gyre Heros}
-
+\usepackage{ragged2e}
+\usepackage[many]{tcolorbox}
 
 % \fancypagestyle{lscapedplain}{%
 %   \fancyhf{}
@@ -57,6 +59,8 @@
     pdftitle={Forward Frontier},
 }
 
+\usetikzlibrary{matrix}
+
 %\renewcommand{\headheight}{15pt}
 \renewcommand{\familydefault}{\sfdefault}
 \graphicspath{ {./parta}{images} }
@@ -79,8 +83,55 @@
 
 \renewcommand{\footrulewidth}{1pt}
 
+\newtcolorbox{titlebox}[1][]{enhanced jigsaw,
+  colback=black,
+  opacityback=0.2,
+  width=10.2cm,
+  coltext={white},
+  boxrule=0pt,
+  arc=3mm,
+  halign=center,
+  rounded corners,
+  fontupper={\bfseries},
+  #1}
+
 
 \begin {document}
+
+\begin{titlepage}
+	\ThisCenterWallPaper{1}{space_sky.png}
+% 	\noindent
+	\color{white}
+    \begin{Center}
+	    \begin{titlebox}
+	    \textbf{\Large{\textsf{Software Design \& Development\\Major Project - Check 2}}} 
+	    \end{titlebox}
+    \end{Center}
+	\vfill
+    \begin{Center}
+        \Huge{
+        \[
+        \left[\begin{array}{c}
+            Forward\\
+            Frontier
+        \end{array}\right]
+        \]
+        }
+    \end{Center}
+    \vfill
+	\noindent
+	    \begin{Center}
+            {\Huge \textsf{\authorid}}
+            \vskip\baselineskip
+            \noindent
+            \textsf{Compiled \today}
+	    \end{Center}
+\end{titlepage}
+\clearpage
+
+
+
+
 %A rc
 \section{Problem Statement and Initial Design Specification}
 There are currently few cross platform open world space games that allow for the building of complex systems and vessels, in a multiplayer scenario. Software such as Space Engineers have limited performance on platforms such as Linux or PS4, as they cannot run DirectX (only Xbox and Microsoft Windows can run DirectX). As well as having limited performance due to limitations of DirectX. Currently there are no massively open world space games that run on Vulkan (improved performance and compatibility in comparison to DirectX). While games such as From the Depths that allow for complex control systems, run into limitations with the physics engine they use, as they are limited to 32 bit floating point numbers by virtue of using the unity game engine. Using godot allows for the game to be supported into the future (Unity deprecating support for most of the features popular games use, forcing developers to port features or stay locked to an older version of the game engine). \\
@@ -145,6 +196,7 @@ There are currently few cross platform open world space games that allow for the
 
 
 \section{Context Diagram}
+% \includegraphics[width=\textwidth]{./parta/context.png}
 \includegraphics[width=\textwidth]{./parta/context.png}
 
 
@@ -414,7 +466,8 @@ https://www.flecs.dev/flecs \\
 https://godotshaders.com \\
 https://github.com/notakamihe/Unity\-Star\-Systems\-and\-Galaxies \\
 https://github.com/SebLague/Procedural\-Planets \\
-https://developer.nvidia.com/gpugems/gpugems3/part\-v\-physics\-simulation/chapter\-31\-fast\-n\-body\-simulation\-cuda \\
+https://docs.google.com/document/d/10xLhy\-lKzxeNbEQjZ63a5lshe\-\_nfrmTytyNMjp6Ouc \\
+https://developer.nvidia.com/gpugems/gpugems3/part\-v\-physics\-simulation/chapter\-31\-fast\-n\-body\-simulation\-cuda
 
 \end{document}
 %A

@@ -7,9 +7,8 @@ EnsurePythonVersion(3, 6)
 
 
 env = Environment()
-SConscript('Documentation/SConscript')
+docs = SConscript('Documentation/SConscript')
 # SConscript('Client/SConscript')
 SConscript('Server/SConscript')
 
-env.Alias('docs', 'Documentation/SConscript')
 env.Alias('everything', ['docs','Server/SConscript'])
