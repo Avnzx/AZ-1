@@ -10,15 +10,21 @@ public partial class ServerManager : Node
 		GD.Print("Welcome to Forward Frontier Server Edition \n------------------------------------------");
 
 		serverConfig = new ServerConfig();
+		worldNode = GetNode<Node>("world");
 
 		var enet = new ENetMultiplayerPeer();
 		enet.CreateServer(9898);
 		this.Multiplayer.MultiplayerPeer = enet;
 
-		this.AddChild(new CommManager());
+		this.AddChild(new CommManager(worldNode,serverConfig));
 
-		this.Multiplayer.PeerConnected += (long x) => {OnPlayerConnect(x);};
-		// this.Multiplayer.PeerConnected += (long x) => {OnPlayerConnect(x);};
+		this.Multiplayer.PeerConnected += (long x) => {
+			OnPlayerConnect(x);
+		};
+		
+		this.Multiplayer.PeerDisconnected += (long id) => {
+			GetNode<CommManager>("CommManager").HandleDisconnectPeer(id);
+		};
 
 		
 	}
@@ -57,8 +63,15 @@ public partial class ServerManager : Node
 		(string, Godot.Vector3) test = serverConfig!.SpawnChunk;
 		// worldNode.CallDeferred(Node2D.MethodName.Fi)
 		// worldNode.GetNode()
-		GetNode<CommManager>("CommManager").RpcId(id,"GetPlayerID");
+		GetNode<CommManager>("CommManager").RpcId(id,"CmdPlayerID");
 	}
+
+	private void OnPlayerDisconnect(long id) {
+		GD.Print("Client: ", id, " disconnected!");
+		GetNode<CommManager>("CommManager").HandleDisconnectPeer(id);
+	}
+
+
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)	{

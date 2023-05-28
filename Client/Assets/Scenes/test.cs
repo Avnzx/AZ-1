@@ -22,13 +22,19 @@ public partial class test : Node
     }
 
 	public override void _UnhandledInput(InputEvent ev) {
+		int testaccum = 0;
+
 		if (ev.IsActionPressed(new StringName("player_move_forward"))) {
 			commManager!.RpcId(1, "SendPlayerInputs", "player_move_forward");
+			testaccum++;
 		}
+
+
 
 		if (ev.IsActionPressed(new StringName("player_reset_mouse_accumulator"))) {
 			relativeMouseAccumulator = Vector2.Zero;
-			commManager!.RpcId(1, "Send2AxisInput", "player_yaw_pitch", relativeMouseAccumulator);
+			commManager!.RpcId(1, "Cmd2AxisInput", "player_yaw_pitch", relativeMouseAccumulator);
+			testaccum++;
 		}
 
 		if (ev is Godot.InputEventMouseMotion) {
@@ -36,8 +42,11 @@ public partial class test : Node
 				(ev as Godot.InputEventMouseMotion)!.Relative / this.GetWindow().Size;
 			relativeMouseAccumulator = relativeMouseAccumulator.LimitLength();
 			GD.Print(relativeMouseAccumulator);
-			commManager!.RpcId(1, "Send2AxisInput", "player_yaw_pitch", relativeMouseAccumulator);
+			testaccum++;
+			commManager!.RpcId(1, "Cmd2AxisInput", "player_yaw_pitch", relativeMouseAccumulator);
 		}
+
+		GD.Print(testaccum);
 	}
 
 	Node? worldNode;

@@ -6,5 +6,6 @@ public struct PlayerInputTp {
     public Godot.Quaternion commandRotation;
     // 
     public Godot.Vector3 commandTranslation;
+    public bool flightAssist;
 
 }

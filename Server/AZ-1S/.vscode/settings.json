@@ -1,4 +1,5 @@
 {
     "todo-tree.tree.showBadges": false,
-    "todo-tree.tree.showCountsInTree": true
+    "todo-tree.tree.showCountsInTree": true,
+    "godot_tools.gdscript_lsp_server_port": 6008
 }
