@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-EnsureSConsVersion(4, 0, 0)
+from SCons.Script import EnsureSConsVersion,EnsurePythonVersion,Environment,SConscript
+EnsureSConsVersion(3, 0, 0)
 
 import os
 
@@ -9,6 +10,9 @@ env.AppendUnique(PDFLATEXFLAGS='-synctex=1')
 env.AppendUnique(PDFLATEXFLAGS='-shell-escape')
 
 pdf_output = env.PDF(target='main.pdf', source='main.tex')
+# pdf_output = env.PDF(target='main2.pdf', source='main2.tex')
 env.Precious(pdf_output) # incremental build
 
 env.Clean(pdf_output, '_minted-main')
+env.Default(pdf_output)
+env.Alias('docs', pdf_output)
