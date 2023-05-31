@@ -340,33 +340,6 @@ shipdata.bson & BSON, Binary JSON data format & File generated at game compile t
     \hline
 \end{xltabular}
 
-% \textbf{Example:}
-% \{
-%     "states" : \{
-%     "stationaryShoot" : \{
-%     "behaviour" : \["shoot radialShotgun 2", "stateChangeTime waitTimer 6
-%     wait"\]
-%     \},
-%     "wait" : \{
-%     "behaviour" : \["stateChangeTime waitTimer 6 stationaryShoot"\]\}
-%     \}
-% \},
-% "defaultState" : "stationaryShoot",
-%     "projectiles" : \{
-%         "radialShotgun" : \{
-%         "type" : "Radial",
-%         "shotCount" : 1,
-%         "direction" : 90,
-%         "projDesc": \{
-%         "target" : "players",
-%         "speed" : 20,
-%         "size" : 16,
-%         "lifetime" : 3000,
-%         "damage" : 5
-%         \}
-%     \}
-% \}
-
 \clearpage
 \begin{alscape}{DIV=8}
 \section{Data Dictionary}
@@ -408,6 +381,48 @@ The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) 
 \noindent An additional requirement comes from the protocol design for the online part of the game. As the server must communicate with the client every frame with updated positions, the latency required is within 50ms. Due to more advanced jitter and loss compensation algorithms such as Counter Strike and Quake being difficult to achieve with a large number of systems. These lag compensation algorithms also introduce more overhead on each client as they must store and process much more data. Given the difficulty and the costs and benefits it has been decided against. \\ 
 
 \noindent The storage requirements for this game, due to the use of the Godot game engine. Are quite low in comparison to other games. In total this game is expected to reach a full 3d environment while staying under a 10GiB download, to allow for uncompressed assets that may potentially work better on lower end hardware, and to reduce compression artifacting. The 10GiB size allows for a number of assets while still allowing for individuals with a less stable connection to retrieve the game files, as well as for individuals on limited data plans. As many AAA titles reach sizes nearing 100GiB.
+
+
+\clearpage
+\section{Justification and Discussion of UI}
+
+\includegraphics[width=\textwidth]{./parta/mainmenu.png}
+\includegraphics[width=\textwidth]{./parta/optionsmenu.png}
+\includegraphics[width=\textwidth]{./parta/creditsmenu.png}
+\includegraphics[width=\textwidth]{./parta/gameview.png}
+\includegraphics[width=\textwidth]{./parta/gameshipmenu.png}
+\includegraphics[width=\textwidth]{./parta/joinmenu.png}
+\includegraphics[width=\textwidth]{./parta/newgamemenu.png}
+\includegraphics[width=\textwidth]{./parta/pausemenu.png}
+
+
+
+\clearpage
+\section{EBNF and Railroad Diagrams}
+
+\clearpage
+\section{Extensive Algorithm Test Data}
+
+\clearpage
+\section{Error Checking}
+
+\clearpage
+\section{Module Desk Check}
+
+\clearpage
+\section{Breakpoints, single line stepping, and traces}
+
+\clearpage
+\section{Readability of Code}
+
+\clearpage
+\section{Discussion of syntax, runtime, and logic errors}
+
+
+
+
+
+
 
 \clearpage
 \begin{alscape}{DIV=8}
