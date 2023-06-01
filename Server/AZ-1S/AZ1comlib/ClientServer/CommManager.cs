@@ -2,10 +2,12 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+// Careful! Every inbuilt engine type might be using floats or doubles!!!
+
 public partial class CommManager : Node {
 
     #if !ISCLIENT
-    public CommManager(Node _worldNd, ServerConfig _serverCfg) {
+    public CommManager(Node _worldNd, FFServerConfig _serverCfg) {
         worldNode = _worldNd;
         serverConfig = _serverCfg;
     }
@@ -18,12 +20,39 @@ public partial class CommManager : Node {
     #if !ISCLIENT
     public Dictionary<long,PlayerNode> connectedPlayers = new Dictionary<long,PlayerNode>();
     Node? worldNode;
-	ServerConfig? serverConfig;
+	FFServerConfig? serverConfig;
 
     public void HandleDisconnectPeer(long id) {
         connectedPlayers.Remove(id);
     }
     #endif
+
+    /*-------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
+     SECTIONINFO: This contains calls to establish and setup connections
+    ---------------------------------------------------------------------------
+    -------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*-------------------------------------------------------------------------
     ---------------------------------------------------------------------------
@@ -44,7 +73,7 @@ public partial class CommManager : Node {
         var pNode = new PlayerNode(new Guid(guidstr));
         connectedPlayers[this.Multiplayer.GetRemoteSenderId()] = pNode;
 
-        (string, Godot.Vector3) defspawn = serverConfig!.SpawnChunk;
+        (string, Godot.Vector3) defspawn = serverConfig!.Value.SpawnChunk;
         pNode.Position = defspawn.Item2;
         worldNode!.GetNode(defspawn.Item1).CallDeferred(Node.MethodName.AddChild, pNode);
         #endif
@@ -57,9 +86,10 @@ public partial class CommManager : Node {
 
     [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
     public void CmdPlayerInputs(string actionName, float strength) {
-        GD.Print(actionName, " from ", this.Multiplayer.GetRemoteSenderId());
+        GD.Print(actionName, " from ", this.Multiplayer.GetRemoteSenderId(), " strength ", strength);
     }
 
+    // FIXME: Vector2 is different on client and server
     [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
     public void Cmd2AxisInput(string actionName, Vector2 input) {
         GD.Print(actionName, " ", input , " from ", this.Multiplayer.GetRemoteSenderId());

@@ -9,14 +9,15 @@ public partial class ServerManager : Node
 		// try to load default config file or allow custom path to a serverconfig
 		GD.Print("Welcome to Forward Frontier Server Edition \n------------------------------------------");
 
-		serverConfig = new ServerConfig();
+		serverConfig = new FFServerConfig();
 		worldNode = GetNode<Node>("world");
 
 		var enet = new ENetMultiplayerPeer();
+		// Allow for using a STUN or TURN connection
 		enet.CreateServer(9898);
 		this.Multiplayer.MultiplayerPeer = enet;
 
-		this.AddChild(new CommManager(worldNode,serverConfig));
+		this.AddChild(new CommManager(worldNode,serverConfig.Value));
 
 		this.Multiplayer.PeerConnected += (long x) => {
 			OnPlayerConnect(x);
@@ -60,7 +61,7 @@ public partial class ServerManager : Node
 
 	private void OnPlayerConnect(long id) {
 		GD.Print("Client: ", id, " connected!");
-		(string, Godot.Vector3) test = serverConfig!.SpawnChunk;
+		(string, Godot.Vector3) test = serverConfig!.Value.SpawnChunk;
 		// worldNode.CallDeferred(Node2D.MethodName.Fi)
 		// worldNode.GetNode()
 		GetNode<CommManager>("CommManager").RpcId(id,"CmdPlayerID");
@@ -79,6 +80,6 @@ public partial class ServerManager : Node
 
 
 	Node? worldNode;
-	ServerConfig? serverConfig;
+	FFServerConfig? serverConfig;
 
 }
