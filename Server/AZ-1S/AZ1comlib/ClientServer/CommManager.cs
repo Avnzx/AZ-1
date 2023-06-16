@@ -5,7 +5,6 @@ using System.Collections.Generic;
 // Careful! Every inbuilt engine type might be using floats or doubles!!!
 
 public partial class CommManager : Node {
-
     #if !ISCLIENT
     public CommManager(Node _worldNd, FFServerConfig _serverCfg) {
         worldNode = _worldNd;
@@ -69,7 +68,8 @@ public partial class CommManager : Node {
 	public void RspPlayerID(byte[] guidstr) {
         #if !ISCLIENT
 		GD.Print("recieved pID ", guidstr.ToString(), " from peer ", this.Multiplayer.GetRemoteSenderId());
- 
+
+        // FIXME: CHeck for duplicates 'n shit
         var pNode = new PlayerNode(new Guid(guidstr));
         connectedPlayers[this.Multiplayer.GetRemoteSenderId()] = pNode;
 
@@ -77,21 +77,16 @@ public partial class CommManager : Node {
         pNode.Position = defspawn.Item2;
         worldNode!.GetNode(defspawn.Item1).CallDeferred(Node.MethodName.AddChild, pNode);
         #endif
-	}
-
-    [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
-    public void CmdPlayerInputs(string actionName) {
-        GD.Print(actionName, " from ", this.Multiplayer.GetRemoteSenderId());
-    }    
+	} 
 
     [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
     public void CmdPlayerInputs(string actionName, float strength) {
         GD.Print(actionName, " from ", this.Multiplayer.GetRemoteSenderId(), " strength ", strength);
     }
 
-    // FIXME: Vector2 is different on client and server
+    // This goes from -1,1 UNLIKE godot's inbuilt actionstrength
     [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
-    public void Cmd2AxisInput(string actionName, Vector2 input) {
+    public void CmdPlayerInputsAxis(string actionName, float input) {
         GD.Print(actionName, " ", input , " from ", this.Multiplayer.GetRemoteSenderId());
     } 
 

@@ -5,11 +5,17 @@ public partial class ServerManager : Node
 {
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
-		ProcessCmdline(OS.GetCmdlineArgs());
+		{ // Initial setup NS
+			var cmdline = new System.Collections.Generic.List<string>();
+			cmdline.AddRange(OS.GetCmdlineArgs());
+			cmdline.AddRange(OS.GetCmdlineUserArgs());
+			ProcessCmdline(cmdline);
+		}
+
+
 		// try to load default config file or allow custom path to a serverconfig
 		GD.Print("Welcome to Forward Frontier Server Edition \n------------------------------------------");
 
-		serverConfig = new FFServerConfig();
 		worldNode = GetNode<Node>("world");
 
 		var enet = new ENetMultiplayerPeer();
@@ -17,7 +23,7 @@ public partial class ServerManager : Node
 		enet.CreateServer(9898);
 		this.Multiplayer.MultiplayerPeer = enet;
 
-		this.AddChild(new CommManager(worldNode,serverConfig.Value));
+		this.AddChild(new CommManager(worldNode,serverConfig!.Value));
 
 		this.Multiplayer.PeerConnected += (long x) => {
 			OnPlayerConnect(x);
@@ -31,8 +37,9 @@ public partial class ServerManager : Node
 	}
 
 
-	private void ProcessCmdline(string[] args) {
+	private void ProcessCmdline(System.Collections.Generic.List<string> args) {
 		var argdict = new System.Collections.Generic.Dictionary<string,string>();
+		serverConfig = new FFServerConfig();
 
 		foreach (var arg in args) {
 			if (!arg.Contains("--")) {
@@ -53,7 +60,15 @@ public partial class ServerManager : Node
 		//  PROCESSING THE OPTIONS
 		
 		foreach (var arg in argdict) {
-			
+			switch (arg.Key) {
+				case "ss": case "d":
+					break;
+
+				default:
+					GD.Print("Unrecognized argument ", arg.Key);
+					break;
+				
+			}
 		}
 
 	}
@@ -61,9 +76,6 @@ public partial class ServerManager : Node
 
 	private void OnPlayerConnect(long id) {
 		GD.Print("Client: ", id, " connected!");
-		(string, Godot.Vector3) test = serverConfig!.Value.SpawnChunk;
-		// worldNode.CallDeferred(Node2D.MethodName.Fi)
-		// worldNode.GetNode()
 		GetNode<CommManager>("CommManager").RpcId(id,"CmdPlayerID");
 	}
 

@@ -21,23 +21,56 @@ public partial class test : Node
     public override void _Process(double delta) {
     }
 
+
+
+
+	public void CollectAndSendInput(InputEvent ev, StringName action) {
+		if (ev.IsActionPressed(action))
+			commManager!.RpcId(1, "CmdPlayerInputsAxis", action, ev.GetActionStrength(action));
+	}
+
+
+
+
+
+
+
+
+
 	public override void _UnhandledInput(InputEvent ev) {
 
 		if (ev.IsActionPressed(new StringName("player_move_forward"))) {
 			commManager!.RpcId(1, "SendPlayerInputs", "player_move_forward");
 		}
 
-		if (ev.IsActionPressed(new StringName("player_reset_mouse_accumulator"))) {
-			relativeMouseAccumulator = Vector2.Zero;
-			commManager!.RpcId(1, "Cmd2AxisInput", "player_yaw_pitch", relativeMouseAccumulator);
+		if (ev.IsActionPressed(InputActions.PlayerResetMouseAccumulator)) {
+			relativeMouseAccumulator = Vector2.Zero;                                                     
+			commManager!.RpcId(1, "CmdPlayerInputsAxis", "player_yaw_pitch", relativeMouseAccumulator);
 		}
+
+		CollectAndSendInput(ev, InputActions.PlayerDisableFlightAssist);
+		CollectAndSendInput(ev, InputActions.PlayerResetThrottle);
+
+		CollectAndSendInput(ev, InputActions.PlayerMoveBackward);
+		CollectAndSendInput(ev, InputActions.PlayerMoveForward);
+		CollectAndSendInput(ev, InputActions.PlayerMoveDown);
+		CollectAndSendInput(ev, InputActions.PlayerMoveUp);
+		CollectAndSendInput(ev, InputActions.PlayerMoveLeft);
+		CollectAndSendInput(ev, InputActions.PlayerMoveRight);
+
+		CollectAndSendInput(ev, InputActions.PlayerRotatePitchDown);
+		CollectAndSendInput(ev, InputActions.PlayerRotatePitchUp);
+		CollectAndSendInput(ev, InputActions.PlayerRotateRollLeft);
+		CollectAndSendInput(ev, InputActions.PlayerRotateRollRight);
+		CollectAndSendInput(ev, InputActions.PlayerRotateYawLeft);
+		CollectAndSendInput(ev, InputActions.PlayerRotateYawRight);
 
 		if (ev is Godot.InputEventMouseMotion) {
 			relativeMouseAccumulator += 
 				(ev as Godot.InputEventMouseMotion)!.Relative / this.GetWindow().Size;
 			relativeMouseAccumulator = relativeMouseAccumulator.LimitLength();
 			GD.Print(relativeMouseAccumulator);
-			commManager!.RpcId(1, "Cmd2AxisInput", "player_yaw_pitch", relativeMouseAccumulator);
+			commManager!.RpcId(1, "CmdPlayerInputsAxis", "player_yaw_pitch", relativeMouseAccumulator);
 		}
 	}
 
