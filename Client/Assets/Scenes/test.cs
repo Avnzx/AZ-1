@@ -70,7 +70,7 @@ public partial class test : Node
 				(ev as Godot.InputEventMouseMotion)!.Relative / this.GetWindow().Size;
 			relativeMouseAccumulator = relativeMouseAccumulator.LimitLength();
 			GD.Print(relativeMouseAccumulator);
-			commManager!.RpcId(1, "CmdPlayerInputsAxis", "player_yaw_pitch", relativeMouseAccumulator);
+			commManager!.RpcId(1, nameof(CommManager.CmdPlayerInputsAxis), "player_yaw_pitch", relativeMouseAccumulator);
 		}
 	}
 
