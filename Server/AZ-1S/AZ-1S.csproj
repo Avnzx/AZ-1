@@ -1,6 +1,7 @@
-<Project Sdk="Godot.NET.Sdk/4.0.3-rc">
+<Project Sdk="Godot.NET.Sdk/4.0.4-rc">
   <PropertyGroup>
-    <DefineConstants>REALT_IS_DOUBLE</DefineConstants> <!-- Fix for godot being weird? -->
+    <DefineConstants>REALT_IS_DOUBLE</DefineConstants>
+    <!-- Fix for godot being weird? -->
     <TargetFramework>net6.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <Nullable>enable</Nullable>

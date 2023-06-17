@@ -8,13 +8,11 @@ public class STUNHelper {
     return await hclient.GetAsync("https://raw.githubusercontent.com/pradt2/always-online-stun/master/valid_hosts.txt");
   }
 
-  async IOption<string> GetBestStunServer() {
-    var hclient = new System.Net.Http.HttpClient();
-    string file;
-    file = await hclient.GetStringAsync("https://raw.githubusercontent.com/pradt2/always-online-stun/master/valid_hosts.txt");
-    
-    
-  }
+  // async IOption<string> GetBestStunServer() {
+  //   var hclient = new System.Net.Http.HttpClient();
+  //   string file;
+  //   file = await hclient.GetStringAsync("https://raw.githubusercontent.com/pradt2/always-online-stun/master/valid_hosts.txt");
+  // }
 
 
   byte[] GenerateTransactionID() {

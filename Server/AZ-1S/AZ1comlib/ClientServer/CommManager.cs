@@ -67,7 +67,7 @@ public partial class CommManager : Node {
     [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void RspPlayerID(byte[] guidstr) {
         #if !ISCLIENT
-		GD.Print("recieved pID ", guidstr.ToString(), " from peer ", this.Multiplayer.GetRemoteSenderId());
+		GD.Print("recieved pID ", new Guid(guidstr), " from peer ", this.Multiplayer.GetRemoteSenderId());
 
         // FIXME: CHeck for duplicates 'n shit
         var pNode = new PlayerNode(new Guid(guidstr));
@@ -75,20 +75,19 @@ public partial class CommManager : Node {
 
         (string, Godot.Vector3) defspawn = serverConfig!.Value.SpawnChunk;
         pNode.Position = defspawn.Item2;
+
         worldNode!.GetNode(defspawn.Item1).CallDeferred(Node.MethodName.AddChild, pNode);
         #endif
 	} 
 
     [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
-    public void CmdPlayerInputs(string actionName, float strength) {
-        GD.Print(actionName, " from ", this.Multiplayer.GetRemoteSenderId(), " strength ", strength);
+    // movementtype must be         PlayerMovementActions.MovementActionsEnum
+    public void CmdPlayerInputs(int movementtp, float strength) {
+        #if !ISCLIENT
+        GD.Print(movementtp, " from ", this.Multiplayer.GetRemoteSenderId(), " strength ", strength);
+        connectedPlayers[this.Multiplayer.GetRemoteSenderId()].movReq[movementtp] = strength;
+        #endif
     }
-
-    // This goes from -1,1 UNLIKE godot's inbuilt actionstrength
-    [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
-    public void CmdPlayerInputsAxis(string actionName, float input) {
-        GD.Print(actionName, " ", input , " from ", this.Multiplayer.GetRemoteSenderId());
-    } 
 
 
     /*-------------------------------------------------------------------------

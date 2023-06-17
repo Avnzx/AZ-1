@@ -25,11 +25,16 @@ public partial class test : Node
 
 
 	public void CollectAndSendInput(InputEvent ev, StringName action) {
-		if (ev.IsActionPressed(action))
-			commManager!.RpcId(1, "CmdPlayerInputsAxis", action, ev.GetActionStrength(action));
+		PlayerMovementActions.MovementActionsEnum tmp;
+		Enum.TryParse<PlayerMovementActions.MovementActionsEnum>(action.ToString(),false,out tmp);
+
+		if (ev.IsAction(action)) // send on both press and release
+			commManager!.RpcId(1, nameof(CommManager.CmdPlayerInputs),  (int) tmp, ev.GetActionStrength(action));
 	}
 
-
+	public void SendInput(PlayerMovementActions.MovementActionsEnum action, float strength) {		
+		commManager!.RpcId(1, nameof(CommManager.CmdPlayerInputs), (int) action, strength);
+	}
 
 
 
@@ -39,38 +44,46 @@ public partial class test : Node
 
 	public override void _UnhandledInput(InputEvent ev) {
 
-		if (ev.IsActionPressed(new StringName("player_move_forward"))) {
-			commManager!.RpcId(1, "SendPlayerInputs", "player_move_forward");
+		if (ev.IsActionPressed(InputActionStr.PlayerResetMouseAccumulator)) {
+			relativeMouseAccumulator = Vector2.Zero;     
+			SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateYawLeft, 0f);
+			SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchUp, 0f);
 		}
 
-		if (ev.IsActionPressed(InputActions.PlayerResetMouseAccumulator)) {
-			relativeMouseAccumulator = Vector2.Zero;                                                     
-			commManager!.RpcId(1, "CmdPlayerInputsAxis", "player_yaw_pitch", relativeMouseAccumulator);
-		}
+		CollectAndSendInput(ev, InputActionStr.PlayerDisableFlightAssist);
+		CollectAndSendInput(ev, InputActionStr.PlayerResetThrottle);
 
-		CollectAndSendInput(ev, InputActions.PlayerDisableFlightAssist);
-		CollectAndSendInput(ev, InputActions.PlayerResetThrottle);
+		CollectAndSendInput(ev, InputActionStr.PlayerMoveBackward);
+		CollectAndSendInput(ev, InputActionStr.PlayerMoveForward);
+		CollectAndSendInput(ev, InputActionStr.PlayerMoveDown);
+		CollectAndSendInput(ev, InputActionStr.PlayerMoveUp);
+		CollectAndSendInput(ev, InputActionStr.PlayerMoveLeft);
+		CollectAndSendInput(ev, InputActionStr.PlayerMoveRight);
 
-		CollectAndSendInput(ev, InputActions.PlayerMoveBackward);
-		CollectAndSendInput(ev, InputActions.PlayerMoveForward);
-		CollectAndSendInput(ev, InputActions.PlayerMoveDown);
-		CollectAndSendInput(ev, InputActions.PlayerMoveUp);
-		CollectAndSendInput(ev, InputActions.PlayerMoveLeft);
-		CollectAndSendInput(ev, InputActions.PlayerMoveRight);
-
-		CollectAndSendInput(ev, InputActions.PlayerRotatePitchDown);
-		CollectAndSendInput(ev, InputActions.PlayerRotatePitchUp);
-		CollectAndSendInput(ev, InputActions.PlayerRotateRollLeft);
-		CollectAndSendInput(ev, InputActions.PlayerRotateRollRight);
-		CollectAndSendInput(ev, InputActions.PlayerRotateYawLeft);
-		CollectAndSendInput(ev, InputActions.PlayerRotateYawRight);
+		CollectAndSendInput(ev, InputActionStr.PlayerRotatePitchDown);
+		CollectAndSendInput(ev, InputActionStr.PlayerRotatePitchUp);
+		CollectAndSendInput(ev, InputActionStr.PlayerRotateRollLeft);
+		CollectAndSendInput(ev, InputActionStr.PlayerRotateRollRight);
+		CollectAndSendInput(ev, InputActionStr.PlayerRotateYawLeft);
+		CollectAndSendInput(ev, InputActionStr.PlayerRotateYawRight);
 
 		if (ev is Godot.InputEventMouseMotion) {
+			// Uses screen coordinates (-Y is up)
 			relativeMouseAccumulator += 
 				(ev as Godot.InputEventMouseMotion)!.Relative / this.GetWindow().Size;
 			relativeMouseAccumulator = relativeMouseAccumulator.LimitLength();
 			GD.Print(relativeMouseAccumulator);
-			commManager!.RpcId(1, nameof(CommManager.CmdPlayerInputsAxis), "player_yaw_pitch", relativeMouseAccumulator);
+
+
+			float temp = -relativeMouseAccumulator.Y;
+			if (Mathf.Sign(temp) == 1) 
+			{ SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchUp, temp);
+			} else { SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchDown, -temp); } 
+
+			temp = relativeMouseAccumulator.X;
+			if (Mathf.Sign(temp) == 1) 
+			{ SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateYawRight, temp);
+			} else { SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateYawLeft, -temp); } 
 		}
 	}
 
