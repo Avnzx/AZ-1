@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://vwq7wu4ksxx6"]
+[gd_scene load_steps=5 format=3 uid="uid://vwq7wu4ksxx6"]
 
 [ext_resource type="Script" path="res://Assets/Scenes/test.cs" id="1_a6ii2"]
 [ext_resource type="PackedScene" uid="uid://d1cfu305jh4t8" path="res://Assets/Player/Player.tscn" id="1_p6qtq"]
 [ext_resource type="Environment" uid="uid://diage7yiluksp" path="res://Assets/Environments/space_env.tres" id="2_0t2og"]
+[ext_resource type="Script" path="res://Assets/Scenes/TopLevelWorld.cs" id="3_6lp02"]
 
 [node name="main" type="Node"]
 script = ExtResource("1_a6ii2")
@@ -15,7 +16,9 @@ size = Vector3(24, 1, 20)
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("1_p6qtq")]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource("2_0t2og")
+[node name="world" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0446243, 0, 0.00304031)
+script = ExtResource("3_6lp02")
 
-[node name="world" type="Node" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="world"]
+environment = ExtResource("2_0t2og")

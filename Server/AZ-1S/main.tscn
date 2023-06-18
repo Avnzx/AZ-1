@@ -5,11 +5,12 @@
 [node name="main" type="Node"]
 script = ExtResource("1_tyagu")
 
-[node name="world" type="Node" parent="."]
+[node name="world" type="Node3D" parent="."]
 
 [node name="0_0_1" type="Node" parent="world"]
 
 [node name="Node3D" type="Node3D" parent="world/0_0_1"]
+transform = Transform3D(1, 0, 0, 0, -0.50826, 0.861204, 0, -0.861204, -0.50826, 0, 0, 0)
 
 [node name="1_0_0" type="Node" parent="world"]
 

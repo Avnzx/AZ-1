@@ -1,8 +1,7 @@
 using Godot;
 using System;
 
-public partial class test : Node
-{
+public partial class test : Node{
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready(){
 		ConfigManager.GetConfig();
@@ -11,15 +10,21 @@ public partial class test : Node
 		enet.CreateClient("localhost",9898);
 		this.Multiplayer.MultiplayerPeer = enet;
 
-		worldNode = GetNode<Node>("world");
-		commManager = new CommManager();
+		worldNode = GetNode<Node3D>("world");
+		commManager = new CommManager(worldNode);
 		AddChild(commManager);
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
 
-    public override void _Process(double delta) {
-    }
+
+	public override void _Notification(int what) {
+		if (what == NotificationWMCloseRequest) {
+			GetTree().AutoAcceptQuit = false;
+			this.Multiplayer.MultiplayerPeer.Close();
+			GetTree().Quit();
+		}
+	}
 
 
 
@@ -87,7 +92,7 @@ public partial class test : Node
 		}
 	}
 
-	Node? worldNode;
+	Node3D? worldNode;
 	CommManager? commManager;
 	Vector2 relativeMouseAccumulator = new Vector2();
 

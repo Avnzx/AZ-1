@@ -1,30 +1,47 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 // Careful! Every inbuilt engine type might be using floats or doubles!!!
 
 public partial class CommManager : Node {
+    
+    Node3D? worldNode;
+
+    
     #if !ISCLIENT
-    public CommManager(Node _worldNd, FFServerConfig _serverCfg) {
+    public Dictionary<long,PlayerNode> connectedPlayers = new Dictionary<long,PlayerNode>();
+	FFServerConfig? serverConfig;
+
+    public void HandleDisconnectPeer(long id) {
+        GD.Print("Client: ", id, " dicsonnected");
+        connectedPlayers[id].QueueFree();
+        connectedPlayers.Remove(id);
+    }
+
+    public CommManager(Node3D _worldNd, FFServerConfig _serverCfg) {
         worldNode = _worldNd;
         serverConfig = _serverCfg;
     }
+    
+    public long GetRemoteIDFromPlayer(PlayerNode nd) {
+        return connectedPlayers.FirstOrDefault(x => x.Value == nd).Key;
+    }
+
+    
+    #else
+
+    public CommManager(Node3D _worldNd) {
+        worldNode = _worldNd;
+    }
+
     #endif
 
     public override void _Ready() {
         this.Name = "CommManager";
     }
 
-    #if !ISCLIENT
-    public Dictionary<long,PlayerNode> connectedPlayers = new Dictionary<long,PlayerNode>();
-    Node? worldNode;
-	FFServerConfig? serverConfig;
-
-    public void HandleDisconnectPeer(long id) {
-        connectedPlayers.Remove(id);
-    }
-    #endif
 
     /*-------------------------------------------------------------------------
     ---------------------------------------------------------------------------
@@ -64,7 +81,7 @@ public partial class CommManager : Node {
     -------------------------------------------------------------------------*/
 
     // TODO: Can this be implemented with custom attributes and function factories? 
-    [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void RspPlayerID(byte[] guidstr) {
         #if !ISCLIENT
 		GD.Print("recieved pID ", new Guid(guidstr), " from peer ", this.Multiplayer.GetRemoteSenderId());
@@ -80,7 +97,7 @@ public partial class CommManager : Node {
         #endif
 	} 
 
-    [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
     // movementtype must be         PlayerMovementActions.MovementActionsEnum
     public void CmdPlayerInputs(int movementtp, float strength) {
         #if !ISCLIENT
@@ -94,7 +111,7 @@ public partial class CommManager : Node {
      SUBSINFO: This contains calls that are from the server to the client
     -------------------------------------------------------------------------*/
 
-    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void CmdPlayerID() {
         #if ISCLIENT
 		GD.Print("tried to get pID");
@@ -104,11 +121,16 @@ public partial class CommManager : Node {
 	}
 
     // This in addition to another RPC that allows for things around the player to be updated are also needed, this allows for only things that have moved to be sent
-    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = true, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
     public void CmdUpdatePlayerPose(Vector3G pos, Quaternion rot) {
     } 
 
-
+    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    public void CmdUpdatePlayerRot(Quaternion rot) {
+        #if ISCLIENT
+        (worldNode as TopLevelWorld)!.DoRotate(rot); 
+        #endif
+    } 
 
 
 
