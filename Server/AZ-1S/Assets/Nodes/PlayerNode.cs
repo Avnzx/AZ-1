@@ -8,7 +8,7 @@ public partial class PlayerNode : RigidBody3D {
     public System.Guid playerID;
 
     // movement reqested
-    public float[] movReq = new float[12];
+    public float[] movReq = new float[Enum.GetNames(typeof(PlayerMovementActions.MovementActionsEnum)).Length];
 
     private CommManager? commManager;
     public PlayerMovementActions movementActions = new PlayerMovementActions();
