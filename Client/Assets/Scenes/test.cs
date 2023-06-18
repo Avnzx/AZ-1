@@ -87,8 +87,8 @@ public partial class test : Node{
 
 			temp = relativeMouseAccumulator.X;
 			if (Mathf.Sign(temp) == 1) 
-			{ SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateYawRight, temp);
-			} else { SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateYawLeft, -temp); } 
+			{ SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollRight, temp);
+			} else { SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollLeft, -temp); } 
 		}
 	}
 

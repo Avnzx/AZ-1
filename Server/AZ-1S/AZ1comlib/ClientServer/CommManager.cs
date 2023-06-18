@@ -98,10 +98,10 @@ public partial class CommManager : Node {
 	} 
 
     [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
-    // movementtype must be         PlayerMovementActions.MovementActionsEnum
+    // movementtype must be PlayerMovementActions.MovementActionsEnum
     public void CmdPlayerInputs(int movementtp, float strength) {
         #if !ISCLIENT
-        GD.Print(movementtp, " from ", this.Multiplayer.GetRemoteSenderId(), " strength ", strength);
+        // GD.Print(movementtp, " from ", this.Multiplayer.GetRemoteSenderId(), " strength ", strength);
         connectedPlayers[this.Multiplayer.GetRemoteSenderId()].movReq[movementtp] = strength;
         #endif
     }

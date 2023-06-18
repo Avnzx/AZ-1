@@ -1,17 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://n8x03ly7a6uy"]
+[gd_scene load_steps=3 format=3 uid="uid://n8x03ly7a6uy"]
 
 [ext_resource type="Script" path="res://ServerManager.cs" id="1_tyagu"]
+[ext_resource type="Script" path="res://Assets/Scripts/WorldManager.cs" id="2_pjadp"]
 
 [node name="main" type="Node"]
 script = ExtResource("1_tyagu")
 
 [node name="world" type="Node3D" parent="."]
-
-[node name="0_0_1" type="Node" parent="world"]
-
-[node name="Node3D" type="Node3D" parent="world/0_0_1"]
-transform = Transform3D(1, 0, 0, 0, -0.50826, 0.861204, 0, -0.861204, -0.50826, 0, 0, 0)
-
-[node name="1_0_0" type="Node" parent="world"]
+script = ExtResource("2_pjadp")
 
 [node name="0_0_0" type="Node" parent="world"]

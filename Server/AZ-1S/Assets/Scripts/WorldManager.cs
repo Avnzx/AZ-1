@@ -1,16 +1,15 @@
 using Godot;
 using System;
 
-public partial class WorldManager : Node
+public partial class WorldManager : Node3D
 {
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
-		worldRoot = GetNodeOrNull<Node>("/root/main/world");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta) {
-		var children = worldRoot!.GetChildren();
+		var children = this.GetChildren();
 
 		foreach (Node chunk in children) {
 			foreach (Node3D obj in chunk.GetChildren()) {
@@ -34,25 +33,23 @@ public partial class WorldManager : Node
 						ab[i] = -(chunkOffset * (float) FrontierConstants.chunkSize);
 						
 
-						GD.Print("Boundary c/*rossed \n COORD: ", i, " RATIO: ",   temp / FrontierConstants.forgiveness, " OLD: ", chunk.Name ," NEW: ", string.Join('_',currChunk), " ORD: ", obj.Position[i], " NRD: ", ab[i]+obj.Position[i]);
+						GD.Print("Boundary crossed \n COORD: ", i, " RATIO: ",   temp / FrontierConstants.forgiveness, " OLD: ", chunk.Name ," NEW: ", string.Join('_',currChunk), " ORD: ", obj.Position[i], " NRD: ", ab[i]+obj.Position[i]);
 						
 						obj.Position += new Vector3(ab[0],ab[1],ab[2]);
 
-						var possibleNode = worldRoot.GetNodeOrNull(string.Join('_',currChunk));
+						var possibleNode = this.GetNodeOrNull(string.Join('_',currChunk));
 
 						// FIXME: Testing code
 						if (possibleNode is null) {
 							Node nd = new Node();
 							nd.Name = string.Join('_',currChunk);
-							worldRoot.AddChild(nd);
+							this.AddChild(nd);
 						}
 
-						worldRoot.GetNode(string.Join('_',currChunk)).AddChild(obj);
+						this.GetNode(string.Join('_',currChunk)).AddChild(obj);
 				}}
 			}
 		}
 
 	}
-
-	Node? worldRoot;
 }
