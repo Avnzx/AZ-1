@@ -16,7 +16,7 @@ public partial class ServerManager : Node
 		// try to load default config file or allow custom path to a serverconfig
 		GD.Print("Welcome to Forward Frontier Server Edition \n------------------------------------------");
 
-		worldNode = GetNode<Node3D>("world");
+		worldNode = GetNode<WorldManager>("world");
 
 		var enet = new ENetMultiplayerPeer();
 		// Allow for using a STUN or TURN connection
@@ -33,6 +33,7 @@ public partial class ServerManager : Node
 			GetNode<CommManager>("CommManager").HandleDisconnectPeer(id);
 		};
 
+		worldNode.CreateChunk(9129839821,Vector3I.Zero);
 		
 	}
 
@@ -91,7 +92,7 @@ public partial class ServerManager : Node
 	}
 
 
-	Node3D? worldNode;
+	WorldManager? worldNode;
 	FFServerConfig? serverConfig;
 
 }

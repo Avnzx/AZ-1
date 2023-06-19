@@ -87,6 +87,7 @@ public partial class CommManager : Node {
 		GD.Print("recieved pID ", new Guid(guidstr), " from peer ", this.Multiplayer.GetRemoteSenderId());
 
         // FIXME: CHeck for duplicates 'n shit
+        // TODO: Save players and see the chunk of old pID's
         var pNode = new PlayerNode(new Guid(guidstr));
         connectedPlayers[this.Multiplayer.GetRemoteSenderId()] = pNode;
 

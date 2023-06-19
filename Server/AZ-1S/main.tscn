@@ -8,5 +8,3 @@ script = ExtResource("1_tyagu")
 
 [node name="world" type="Node3D" parent="."]
 script = ExtResource("2_pjadp")
-
-[node name="0_0_0" type="Node" parent="world"]

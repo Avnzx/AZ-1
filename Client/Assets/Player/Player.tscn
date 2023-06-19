@@ -1,7 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1cfu305jh4t8"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aa0y2"]
-albedo_color = Color(0.113725, 0.0117647, 0.0666667, 1)
+[gd_scene load_steps=2 format=3 uid="uid://d1cfu305jh4t8"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ysmmy"]
 height = 3.0
@@ -18,7 +15,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 [node name="CSGSphere3D" type="CSGSphere3D" parent="CSGCylinder3D/CSGSphere3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.357251)
 radius = 0.2
-material = SubResource("StandardMaterial3D_aa0y2")
 
 [node name="CSGSphere3D2" type="CSGSphere3D" parent="CSGCylinder3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.00339, 0)
