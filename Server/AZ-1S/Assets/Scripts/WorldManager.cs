@@ -1,11 +1,87 @@
 using Godot;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 public partial class WorldManager : Node3D
 {
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
 	}
+
+	public void LoadWorld() {
+		// random seed for the reproducible RNG
+		var rand = new Random();
+
+		var seed = new byte[8];
+		rand.NextBytes(seed);
+
+		var rng = new RandomNumberGenerator();
+		rng.Seed = BitConverter.ToUInt64(seed);
+	}
+
+	public void CreateChunk(ulong seed, Vector3I pos) {
+		var rng = new RandomNumberGenerator();
+		rng.Seed = seed;
+
+		// X,Y,Z for each planet :skull:
+		var planetpos = new int[3*16];
+
+		for (int i = 0; i < planetpos.Length; i++){
+			rng.Randomize();
+			// half needs to be taken away
+			// FIXME: Should remove extra range to account for chunk border take 1.5 x maxplanetsz
+			planetpos[i] = rng.RandiRange(-FrontierConstants.chunkSize/2,FrontierConstants.chunkSize/2);
+		}
+
+
+		static (int[], bool[]) CheckOrdinatesCollide(int[] ordinateArr) {
+			var ordinateCheckFail = new bool[ordinateArr.Length];			
+			Array.Sort(ordinateArr); //faster than fac(16) comparisons
+
+			// see the differences, can only go to the n-1th element
+			// ordinate check false when collision
+			for (int i = 0; i < (ordinateArr.Length-1); i++) {
+				ordinateCheckFail[i] = 
+					Math.Abs(ordinateArr[i] - ordinateArr[i+1]) < FrontierConstants.maxPlanetSize 
+						? true : false;
+			}
+			GD.Print(new string(ordinateCheckFail.Select(x => x ? '1' : '0').ToArray()));
+			return (ordinateArr, ordinateCheckFail);
+		}
+
+
+		var posArray = new List<Vector3>();
+		for (int i = 0; i < (planetpos.Length/3); i++) {
+			int m = i*3;
+			posArray.Add(new Vector3(m,m+1,m+2));
+		}
+
+
+		// TODO: Can check for Y,Z collisions to reduce false positives but very rare anyway.
+		// They are only inside one another if all X,Y,Z are within a planets distance
+		var pOrdinate = new int[planetpos.Length/3];
+
+		// Check X coordinates
+		for (int i = 0; i < pOrdinate.Length; i++) {
+				pOrdinate[i] = planetpos[3*i];
+		}
+		var ordColld = CheckOrdinatesCollide(pOrdinate);
+		// a collision occurred
+		if (ordColld.Item2.Any(x => x)) {
+			// Get all indices of colliding objects
+			var arr = ordColld.Item2.Select((b,i) => b == true ? i : -1).Where(i => i != -1).ToArray();
+			foreach (int idx in arr){ posArray.RemoveAt(idx); }
+		}
+		
+
+		Chunk nd = new Chunk(pos);
+		// nd.planetList
+
+
+		this.AddChild(nd);
+	}
+
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta) {
@@ -41,8 +117,7 @@ public partial class WorldManager : Node3D
 
 						// FIXME: Testing code
 						if (possibleNode is null) {
-							Node nd = new Node();
-							nd.Name = string.Join('_',currChunk);
+							Chunk nd = new Chunk(currChunk);
 							this.AddChild(nd);
 						}
 
