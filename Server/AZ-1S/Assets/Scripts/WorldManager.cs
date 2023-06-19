@@ -76,6 +76,16 @@ public partial class WorldManager : Node3D
 		
 
 		Chunk nd = new Chunk(pos);
+
+		// FIXME: The Ctor is broken
+		// FIXME: The Ctor is broken
+		// FIXME: The Ctor is broken
+
+		var basePlnRes = ResourceLoader.Load<PackedScene>("res://Assets/Nodes/BasePlanet.tscn");
+		var pd = basePlnRes.Instantiate();
+
+		nd.AddChild(pd);
+
 		// nd.planetList
 
 
