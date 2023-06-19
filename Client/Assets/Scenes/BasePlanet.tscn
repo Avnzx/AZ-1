@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://ctnw8cj2cehgy"]
+
+[node name="Planet" type="CSGSphere3D"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+radius = 100.0
