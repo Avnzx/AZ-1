@@ -33,7 +33,9 @@ public partial class ServerManager : Node
 			GetNode<CommManager>("CommManager").HandleDisconnectPeer(id);
 		};
 
-		worldNode.CreateChunk(9129839821,Vector3I.Zero);
+		var rng = new RandomNumberGenerator();
+		rng.Randomize();
+		worldNode.CreateChunk(rng.Randi(),Vector3I.Zero);
 		
 	}
 

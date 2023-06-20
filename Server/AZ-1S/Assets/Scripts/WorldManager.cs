@@ -27,10 +27,10 @@ public partial class WorldManager : Node3D
 
 		// X,Y,Z for each planet :skull:
 		// TODO: Maybe use more planets
-		var planetpos = new int[3*100];
+		var planetpos = new int[3*200];
 
 		for (int i = 0; i < planetpos.Length; i++){
-			// rng.Randomize();
+			rng.Randomize();
 			// half needs to be taken away
 			// FIXME: Should remove extra range to account for chunk border take 1.5 x maxplanetsz
 			planetpos[i] = rng.RandiRange(-FrontierConstants.chunkSize/2,FrontierConstants.chunkSize/2);
@@ -46,9 +46,8 @@ public partial class WorldManager : Node3D
 			// ordinate check false when collision
 			for (int i = 0; i < (ordinateArr.Length-1); i++) {
 				ordinateCheckFail[i] = 
-					((Math.Abs(ordinateArr[i] - ordinateArr[i+1]) < FrontierConstants.maxPlanetSize)
-					|| ordinateArr[i] < FrontierConstants.maxPlanetSize*1.001) 
-						? true : false;
+					(Math.Abs(ordinateArr[i] - ordinateArr[i+1]) < FrontierConstants.maxPlanetSize)
+					  || (Math.Abs(ordinateArr[i]) < FrontierConstants.maxPlanetSize*0.6);
 			}
 			// GD.Print(new string(ordinateCheckFail.Select(x => x ? '1' : '0').ToArray()));
 			return (ordinateArr, ordinateCheckFail);
@@ -75,31 +74,28 @@ public partial class WorldManager : Node3D
 		// an X collision occurred
 		if (!xordColld.Item2.Cast<bool>().Contains(true))
 			goto SkipOtherCollisionChecks;
-
+		// xordColld.Item2
 
 
 		var yOrdinate = new int[planetpos.Length/3];
-		// Check X coordinates
 		for (int i = 0; i < yOrdinate.Length; i++) {
 			yOrdinate[i] = planetpos[1+(3*i)];
 		}
 		var yordColld = CheckOrdinatesCollide(yOrdinate);
-		yordColld.Item2.And(xordColld.Item2); // modifies yordColld bitarray
-		if (!yordColld.Item2.Cast<bool>().Contains(true))
+		xordColld.Item2.And(yordColld.Item2); // modifies xordColld bitarray
+		if (!xordColld.Item2.Cast<bool>().Contains(true))
 			goto SkipOtherCollisionChecks;
 
 
 
 		var zOrdinate = new int[planetpos.Length/3];
-		// Check X coordinates
 		for (int i = 0; i < zOrdinate.Length; i++) {
 			yOrdinate[i] = planetpos[2+(3*i)];
 		}
 		var zordColld = CheckOrdinatesCollide(yOrdinate);
-		zordColld.Item2.And(yordColld.Item2); // modifies zordColld bitarray
-		if (!zordColld.Item2.Cast<bool>().Contains(true))
+		xordColld.Item2.And(zordColld.Item2); // modifies xordColld bitarray
+		if (!xordColld.Item2.Cast<bool>().Contains(true))
 			goto SkipOtherCollisionChecks;
-
 
 
 
@@ -116,6 +112,8 @@ public partial class WorldManager : Node3D
 
 
 		SkipOtherCollisionChecks:
+		// GD.Print( Array.ConvertAll(xordColld.Item2.Cast<bool>().ToArray(), item => item ? "1" : "0") );
+
 
 		Chunk nd = new Chunk(pos);
 
@@ -134,7 +132,7 @@ public partial class WorldManager : Node3D
 			var pd = basePlnRes.Instantiate<PlanetType>();
 			// pd.Transform = pd.Transform with { Origin = position };
 			pd.DoInitialise((planetIDlist.ElementAt(i), posArray[i]));
-			GD.Print($"{pd.Position} ID: {pd.planetID}");
+			// GD.Print($"{pd.Position} ID: {pd.planetID}");
 			nd.planetList.Add(pd);
 			nd.AddChild(pd);
 		}

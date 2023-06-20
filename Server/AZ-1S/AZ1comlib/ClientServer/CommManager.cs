@@ -122,6 +122,7 @@ public partial class CommManager : Node {
 
 
     [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    // position is in Kilometres Vector3I.one is 1000m. some imprecision is OK
     public void CmdUpdatePlanetPos(Vector3I pos, long planetID) {
         #if ISCLIENT
         worldNodes[(int) FFRenderLayers.RenderLayersEnum.FarawayLayer]

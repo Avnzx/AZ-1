@@ -1,10 +1,10 @@
 namespace FF.Management {
-    public interface ICanInitialize
+    public interface ICanInitialize<T>
     {
         //
         // Summary:
         //     Signals the object that initialization is starting.
-        public void DoInitialise(params object[] argv);
+        public void DoInitialise(T args);
         bool hasBeenInitialised { get; }
     }
 }

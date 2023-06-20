@@ -14,12 +14,10 @@ public partial class TopLevelWorld : Node3D
 
 
 	public void DoRotate(Quaternion rot) {
-		var we = GetNodeOrNull<WorldEnvironment>("WorldEnvironment");
-
-		GD.Print($"trying to rotate {this.GetPath()}");
+		var we = GetNodeOrNull<Camera3D>("../Camera3D")?.Environment;
 
 		if (we is not null)
-			we.Environment.SkyRotation = rot.GetEuler();
+			we.SkyRotation = rot.GetEuler();
 		this.Quaternion = rot;
 	}
 
@@ -27,8 +25,10 @@ public partial class TopLevelWorld : Node3D
 		PlanetType? planetref;
 
 		if (!planetList.TryGetValue(planetID, out planetref)) {
-			var plt = new PlanetType();
-			plt.DoInitialise(planetID, position);
+			// by default the planets are at their max size
+			var planet = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/BasePlanet.tscn");
+			var plt = planet.Instantiate<PlanetType>();
+			plt.DoInitialise((planetID, position));
 			planetList.Add(planetID,plt);
 			this.CallDeferred(Node.MethodName.AddChild, plt);
 		} else {

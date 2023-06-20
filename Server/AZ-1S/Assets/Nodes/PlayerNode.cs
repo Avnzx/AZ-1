@@ -30,14 +30,28 @@ public partial class PlayerNode : RigidBody3D {
 
     public override void _EnterTree() {
         commManager = GetNode<CommManager>("/root/main/CommManager");
-        commManager!.RpcId(commManager!.GetRemoteIDFromPlayer(this), nameof(CommManager.CmdUpdatePlanetPos), Vector3I.Forward*1000020, 0xffffffff);
     }
 
 
     public override void _Process(double delta) {
+        long peerID = commManager!.GetRemoteIDFromPlayer(this);
+
         commManager!.RpcId(commManager!.GetRemoteIDFromPlayer(this), nameof(CommManager.CmdUpdatePlayerRot), this.Quaternion.Inverse());
 
         // send planets in the chunk
+        foreach (var planet in GetParent<Chunk>().planetList) {
+            int[] deltapos = new int[3];
+            var deltavec = (((Vector3I) planet.Position) - ((Vector3I)this.Position));
+            deltavec.Deconstruct(out deltapos[0], out deltapos[1], out deltapos[2]);
+
+            if (Array.TrueForAll(deltapos, (x => Math.Abs(x/1000) < 1000000))) {
+                commManager!.RpcId(
+                    commManager!.GetRemoteIDFromPlayer(this), 
+                    nameof(CommManager.CmdUpdatePlanetPos), 
+                    deltavec/1000, planet.planetID
+                );
+            }
+        }
     }
 
     public override void _PhysicsProcess(double delta) {
