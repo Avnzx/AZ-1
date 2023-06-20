@@ -18,6 +18,12 @@ public partial class test : Node{
 		AddChild(commManager);
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
+
+
+
+		this.Multiplayer.ServerDisconnected += () => {
+			GD.Print("server was disconnected :skull:");
+		};
 	}
 
 
@@ -52,10 +58,13 @@ public partial class test : Node{
 
 	public override void _UnhandledInput(InputEvent ev) {
 
+
 		if (ev.IsActionPressed(InputActionStr.PlayerResetMouseAccumulator)) {
 			relativeMouseAccumulator = Vector2.Zero;     
-			SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateYawLeft, 0f);
+			SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollLeft, 0f);
+			SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollRight, 0f);
 			SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchUp, 0f);
+			SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchDown, 0f);
 		}
 
 		CollectAndSendInput(ev, InputActionStr.PlayerDisableFlightAssist);
@@ -77,19 +86,30 @@ public partial class test : Node{
 
 		if (ev is Godot.InputEventMouseMotion) {
 			// Uses screen coordinates (-Y is up)
+			GD.Print(relativeMouseAccumulator);
 			relativeMouseAccumulator += 
 				(ev as Godot.InputEventMouseMotion)!.Relative / this.GetWindow().Size;
 			relativeMouseAccumulator = relativeMouseAccumulator.LimitLength();
 
-			float temp = -relativeMouseAccumulator.Y;
-			if (Mathf.Sign(temp) == 1) 
-			{ SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchUp, temp);
-			} else { SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchDown, -temp); } 
+			if (relativeMouseAccumulator.LengthSquared() > (0.05*0.05)) {
 
-			temp = relativeMouseAccumulator.X;
-			if (Mathf.Sign(temp) == 1) 
-			{ SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollRight, temp);
-			} else { SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollLeft, -temp); } 
+				float temp = -relativeMouseAccumulator.Y;
+				if (Mathf.Sign(temp) == 1) { 
+					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchUp, temp);
+					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchDown, 0f);
+				} else { 
+					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchDown, -temp);
+					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchUp, 0f); } 
+
+				temp = relativeMouseAccumulator.X;
+				if (Mathf.Sign(temp) == 1) { 
+					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollRight, temp);
+					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollLeft, 0f);
+				} else { 
+					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollLeft, -temp);
+					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollRight, 0f); } 
+
+			}
 		}
 	}
 	CommManager? commManager;

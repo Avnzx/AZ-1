@@ -8,5 +8,7 @@ emission = Color(1, 1, 1, 1)
 [node name="Planet" type="CSGSphere3D"]
 transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, 0, 0, 0)
 radius = 1.0
+radial_segments = 20
+rings = 12
 material = SubResource("StandardMaterial3D_iy2tp")
 script = ExtResource("1_2yb4s")

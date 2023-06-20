@@ -19,10 +19,22 @@ public partial class CommManager : Node {
 	FFServerConfig? serverConfig;
 
     public void HandleDisconnectPeer(long id) {
-        GD.Print("Client: ", id, " dicsonnected");
+        GD.Print("Client: ", id, " disconnected :(");
         connectedPlayers[id].QueueFree();
         connectedPlayers.Remove(id);
     }
+
+    public void HandleConnectPeer(long id) {
+        GD.Print("Client: ", id, " connected !");
+        RpcId(id, nameof(this.CmdPlayerID));
+	}
+
+    public void HandleDisconnectServer(long id) {
+        GD.Print("Server disconnected 💀");
+        // FIXME: Reconnect logic
+    }
+
+
 
     public CommManager(Node3D _worldNd, FFServerConfig _serverCfg) {
         worldNode = _worldNd;
@@ -74,7 +86,7 @@ public partial class CommManager : Node {
     -------------------------------------------------------------------------*/
 
     // TODO: Can this be implemented with custom attributes and function factories? 
-    [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void RspPlayerID(byte[] guidstr) {
         #if !ISCLIENT
 		GD.Print("recieved pID ", new Guid(guidstr), " from peer ", this.Multiplayer.GetRemoteSenderId());
@@ -105,7 +117,7 @@ public partial class CommManager : Node {
      SUBSINFO: This contains calls that are from the server to the client
     -------------------------------------------------------------------------*/
 
-    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void CmdPlayerID() {
         #if ISCLIENT
 		GD.Print("tried to get pID");

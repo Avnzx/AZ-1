@@ -25,8 +25,8 @@ public partial class ServerManager : Node
 
 		this.AddChild(new CommManager(worldNode,serverConfig!.Value));
 
-		this.Multiplayer.PeerConnected += (long x) => {
-			OnPlayerConnect(x);
+		this.Multiplayer.PeerConnected += (long id) => {
+			GetNode<CommManager>("CommManager").HandleConnectPeer(id);
 		};
 		
 		this.Multiplayer.PeerDisconnected += (long id) => {
@@ -76,16 +76,6 @@ public partial class ServerManager : Node
 
 	}
 
-
-	private void OnPlayerConnect(long id) {
-		GD.Print("Client: ", id, " connected!");
-		GetNode<CommManager>("CommManager").RpcId(id,"CmdPlayerID");
-	}
-
-	private void OnPlayerDisconnect(long id) {
-		GD.Print("Client: ", id, " disconnected!");
-		GetNode<CommManager>("CommManager").HandleDisconnectPeer(id);
-	}
 
 
 

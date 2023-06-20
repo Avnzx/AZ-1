@@ -55,21 +55,55 @@ public partial class PlayerNode : RigidBody3D {
     }
 
     public override void _PhysicsProcess(double delta) {
-        var txlX = this.Basis.X * (movReq[(int) MovementActionsEnum.PlayerMoveRight]-
-            movReq[(int) MovementActionsEnum.PlayerMoveLeft]);
-        var txlY = this.Basis.Y * (movReq[(int) MovementActionsEnum.PlayerMoveUp]-
-            movReq[(int) MovementActionsEnum.PlayerMoveDown]);
-        var txlZ = this.Basis.Z * (movReq[(int) MovementActionsEnum.PlayerMoveBackward]-
-            movReq[(int) MovementActionsEnum.PlayerMoveForward]);
 
-        var rotX = this.Basis.X * (movReq[(int) MovementActionsEnum.PlayerRotatePitchUp]-
-            movReq[(int) MovementActionsEnum.PlayerRotatePitchDown]);
-        var rotY = this.Basis.Y * (movReq[(int) MovementActionsEnum.PlayerRotateYawLeft]-
-            movReq[(int) MovementActionsEnum.PlayerRotateYawRight]);
-        var rotZ = this.Basis.Z * (movReq[(int) MovementActionsEnum.PlayerRotateRollLeft]-
-            movReq[(int) MovementActionsEnum.PlayerRotateRollRight]);
+        if ( Convert.ToBoolean(movReq[(int) MovementActionsEnum.PlayerDisableFlightAssist])) {
+            var txlX = this.Basis.X * 
+                (movReq[(int) MovementActionsEnum.PlayerMoveRight]-
+                movReq[(int) MovementActionsEnum.PlayerMoveLeft]);
+            var txlY = this.Basis.Y * 
+                (movReq[(int) MovementActionsEnum.PlayerMoveUp]-
+                movReq[(int) MovementActionsEnum.PlayerMoveDown]);
+            var txlZ = this.Basis.Z * 
+                (movReq[(int) MovementActionsEnum.PlayerMoveBackward]-
+                movReq[(int) MovementActionsEnum.PlayerMoveForward]);
 
-        this.ApplyTorque(rotX + rotY + rotZ);
-        this.ApplyForce(txlX + txlY + txlZ);
+            var rotX = this.Basis.X * angularAccelConst.X *
+                (movReq[(int) MovementActionsEnum.PlayerRotatePitchUp]-
+                movReq[(int) MovementActionsEnum.PlayerRotatePitchDown]);
+            var rotY = this.Basis.Y * angularAccelConst.Y *
+                (movReq[(int) MovementActionsEnum.PlayerRotateYawLeft]-
+                movReq[(int) MovementActionsEnum.PlayerRotateYawRight]);
+            var rotZ = this.Basis.Z * angularAccelConst.Z *
+                (movReq[(int) MovementActionsEnum.PlayerRotateRollLeft]-
+                movReq[(int) MovementActionsEnum.PlayerRotateRollRight]);
+
+            this.ApplyTorque( delta*(rotX + rotY + rotZ) );
+            this.ApplyForce( delta*(txlX + txlY + txlZ) );
+        } else {
+
+
+            var angvel = -this.AngularVelocity/(2*Math.PI);
+
+            GD.Print($"{angvel}");
+
+            var rotX = this.Basis.X * angularAccelConst.X *
+                (movReq[(int) MovementActionsEnum.PlayerRotatePitchUp]-
+                movReq[(int) MovementActionsEnum.PlayerRotatePitchDown]);
+            var rotY = this.Basis.Y * angularAccelConst.Y *
+                (movReq[(int) MovementActionsEnum.PlayerRotateYawLeft]-
+                movReq[(int) MovementActionsEnum.PlayerRotateYawRight]);
+            var rotZ = this.Basis.Z * angularAccelConst.Z *
+                (movReq[(int) MovementActionsEnum.PlayerRotateRollLeft]-
+                movReq[(int) MovementActionsEnum.PlayerRotateRollRight]);
+
+
+            this.ApplyTorque(angvel);
+            // this.ApplyForce(txlX + txlY + txlZ);
+        }
+
+
     }
+
+    Vector3 angularAccelConst = new Vector3(30,10,35);
+    Vector3 accelConst;
 }

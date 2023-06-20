@@ -27,7 +27,7 @@ public partial class WorldManager : Node3D
 
 		// X,Y,Z for each planet :skull:
 		// TODO: Maybe use more planets
-		var planetpos = new int[3*200];
+		var planetpos = new int[3*250];
 
 		for (int i = 0; i < planetpos.Length; i++){
 			rng.Randomize();
