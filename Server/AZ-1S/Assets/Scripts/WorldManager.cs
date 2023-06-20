@@ -92,16 +92,13 @@ public partial class WorldManager : Node3D
 
 		var basePlnRes = ResourceLoader.Load<PackedScene>("res://Assets/Nodes/BasePlanet.tscn");
 		foreach (var position in posArray) {
-			var pd = basePlnRes.Instantiate();
-			nd.Transform = nd.Transform with { Origin = position };
-			GD.Print(position);
+			var pd = basePlnRes.Instantiate<PlanetType>();
+			pd.Transform = pd.Transform with { Origin = position };
+			nd.planetList.Add(pd);
 			nd.AddChild(pd);
 		}
-		
 
 		
-
-		// nd.planetList
 
 
 		this.AddChild(nd);
