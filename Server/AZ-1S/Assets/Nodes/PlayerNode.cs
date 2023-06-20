@@ -30,11 +30,14 @@ public partial class PlayerNode : RigidBody3D {
 
     public override void _EnterTree() {
         commManager = GetNode<CommManager>("/root/main/CommManager");
+        commManager!.RpcId(commManager!.GetRemoteIDFromPlayer(this), nameof(CommManager.CmdUpdatePlanetPos), Vector3I.Forward*1000020, 0xffffffff);
     }
 
 
     public override void _Process(double delta) {
         commManager!.RpcId(commManager!.GetRemoteIDFromPlayer(this), nameof(CommManager.CmdUpdatePlayerRot), this.Quaternion.Inverse());
+
+        // send planets in the chunk
     }
 
     public override void _PhysicsProcess(double delta) {

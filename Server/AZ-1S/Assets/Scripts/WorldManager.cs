@@ -25,6 +25,7 @@ public partial class WorldManager : Node3D
 		rng.Seed = seed;
 
 		// X,Y,Z for each planet :skull:
+		// TODO: Maybe use more planets
 		var planetpos = new int[3*16];
 
 		for (int i = 0; i < planetpos.Length; i++){
@@ -88,7 +89,8 @@ public partial class WorldManager : Node3D
 
 		// FIXME: The Ctor is broken
 		// FIXME: The Ctor is broken
-		// FIXME: The Ctor is broken
+		// FIXME: The Ctor is broken need to add the seed for the shader and data
+		// need to also scaled the size properly
 
 		var basePlnRes = ResourceLoader.Load<PackedScene>("res://Assets/Nodes/BasePlanet.tscn");
 		foreach (var position in posArray) {

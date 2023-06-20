@@ -6,11 +6,15 @@ using System.Linq;
 // Careful! Every inbuilt engine type might be using floats or doubles!!!
 
 public partial class CommManager : Node {
-    
+
+    /*-------------------------------------------------------------------------
+                            SERVER LOCAL FUNCTIONS
+    -------------------------------------------------------------------------*/
+
+    #if !ISCLIENT // SERVER ONLY THINGS GO HERE
+
     Node3D? worldNode;
 
-    
-    #if !ISCLIENT
     public Dictionary<long,PlayerNode> connectedPlayers = new Dictionary<long,PlayerNode>();
 	FFServerConfig? serverConfig;
 
@@ -29,11 +33,16 @@ public partial class CommManager : Node {
         return connectedPlayers.FirstOrDefault(x => x.Value == nd).Key;
     }
 
-    
-    #else
 
-    public CommManager(Node3D _worldNd) {
-        worldNode = _worldNd;
+    /*-------------------------------------------------------------------------
+                            CLIENT LOCAL FUNCTIONS
+    -------------------------------------------------------------------------*/
+    #else // CLIENT ONLY THINGS GO HERE
+
+    TopLevelWorld[] worldNodes = new TopLevelWorld[Enum.GetNames(typeof(FFRenderLayers.RenderLayersEnum)).Length];
+
+    public CommManager(TopLevelWorld[] _worldNodes) {
+        worldNodes = _worldNodes;
     }
 
     #endif
@@ -41,25 +50,9 @@ public partial class CommManager : Node {
     public override void _Ready() {
         this.Name = "CommManager";
     }
-
-
     /*-------------------------------------------------------------------------
-    ---------------------------------------------------------------------------
-     SECTIONINFO: This contains calls to establish and setup connections
-    ---------------------------------------------------------------------------
+                            END OF LOCAL FUNCTIONS
     -------------------------------------------------------------------------*/
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -126,12 +119,24 @@ public partial class CommManager : Node {
     public void CmdUpdatePlayerPose(Vector3G pos, Quaternion rot) {
     } 
 
+
+
+    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    public void CmdUpdatePlanetPos(Vector3I pos, long planetID) {
+        #if ISCLIENT
+        worldNodes[(int) FFRenderLayers.RenderLayersEnum.FarawayLayer]
+            .UpdatePlanetPos(pos, (uint) planetID); 
+        #endif
+    } 
+
     [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
     public void CmdUpdatePlayerRot(Quaternion rot) {
         #if ISCLIENT
-        (worldNode as TopLevelWorld)!.DoRotate(rot); 
+        foreach (var world in worldNodes){ world.DoRotate(rot); }
         #endif
     } 
+
+    
 
 
 

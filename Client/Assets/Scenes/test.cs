@@ -10,8 +10,11 @@ public partial class test : Node{
 		enet.CreateClient("localhost",9898);
 		this.Multiplayer.MultiplayerPeer = enet;
 
-		worldNode = GetNode<Node3D>("world");
-		commManager = new CommManager(worldNode);
+		var world = GetNode<TopLevelWorld>("CloseObjectLayer/ViewContainer/SubViewport/world");
+		commManager = new CommManager( new System.Collections.Generic.List<TopLevelWorld>{
+			GetNode<TopLevelWorld>("CloseObjectLayer/ViewContainer/SubViewport/world"),
+			GetNode<TopLevelWorld>("FarawayLayer/ViewContainer/SubViewport/world")
+		}.ToArray());
 		AddChild(commManager);
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
@@ -77,8 +80,6 @@ public partial class test : Node{
 			relativeMouseAccumulator += 
 				(ev as Godot.InputEventMouseMotion)!.Relative / this.GetWindow().Size;
 			relativeMouseAccumulator = relativeMouseAccumulator.LimitLength();
-			GD.Print(relativeMouseAccumulator);
-
 
 			float temp = -relativeMouseAccumulator.Y;
 			if (Mathf.Sign(temp) == 1) 
@@ -91,8 +92,6 @@ public partial class test : Node{
 			} else { SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollLeft, -temp); } 
 		}
 	}
-
-	Node3D? worldNode;
 	CommManager? commManager;
 	Vector2 relativeMouseAccumulator = new Vector2();
 

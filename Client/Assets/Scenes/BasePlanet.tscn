@@ -1,5 +1,8 @@
-[gd_scene format=3 uid="uid://ctnw8cj2cehgy"]
+[gd_scene load_steps=2 format=3 uid="uid://ctnw8cj2cehgy"]
+
+[ext_resource type="Script" path="res://AZ1comlib/Types/PlanetType.cs" id="1_2yb4s"]
 
 [node name="Planet" type="CSGSphere3D"]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
-radius = 100.0
+transform = Transform3D(1e+06, 0, 0, 0, 1e+06, 0, 0, 0, 1e+06, 0, 0, 0)
+radius = 1.0
+script = ExtResource("1_2yb4s")

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class TopLevelWorld : Node3D
 {
@@ -13,9 +14,28 @@ public partial class TopLevelWorld : Node3D
 
 
 	public void DoRotate(Quaternion rot) {
-		var we = GetNode<WorldEnvironment>("WorldEnvironment");
-		// For some reason skies have inverse rotation
-		// Since the server is sending inverse we need to invert it again, WTF
-		we.Environment.SkyRotation = rot.GetEuler();
+		var we = GetNodeOrNull<WorldEnvironment>("WorldEnvironment");
+
+		GD.Print($"trying to rotate {this.GetPath()}");
+
+		if (we is not null)
+			we.Environment.SkyRotation = rot.GetEuler();
+		this.Quaternion = rot;
 	}
+
+	public void UpdatePlanetPos(Vector3I position, uint planetID) {
+		PlanetType? planetref;
+
+		if (!planetList.TryGetValue(planetID, out planetref)) {
+			var plt = new PlanetType();
+			plt.DoInitialise(planetID, position);
+			planetList.Add(planetID,plt);
+			this.CallDeferred(Node.MethodName.AddChild, plt);
+		} else {
+			planetref!.Position = position;
+		}
+	}
+
+	Dictionary<uint,PlanetType> planetList = new Dictionary<uint, PlanetType>();
+	// List<PlayerType>
 }

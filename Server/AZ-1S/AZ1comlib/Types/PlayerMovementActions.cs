@@ -1,6 +1,5 @@
 using Godot;
 
-
 public class PlayerMovementActions {
 
     public enum MovementActionsEnum : ushort {

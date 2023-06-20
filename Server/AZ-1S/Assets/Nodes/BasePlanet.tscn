@@ -3,10 +3,11 @@
 [ext_resource type="Script" path="res://AZ1comlib/Types/PlanetType.cs" id="1_wu10x"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_u74hd"]
-radius = 1100.0
+radius = 1.0
 
 [node name="BasePlanet" type="StaticBody3D"]
 script = ExtResource("1_wu10x")
 
 [node name="PlanetCollider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1e+06, 0, 0, 0, 1e+06, 0, 0, 0, 1e+06, 0, 0, 0)
 shape = SubResource("SphereShape3D_u74hd")
