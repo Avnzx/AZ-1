@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 
 public partial class WorldManager : Node3D
 {
@@ -26,18 +27,18 @@ public partial class WorldManager : Node3D
 
 		// X,Y,Z for each planet :skull:
 		// TODO: Maybe use more planets
-		var planetpos = new int[3*16];
+		var planetpos = new int[3*100];
 
 		for (int i = 0; i < planetpos.Length; i++){
-			rng.Randomize();
+			// rng.Randomize();
 			// half needs to be taken away
 			// FIXME: Should remove extra range to account for chunk border take 1.5 x maxplanetsz
 			planetpos[i] = rng.RandiRange(-FrontierConstants.chunkSize/2,FrontierConstants.chunkSize/2);
 		}
 
 
-		static (int[], bool[]) CheckOrdinatesCollide(int[] ordinateArr) {
-			var ordinateCheckFail = new bool[ordinateArr.Length];
+		static (int[], BitArray) CheckOrdinatesCollide(int[] ordinateArr) {
+			var ordinateCheckFail = new BitArray(ordinateArr.Length);
 			// TODO: Docs			
 			Array.Sort(ordinateArr); //faster than fac(16) comparisons
 
@@ -45,45 +46,76 @@ public partial class WorldManager : Node3D
 			// ordinate check false when collision
 			for (int i = 0; i < (ordinateArr.Length-1); i++) {
 				ordinateCheckFail[i] = 
-					Math.Abs(ordinateArr[i] - ordinateArr[i+1]) < FrontierConstants.maxPlanetSize 
+					((Math.Abs(ordinateArr[i] - ordinateArr[i+1]) < FrontierConstants.maxPlanetSize)
+					|| ordinateArr[i] < FrontierConstants.maxPlanetSize*1.001) 
 						? true : false;
 			}
-			GD.Print(new string(ordinateCheckFail.Select(x => x ? '1' : '0').ToArray()));
+			// GD.Print(new string(ordinateCheckFail.Select(x => x ? '1' : '0').ToArray()));
 			return (ordinateArr, ordinateCheckFail);
 		}
 
 
-		var posArray = new List<Vector3>();
+		var posArray = new List<Vector3I>();
 		for (int i = 0; i < (planetpos.Length/3); i++) {
 			int m = i*3;
-			posArray.Add(new Vector3(
+			posArray.Add(new Vector3I(
 				planetpos[m],
 				planetpos[m+1],
 				planetpos[m+2]));
 		}
 
-
 		// TODO: Can check for Y,Z collisions to reduce false positives but very rare anyway.
 		// They are only inside one another if all X,Y,Z are within a planets distance
-		var pOrdinate = new int[planetpos.Length/3];
-
+		var xOrdinate = new int[planetpos.Length/3];
 		// Check X coordinates
-		for (int i = 0; i < pOrdinate.Length; i++) {
-				pOrdinate[i] = planetpos[3*i];
+		for (int i = 0; i < xOrdinate.Length; i++) {
+				xOrdinate[i] = planetpos[3*i];
 		}
-		var ordColld = CheckOrdinatesCollide(pOrdinate);
-		// a collision occurred
-		if (ordColld.Item2.Any(x => x)) {
-			// Get all indices of colliding objects
-			var arr = ordColld.Item2.Select((b,i) => b == true ? i : -1).Where(i => i != -1).ToArray();
-			for (int i = 0; i < arr.Length; i++){
-				int idx = arr[i]; // make the number the index
-				idx = ordColld.Item1[idx]; // make the value the index
-				idx = Array.FindIndex(pOrdinate, x => (x == idx)); // get the index in the ordinates
-				posArray.RemoveAt(idx);
-			}
+		var xordColld = CheckOrdinatesCollide(xOrdinate);
+		// an X collision occurred
+		if (!xordColld.Item2.Cast<bool>().Contains(true))
+			goto SkipOtherCollisionChecks;
+
+
+
+		var yOrdinate = new int[planetpos.Length/3];
+		// Check X coordinates
+		for (int i = 0; i < yOrdinate.Length; i++) {
+			yOrdinate[i] = planetpos[1+(3*i)];
 		}
-		
+		var yordColld = CheckOrdinatesCollide(yOrdinate);
+		yordColld.Item2.And(xordColld.Item2); // modifies yordColld bitarray
+		if (!yordColld.Item2.Cast<bool>().Contains(true))
+			goto SkipOtherCollisionChecks;
+
+
+
+		var zOrdinate = new int[planetpos.Length/3];
+		// Check X coordinates
+		for (int i = 0; i < zOrdinate.Length; i++) {
+			yOrdinate[i] = planetpos[2+(3*i)];
+		}
+		var zordColld = CheckOrdinatesCollide(yOrdinate);
+		zordColld.Item2.And(yordColld.Item2); // modifies zordColld bitarray
+		if (!zordColld.Item2.Cast<bool>().Contains(true))
+			goto SkipOtherCollisionChecks;
+
+
+
+
+
+		// Get all indices of colliding objects
+		// var arr = xordColld.Item2.Cast<bool>().Select((b,i) => b == true ? i : -1).Where(i => i != -1).ToArray();
+		// for (int i = 0; i < arr.Length; i++){
+		// 	int idx = arr[i]; // make the number the index
+		// 	idx = xordColld.Item1[idx]; // make the value the index
+		// 	idx = Array.FindIndex(xOrdinate, x => (x == idx)); // get the index in the ordinates
+		// 	// FIXME: some weird behaviour throws out of range except
+		// 	posArray.RemoveAt(idx);
+		// }
+
+
+		SkipOtherCollisionChecks:
 
 		Chunk nd = new Chunk(pos);
 
@@ -92,16 +124,20 @@ public partial class WorldManager : Node3D
 		// FIXME: The Ctor is broken need to add the seed for the shader and data
 		// need to also scaled the size properly
 
+		HashSet<UInt32> planetIDlist = new HashSet<uint>();
+		while (planetIDlist.Count < posArray.Count) {
+			planetIDlist.Add(rng.Randi());
+		}
+
 		var basePlnRes = ResourceLoader.Load<PackedScene>("res://Assets/Nodes/BasePlanet.tscn");
-		foreach (var position in posArray) {
+		for (int i = 0; i < posArray.Count; i++) {
 			var pd = basePlnRes.Instantiate<PlanetType>();
-			pd.Transform = pd.Transform with { Origin = position };
+			// pd.Transform = pd.Transform with { Origin = position };
+			pd.DoInitialise((planetIDlist.ElementAt(i), posArray[i]));
+			GD.Print($"{pd.Position} ID: {pd.planetID}");
 			nd.planetList.Add(pd);
 			nd.AddChild(pd);
 		}
-
-		
-
 
 		this.AddChild(nd);
 	}
