@@ -36,7 +36,8 @@ public partial class WorldManager : Node3D
 
 
 		static (int[], bool[]) CheckOrdinatesCollide(int[] ordinateArr) {
-			var ordinateCheckFail = new bool[ordinateArr.Length];			
+			var ordinateCheckFail = new bool[ordinateArr.Length];
+			// TODO: Docs			
 			Array.Sort(ordinateArr); //faster than fac(16) comparisons
 
 			// see the differences, can only go to the n-1th element
@@ -54,7 +55,10 @@ public partial class WorldManager : Node3D
 		var posArray = new List<Vector3>();
 		for (int i = 0; i < (planetpos.Length/3); i++) {
 			int m = i*3;
-			posArray.Add(new Vector3(m,m+1,m+2));
+			posArray.Add(new Vector3(
+				planetpos[m],
+				planetpos[m+1],
+				planetpos[m+2]));
 		}
 
 
@@ -71,7 +75,12 @@ public partial class WorldManager : Node3D
 		if (ordColld.Item2.Any(x => x)) {
 			// Get all indices of colliding objects
 			var arr = ordColld.Item2.Select((b,i) => b == true ? i : -1).Where(i => i != -1).ToArray();
-			foreach (int idx in arr){ posArray.RemoveAt(idx); }
+			for (int i = 0; i < arr.Length; i++){
+				int idx = arr[i]; // make the number the index
+				idx = ordColld.Item1[idx]; // make the value the index
+				idx = Array.FindIndex(pOrdinate, x => (x == idx)); // get the index in the ordinates
+				posArray.RemoveAt(idx);
+			}
 		}
 		
 
@@ -82,9 +91,15 @@ public partial class WorldManager : Node3D
 		// FIXME: The Ctor is broken
 
 		var basePlnRes = ResourceLoader.Load<PackedScene>("res://Assets/Nodes/BasePlanet.tscn");
-		var pd = basePlnRes.Instantiate();
+		foreach (var position in posArray) {
+			var pd = basePlnRes.Instantiate();
+			nd.Transform = nd.Transform with { Origin = position };
+			GD.Print(position);
+			nd.AddChild(pd);
+		}
+		
 
-		nd.AddChild(pd);
+		
 
 		// nd.planetList
 
