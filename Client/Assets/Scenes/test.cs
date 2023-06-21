@@ -6,10 +6,6 @@ public partial class test : Node{
 	public override void _Ready(){
 		ConfigManager.GetConfig();
 
-		var enet = new ENetMultiplayerPeer();
-		enet.CreateClient("localhost",9898);
-		this.Multiplayer.MultiplayerPeer = enet;
-
 		var world = GetNode<TopLevelWorld>("CloseObjectLayer/ViewContainer/SubViewport/world");
 		commManager = new CommManager( new System.Collections.Generic.List<TopLevelWorld>{
 			GetNode<TopLevelWorld>("CloseObjectLayer/ViewContainer/SubViewport/world"),
@@ -18,12 +14,6 @@ public partial class test : Node{
 		AddChild(commManager);
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
-
-
-
-		this.Multiplayer.ServerDisconnected += () => {
-			GD.Print("server was disconnected :skull:");
-		};
 	}
 
 
@@ -91,7 +81,6 @@ public partial class test : Node{
 				(ev as Godot.InputEventMouseMotion)!.Relative / this.GetWindow().Size;
 			relativeMouseAccumulator = relativeMouseAccumulator.LimitLength();
 
-			if (relativeMouseAccumulator.LengthSquared() > (0.05*0.05)) {
 
 				float temp = -relativeMouseAccumulator.Y;
 				if (Mathf.Sign(temp) == 1) { 
@@ -108,8 +97,6 @@ public partial class test : Node{
 				} else { 
 					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollLeft, -temp);
 					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollRight, 0f); } 
-
-			}
 		}
 	}
 	CommManager? commManager;

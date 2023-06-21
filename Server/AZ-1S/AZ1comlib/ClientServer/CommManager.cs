@@ -10,13 +10,14 @@ public partial class CommManager : Node {
     /*-------------------------------------------------------------------------
                             SERVER LOCAL FUNCTIONS
     -------------------------------------------------------------------------*/
-
     #if !ISCLIENT // SERVER ONLY THINGS GO HERE
 
     Node3D? worldNode;
-
+    // public Dictionary<System.Guid, PlayerNode()
     public Dictionary<long,PlayerNode> connectedPlayers = new Dictionary<long,PlayerNode>();
 	FFServerConfig? serverConfig;
+
+
 
     public void HandleDisconnectPeer(long id) {
         GD.Print("Client: ", id, " disconnected :(");
@@ -29,32 +30,75 @@ public partial class CommManager : Node {
         RpcId(id, nameof(this.CmdPlayerID));
 	}
 
-    public void HandleDisconnectServer(long id) {
-        GD.Print("Server disconnected 💀");
-        // FIXME: Reconnect logic
-    }
-
-
 
     public CommManager(Node3D _worldNd, FFServerConfig _serverCfg) {
         worldNode = _worldNd;
         serverConfig = _serverCfg;
     }
     
-    public long GetRemoteIDFromPlayer(PlayerNode nd) {
+    public long? GetRemoteIDFromPlayer(PlayerNode nd) {
         return connectedPlayers.FirstOrDefault(x => x.Value == nd).Key;
     }
+
+    /// <summary> Only sends an RPC if the peer is connected </summary>
+    /// <returns> True if RPC was sent to a connected peer </returns>
+    public bool RpcIdIfConnected(long peerId, StringName method, params Variant[] args) {
+        if (connectedPlayers.ContainsKey(peerId)) {
+            this.RpcId(peerId, method, args);
+            return true;
+        } else {
+            return false;
+        }      
+    }
+    public bool RpcIdIfConnected(PlayerNode playerNd, StringName method, params Variant[] args) {
+        long? peerID = GetRemoteIDFromPlayer(playerNd);
+        if (peerID.HasValue)
+            return this.RpcIdIfConnected(peerID.Value, method, args);
+        return false;
+    }
+
+
 
 
     /*-------------------------------------------------------------------------
                             CLIENT LOCAL FUNCTIONS
     -------------------------------------------------------------------------*/
     #else // CLIENT ONLY THINGS GO HERE
-
     TopLevelWorld[] worldNodes = new TopLevelWorld[Enum.GetNames(typeof(FFRenderLayers.RenderLayersEnum)).Length];
+    (string addr, int port, bool isConnected) connectionDetails;
+
 
     public CommManager(TopLevelWorld[] _worldNodes) {
         worldNodes = _worldNodes;
+    }
+
+    public void ConnectToServer(string addr = "localhost", int port = 9898) {
+        connectionDetails = (addr, port, false);
+
+        var enet = new ENetMultiplayerPeer();
+		enet.CreateClient(addr,port);
+		this.Multiplayer.MultiplayerPeer = enet;
+
+        this.Multiplayer.ServerDisconnected += () => { HandleDisconnectServer(); };
+        this.Multiplayer.ConnectedToServer += () => { HandleConnectServer(); };
+    }
+
+    public void HandleDisconnectServer() {
+        connectionDetails.isConnected = false;
+        GD.Print("Server disconnected 💀");
+        // FIXME: Reconnect logic
+    }
+
+    public void HandleConnectServer() {
+        connectionDetails.isConnected = true;
+        GD.Print("Server connected :happy:");
+    }
+
+    public bool RpcIdIfConnected(StringName method, params Variant[] args) {
+        if (connectionDetails.isConnected) {
+            this.RpcId(1, method, args);
+            return true;
+        } else { return false; }
     }
 
     #endif
@@ -65,9 +109,6 @@ public partial class CommManager : Node {
     /*-------------------------------------------------------------------------
                             END OF LOCAL FUNCTIONS
     -------------------------------------------------------------------------*/
-
-
-
 
 
 

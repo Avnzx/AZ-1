@@ -57,13 +57,13 @@ public partial class PlayerNode : RigidBody3D {
     public override void _PhysicsProcess(double delta) {
 
         if ( Convert.ToBoolean(movReq[(int) MovementActionsEnum.PlayerDisableFlightAssist])) {
-            var txlX = this.Basis.X * 
+            var txlX = this.Basis.X * accelConst.X *
                 (movReq[(int) MovementActionsEnum.PlayerMoveRight]-
                 movReq[(int) MovementActionsEnum.PlayerMoveLeft]);
-            var txlY = this.Basis.Y * 
+            var txlY = this.Basis.Y * accelConst.Y *
                 (movReq[(int) MovementActionsEnum.PlayerMoveUp]-
                 movReq[(int) MovementActionsEnum.PlayerMoveDown]);
-            var txlZ = this.Basis.Z * 
+            var txlZ = this.Basis.Z * accelConst.Z *
                 (movReq[(int) MovementActionsEnum.PlayerMoveBackward]-
                 movReq[(int) MovementActionsEnum.PlayerMoveForward]);
 
@@ -77,8 +77,8 @@ public partial class PlayerNode : RigidBody3D {
                 (movReq[(int) MovementActionsEnum.PlayerRotateRollLeft]-
                 movReq[(int) MovementActionsEnum.PlayerRotateRollRight]);
 
-            this.ApplyTorque( delta*(rotX + rotY + rotZ) );
-            this.ApplyForce( delta*(txlX + txlY + txlZ) );
+            this.ApplyTorque( delta * (rotX + rotY + rotZ) );
+            this.ApplyForce( delta * (txlX + txlY + txlZ) );
         } else {
 
 
@@ -97,8 +97,17 @@ public partial class PlayerNode : RigidBody3D {
                 movReq[(int) MovementActionsEnum.PlayerRotateRollRight]);
 
 
+            float cmdXtxl = (movReq[(int) MovementActionsEnum.PlayerMoveRight]-
+                movReq[(int) MovementActionsEnum.PlayerMoveLeft]);
+            
+            if(!Convert.ToBoolean(cmdXtxl)) // see if there is a command
+                this.Basis.X * -accelConst.X * this.LinearVelocity.X
+                // project 
+
+
+
             this.ApplyTorque(angvel);
-            // this.ApplyForce(txlX + txlY + txlZ);
+            this.ApplyForce(txlX + txlY + txlZ);
         }
 
 
