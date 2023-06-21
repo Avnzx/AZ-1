@@ -60,6 +60,8 @@ public partial class test : Node{
 			SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollRight, 0f);
 			SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchUp, 0f);
 			SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotatePitchDown, 0f);
+			cursor!.Position = (this.GetWindow().Size/2);
+			(cursor!.Material as ShaderMaterial)!.SetShaderParameter("transparency", 0);
 		}
 
 		CollectAndSendInput(ev, InputActionStr.PlayerDisableFlightAssist);
