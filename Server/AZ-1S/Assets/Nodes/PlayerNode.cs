@@ -126,6 +126,6 @@ public partial class PlayerNode : RigidBody3D {
 
     }
 
-    Vector3 angularAccelConst = new Vector3(30,10,35); // pitch, yaw, roll
+    Vector3 angularAccelConst = new Vector3(25,10,30); // pitch, yaw, roll
     Vector3 accelConst = new Vector3(50,100,400); // sideways, vertical, fw / back
 }

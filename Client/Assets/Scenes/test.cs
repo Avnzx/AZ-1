@@ -84,10 +84,12 @@ public partial class test : Node{
 
 			var deltaMouse = (ev as Godot.InputEventMouseMotion)!.Relative / this.GetWindow().Size;
 
+			// counter mouse drift
 			relativeMouseAccumulator += 
 				deltaMouse.LengthSquared() > (0.005*0.005) ? deltaMouse : Vector2.Zero;
 			relativeMouseAccumulator = relativeMouseAccumulator.LimitLength();
 
+			// there is a simpler solution for this
 			cursor!.Position = (this.GetWindow().Size/2) + relativeMouseAccumulator*200;
 			cursor!.Rotation = (float) Math.PI + Mathf.Atan2( 
 				((float) -relativeMouseAccumulator.X), 
