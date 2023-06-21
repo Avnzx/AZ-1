@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public partial class Chunk : Node3D {
     public List<PlanetType> planetList = new List<PlanetType>();
+    public List<Node3D> modelList = new List<Node3D>();
 
     // Not global coordinates, in chunks
     public Chunk(Vector3I position) {
@@ -25,6 +26,10 @@ public partial class Chunk : Node3D {
 
     public static string GetChunkNameFromPos(Vector3I position) {
         return $"{position.X}_{position.Y}_{position.Z}";
+    }
+
+    public Vector3I GetChunkPosition() {
+        return GetChunkPosFromName(this.Name);
     }
 
     public static Vector3I GetChunkPosFromName(string name) {
