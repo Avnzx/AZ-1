@@ -383,6 +383,16 @@ The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) 
 \noindent The storage requirements for this game, due to the use of the Godot game engine. Are quite low in comparison to other games. In total this game is expected to reach a full 3d environment while staying under a 10GiB download, to allow for uncompressed assets that may potentially work better on lower end hardware, and to reduce compression artifacting. The 10GiB size allows for a number of assets while still allowing for individuals with a less stable connection to retrieve the game files, as well as for individuals on limited data plans. As many AAA titles reach sizes nearing 100GiB.
 
 
+
+
+
+
+
+
+
+
+
+
 \clearpage
 \section{Justification and Discussion of UI}
 
@@ -406,6 +416,16 @@ The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) 
 \clearpage
 \section{Error Checking}
 
+% debugging prints
+\includegraphics[width=\textwidth]{debugprintserver.png}
+\includegraphics[width=\textwidth]{debuggingprint.png}
+
+% use of flags
+\includegraphics[width=\textwidth]{flags.png}
+
+
+
+
 \clearpage
 \section{Module Desk Check}
 
@@ -418,9 +438,50 @@ The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) 
 \clearpage
 \section{Discussion of syntax, runtime, and logic errors}
 
+\includegraphics[width=\textwidth]{logicerror.png}
+
+\includegraphics[width=\textwidth]{runtimeerror.png}
+
+\includegraphics[width=\textwidth]{syntaxerror.png}
 
 
+\clearpage
+\section{Efficiency and Elegancy of Code}
 
+\includegraphics[width=\textwidth]{bitarray.png}
+\includegraphics[width=\textwidth]{vector3g.png}
+
+
+\clearpage
+\section{Final UI Design}
+
+\clearpage
+\section{Suitable CASE Tools and VCS}
+
+\subsection{VCS - Git}
+Git is the current industry standard for VCS (Version Control System) software. Due to it's age, wide use (it is the current VCS of the Linux kernel), and stability. Git, unlike other version control systems of its time, is a DCVS (Distributed VCS). Where each machine has an entire copy of the repository, and a central server is not necessary to be able to work on the project, commit changes, or do other repository operations without having to be online. It allows for greater collaboration or as a mental notetaking system as it has advanced algorithms for allowing for the reconciliation of conflicting branches, (two 'commits' changed the same file). Allowing for features from very old or new 'branches' to be quickly integrated into the final product. (This can be seen by the presence of so called 'Merge commits' in the repository of this game). \\
+
+Git also acts as a bug finding tool. As it is able to quickly and efficiently narrow down a single commit, or group of commits that caused a regression or bug in the software (as commits only contain the difference between versions of a file). Invoked with the "git bisect" command. This and other operations such as the ability to rollback to earlier commits seamlessly allow for bugs to be found and fixed easily.\\
+
+\includegraphics[width=\textwidth]{godot4commits.png}
+\caption{Commit history from the Godot 4.0 stable branch on GitHub \cite{godotgithub}}
+
+Other features that git provides such as submodules are heavily used by my project, as the server of my project uses my custom version of the godot engine. This uses a git submodule to both reduce the size of the repository as well as retain the ability to fast forward my copy of the engine source code easily and reproducibly on many systems.
+
+\includegraphics[width=\textwidth]{localserverstructure.png}
+\caption{Local directory structure of the Server folder, showing the use of subprojects}
+
+\clearpage
+\section{Changing User Requirements}
+
+\clearpage
+\section{User Manual}
+
+\clearpage
+\section{Installation Manual}
+
+\clearpage
+\section{Project Report}
 
 
 
@@ -461,6 +522,10 @@ Created the godot scene to start the game & & & \\
 
 2023-03-08 & Fixed the context diagram to fit with the new Structure chart to include external servers. Completed finishing touches and converted logbook to proforma format before submission. & My logbook was not created with the proforma in mind and required a large ammount of effort and a significant ammount of wasted effort to convert it. Next time I need to start the conversion process earlier as well as  & Submit part A & Done \\
     \hline
+
+% include the MS Vscode requirement for omnisharp debugging somewhere
+
+
 \end{xltabular}
 \end{alscape}
 
@@ -481,9 +546,15 @@ https://www.flecs.dev/flecs \\
 https://godotshaders.com \\
 https://github.com/notakamihe/Unity\-Star\-Systems\-and\-Galaxies \\
 https://github.com/SebLague/Procedural\-Planets \\
-https://docs.google.com/document/d/10xLhy\-lKzxeNbEQjZ63a5lshe\-\_nfrmTytyNMjp6Ouc \\
-https://developer.nvidia.com/gpugems/gpugems3/part\-v\-physics\-simulation/chapter\-31\-fast\-n\-body\-simulation\-cuda
-
+Allows me to start implementing ICE, Interactive Connectivity Establishment, to allow players behind a NAT to access internet games. https://docs.google.com/document/d/10xLhy\-lKzxeNbEQjZ63a5lshe\-\_nfrmTytyNMjp6Ouc \\
+Gave me ideas for how to quickly simulate N body physics https://developer.nvidia.com/gpugems/gpugems3/part\-v\-physics\-simulation/chapter\-31\-fast\-n\-body\-simulation\-cuda
+My planet shader is a heavily modified version of the GenGen shader https://github.com/Zarkonnen/GenGen/
+How to use multiple cameras further down the thread https://github.com/godotengine/godot-proposals/issues/956
+Basic LINQ instructions to help me get started with advanced queries https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/introduction-to-linq-queries
+My use and implementation of the ICanInitialise interface was asissted and inspired by the microsoft implementation. https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.isupportinitialize?view=net-7.0
+Primary source for godot documentation. https://docs.godotengine.org/en/stable/
+All of these blogs gave me the ideas necessary to implement one of the network models described with greater confidence. I ended up implementing the lockstep model due to the complexity and my novice experience with computer networking. https://gafferongames.com/post/udp_vs_tcp/
+Gave me information on other implementations as well as a starting point for how to compile the engine to support double precision numbers. Which is what I ended up doing on the server side for increased precision. https://github.com/godotengine/godot-proposals/issues/892
 \end{document}
 %A
 %# Functions and Modules (>=5)
