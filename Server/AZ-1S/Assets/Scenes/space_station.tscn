@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://cf1tq7erbkwas"]
+
+[ext_resource type="Script" path="res://AZ1comlib/Types/ModelType.cs" id="1_0ogcp"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_nsjdx"]
+height = 16.899
+radius = 105.0
+
+[node name="space_station" type="StaticBody3D"]
+script = ExtResource("1_0ogcp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.31134e-07, -1, 0, 1, 1.31134e-07, -2, -4.80029, 36.3158)
+shape = SubResource("CylinderShape3D_nsjdx")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1, 0, -33.7563)
+shape = SubResource("CylinderShape3D_nsjdx")

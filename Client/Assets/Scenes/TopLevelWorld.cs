@@ -36,6 +36,26 @@ public partial class TopLevelWorld : Node3D
 		}
 	}
 
+
+
+	public void UpdateModelPos(Vector3 position, Quaternion rot, uint modelID) {
+		Node3D? modelref;
+
+		if (!modelList.TryGetValue(modelID, out modelref)) {
+			// by default the planets are at their max size
+			var model = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/highres/space_station/space_station.tscn");
+			Node3D mod = model.Instantiate<Node3D>();
+
+			modelList.Add(modelID,mod);
+			this.CallDeferred(Node.MethodName.AddChild, mod);
+		} else {
+			modelref!.Position = position;
+			modelref!.Quaternion = rot;
+		}
+	}
+
+
 	Dictionary<uint,PlanetType> planetList = new Dictionary<uint, PlanetType>();
+	Dictionary<uint,Node3D> modelList = new Dictionary<uint, Node3D>();
 	// List<PlayerType>
 }

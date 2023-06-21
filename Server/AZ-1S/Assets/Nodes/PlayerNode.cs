@@ -13,6 +13,9 @@ public partial class PlayerNode : RigidBody3D {
     private CommManager? commManager;
     public PlayerMovementActions movementActions = new PlayerMovementActions();
 
+
+
+
     public PlayerNode(System.Guid _pID) {
         playerID = _pID;
         
@@ -34,9 +37,7 @@ public partial class PlayerNode : RigidBody3D {
 
 
     public override void _Process(double delta) {
-        long peerID = commManager!.GetRemoteIDFromPlayer(this);
-
-        commManager!.RpcId(commManager!.GetRemoteIDFromPlayer(this), nameof(CommManager.CmdUpdatePlayerRot), this.Quaternion.Inverse());
+        commManager!.RpcIdIfConnected(this, nameof(CommManager.CmdUpdatePlayerRot), this.Quaternion.Inverse());
 
         // send planets in the chunk
         foreach (var planet in GetParent<Chunk>().planetList) {
@@ -45,11 +46,23 @@ public partial class PlayerNode : RigidBody3D {
             deltavec.Deconstruct(out deltapos[0], out deltapos[1], out deltapos[2]);
 
             if (Array.TrueForAll(deltapos, (x => Math.Abs(x/1000) < 1000000))) {
-                commManager!.RpcId(
-                    commManager!.GetRemoteIDFromPlayer(this), 
-                    nameof(CommManager.CmdUpdatePlanetPos), 
-                    deltavec/1000, planet.planetID
-                );
+                commManager.RpcIdIfConnected(this, 
+                    nameof(CommManager.CmdUpdatePlanetPos),
+                    deltavec/1000, planet.planetID );
+            }
+        }
+
+        // send !models! in the chunk
+        foreach (var model in GetParent<Chunk>().modelList) {
+            double[] deltapos = new double[3];
+            var deltavec = (model.Position - this.Position);
+            deltavec.Deconstruct(out deltapos[0], out deltapos[1], out deltapos[2]);
+
+            if (Array.TrueForAll(deltapos, (x => Math.Abs(x) < 1000000))) {
+                commManager.RpcIdIfConnected(this, 
+                // Vector3 pos, Quaternion rot, long modelID
+                    nameof(CommManager.CmdUpdateArbitraryModelPos),
+                    deltavec, model.Quaternion, model.modelID, model.modelPath );
             }
         }
     }
@@ -84,7 +97,7 @@ public partial class PlayerNode : RigidBody3D {
 
             var angvel = -this.AngularVelocity/(2*Math.PI);
 
-            GD.Print($"{angvel}");
+            // GD.Print($"{angvel}");
 
             var rotX = this.Basis.X * angularAccelConst.X *
                 (movReq[(int) MovementActionsEnum.PlayerRotatePitchUp]-
@@ -100,19 +113,19 @@ public partial class PlayerNode : RigidBody3D {
             float cmdXtxl = (movReq[(int) MovementActionsEnum.PlayerMoveRight]-
                 movReq[(int) MovementActionsEnum.PlayerMoveLeft]);
             
-            if(!Convert.ToBoolean(cmdXtxl)) // see if there is a command
-                this.Basis.X * -accelConst.X * this.LinearVelocity.X
+            // if(!Convert.ToBoolean(cmdXtxl)) // see if there is a command
+                // this.Basis.X * -accelConst.X * this.LinearVelocity.X
                 // project 
 
 
 
             this.ApplyTorque(angvel);
-            this.ApplyForce(txlX + txlY + txlZ);
+            // this.ApplyForce(txlX + txlY + txlZ);
         }
 
 
     }
 
-    Vector3 angularAccelConst = new Vector3(30,10,35);
-    Vector3 accelConst;
+    Vector3 angularAccelConst = new Vector3(30,10,35); // pitch, yaw, roll
+    Vector3 accelConst = new Vector3(50,100,400); // sideways, vertical, fw / back
 }

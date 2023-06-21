@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnv7m3leuhju0"]
+
+[ext_resource type="PackedScene" uid="uid://c8wa74sg2wsgj" path="res://Assets/Scenes/highres/space_station/space_station_3.glb" id="1_jggh7"]
+
+[node name="space_station" instance=ExtResource("1_jggh7")]
+
+[node name="Sketchfab_model" parent="." index="0"]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)

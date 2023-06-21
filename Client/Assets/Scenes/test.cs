@@ -13,6 +13,8 @@ public partial class test : Node{
 		}.ToArray());
 		AddChild(commManager);
 
+		commManager.ConnectToServer();
+
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
 
@@ -25,7 +27,8 @@ public partial class test : Node{
 		}
 	}
 
-
+	public override void _Process(double delta) {
+	}
 
 
 	public void CollectAndSendInput(InputEvent ev, StringName action) {
@@ -33,11 +36,11 @@ public partial class test : Node{
 		Enum.TryParse<PlayerMovementActions.MovementActionsEnum>(action.ToString(),false,out tmp);
 
 		if (ev.IsAction(action)) // send on both press and release
-			commManager!.RpcId(1, nameof(CommManager.CmdPlayerInputs),  (int) tmp, ev.GetActionStrength(action));
+			commManager!.RpcIdIfConnected(nameof(CommManager.CmdPlayerInputs), (int) tmp, ev.GetActionStrength(action));
 	}
 
-	public void SendInput(PlayerMovementActions.MovementActionsEnum action, float strength) {		
-		commManager!.RpcId(1, nameof(CommManager.CmdPlayerInputs), (int) action, strength);
+	public void SendInput(PlayerMovementActions.MovementActionsEnum action, float strength) {
+		commManager!.RpcIdIfConnected(nameof(CommManager.CmdPlayerInputs), (int) action, strength);
 	}
 
 
@@ -76,9 +79,11 @@ public partial class test : Node{
 
 		if (ev is Godot.InputEventMouseMotion) {
 			// Uses screen coordinates (-Y is up)
-			GD.Print(relativeMouseAccumulator);
+
+			var deltaMouse = (ev as Godot.InputEventMouseMotion)!.Relative / this.GetWindow().Size;
+
 			relativeMouseAccumulator += 
-				(ev as Godot.InputEventMouseMotion)!.Relative / this.GetWindow().Size;
+				deltaMouse.LengthSquared() > (0.005*0.005) ? deltaMouse : Vector2.Zero;
 			relativeMouseAccumulator = relativeMouseAccumulator.LimitLength();
 
 

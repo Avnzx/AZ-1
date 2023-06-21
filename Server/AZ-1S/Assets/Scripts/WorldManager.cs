@@ -3,43 +3,66 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
+using FF.Management;
 
-public partial class WorldManager : Node3D
-{
+public partial class WorldManager : Node3D, ICanInitialize<ulong> {
+
+	private ulong? worldSeed;
+	public bool hasBeenInitialised { get; private set; } = false;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
 	}
 
-	public void LoadWorld() {
-		// random seed for the reproducible RNG
-		var rand = new Random();
-
-		var seed = new byte[8];
-		rand.NextBytes(seed);
-
-		var rng = new RandomNumberGenerator();
-		rng.Seed = BitConverter.ToUInt64(seed);
+	public void DoInitialise(ulong seed) {
+		this.worldSeed = seed;
+		hasBeenInitialised = true;
 	}
 
-	public void CreateChunk(ulong seed, Vector3I pos) {
+
+
+	// Expects the transform to already be set
+	public void AddModelToChunk(Vector3I chunk, ModelType model) {
+		Chunk thechunk = GetOrCreateChunk(chunk, null);
+		thechunk.AddChild(model);
+		thechunk.modelList.Add(model);		
+	}
+
+
+
+	public Chunk GetOrCreateChunk(Vector3I position, ulong? seed) {
+		var attempt = GetChunkIfExists(position);
+		if (attempt != null)
+			return attempt;
+		
+		if (seed.HasValue)
+			return CreateChunk(seed.Value, position);
+
+		return CreateChunk(this.worldSeed!.Value, position);
+	}
+
+	public Chunk? GetChunkIfExists(Vector3I pos) {
+		return GetNodeOrNull<Chunk>(Chunk.GetChunkNameFromPos(pos));
+	}
+
+	public Chunk CreateChunk(ulong? seed, Vector3I pos) {
 		var rng = new RandomNumberGenerator();
-		rng.Seed = seed;
+		if (seed.HasValue) { rng.Seed = seed.Value;} 
+			else { rng.Seed = this.worldSeed!.Value; }
+		
 
 		// X,Y,Z for each planet :skull:
-		// TODO: Maybe use more planets
-		var planetpos = new int[3*250];
+		// TODO: Maybe make the number a param
+		var planetpos = new int[3*100];
 
 		for (int i = 0; i < planetpos.Length; i++){
-			rng.Randomize();
 			// half needs to be taken away
 			// FIXME: Should remove extra range to account for chunk border take 1.5 x maxplanetsz
 			planetpos[i] = rng.RandiRange(-FrontierConstants.chunkSize/2,FrontierConstants.chunkSize/2);
 		}
 
-
 		static (int[], BitArray) CheckOrdinatesCollide(int[] ordinateArr) {
-			var ordinateCheckFail = new BitArray(ordinateArr.Length);
-			// TODO: Docs			
+			var ordinateCheckFail = new BitArray(ordinateArr.Length);		
 			Array.Sort(ordinateArr); //faster than fac(16) comparisons
 
 			// see the differences, can only go to the n-1th element
@@ -117,11 +140,6 @@ public partial class WorldManager : Node3D
 
 		Chunk nd = new Chunk(pos);
 
-		// FIXME: The Ctor is broken
-		// FIXME: The Ctor is broken
-		// FIXME: The Ctor is broken need to add the seed for the shader and data
-		// need to also scaled the size properly
-
 		HashSet<UInt32> planetIDlist = new HashSet<uint>();
 		while (planetIDlist.Count < posArray.Count) {
 			planetIDlist.Add(rng.Randi());
@@ -138,6 +156,7 @@ public partial class WorldManager : Node3D
 		}
 
 		this.AddChild(nd);
+		return nd;
 	}
 
 
@@ -173,7 +192,6 @@ public partial class WorldManager : Node3D
 
 						var possibleNode = this.GetNodeOrNull(string.Join('_',currChunk));
 
-						// FIXME: Testing code
 						if (possibleNode is null) {
 							Chunk nd = new Chunk(currChunk);
 							this.AddChild(nd);

@@ -7,31 +7,6 @@
 [node name="main" type="Node"]
 script = ExtResource("1_a6ii2")
 
-[node name="CloseObjectLayer" type="CanvasLayer" parent="."]
-visible = false
-
-[node name="ViewContainer" type="SubViewportContainer" parent="CloseObjectLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="CloseObjectLayer/ViewContainer"]
-own_world_3d = true
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(1152, 648)
-render_target_update_mode = 0
-
-[node name="Camera3D" type="Camera3D" parent="CloseObjectLayer/ViewContainer/SubViewport"]
-
-[node name="world" type="Node3D" parent="CloseObjectLayer/ViewContainer/SubViewport"]
-script = ExtResource("3_6lp02")
-
 [node name="FarawayLayer" type="CanvasLayer" parent="."]
 
 [node name="ViewContainer" type="SubViewportContainer" parent="FarawayLayer"]
@@ -60,3 +35,27 @@ script = ExtResource("3_6lp02")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="FarawayLayer/ViewContainer/SubViewport/world"]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 20.34, 20.21)
 shadow_enabled = true
+
+[node name="CloseObjectLayer" type="CanvasLayer" parent="."]
+
+[node name="ViewContainer" type="SubViewportContainer" parent="CloseObjectLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="CloseObjectLayer/ViewContainer"]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="CloseObjectLayer/ViewContainer/SubViewport"]
+
+[node name="world" type="Node3D" parent="CloseObjectLayer/ViewContainer/SubViewport"]
+script = ExtResource("3_6lp02")

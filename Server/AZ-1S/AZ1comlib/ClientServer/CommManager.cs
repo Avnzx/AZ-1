@@ -12,16 +12,40 @@ public partial class CommManager : Node {
     -------------------------------------------------------------------------*/
     #if !ISCLIENT // SERVER ONLY THINGS GO HERE
 
-    Node3D? worldNode;
-    // public Dictionary<System.Guid, PlayerNode()
-    public Dictionary<long,PlayerNode> connectedPlayers = new Dictionary<long,PlayerNode>();
+    WorldManager? worldNode;
+
+    // Store the playernode and CHUNK in a vector3I, the local chunk offset is all g
+    public Dictionary<PlayerNode,Vector3I> disconnectedPlayers = 
+        new Dictionary<PlayerNode, Vector3I>();
+    public Dictionary<long,PlayerNode> connectedPlayers = 
+        new Dictionary<long,PlayerNode>();
 	FFServerConfig? serverConfig;
 
+    public void StartServer(int port = 9898) {
+        var enet = new ENetMultiplayerPeer();
+		enet.CreateServer(port);
+		this.Multiplayer.MultiplayerPeer = enet;
+
+        this.Multiplayer.PeerDisconnected += (long x) => { HandleDisconnectPeer(x); };
+        this.Multiplayer.PeerConnected += (long x) => { HandleConnectPeer(x); };
+    }
 
 
     public void HandleDisconnectPeer(long id) {
         GD.Print("Client: ", id, " disconnected :(");
-        connectedPlayers[id].QueueFree();
+
+        // peer was not fully authenticated anyway
+        if (!connectedPlayers.ContainsKey(id))
+            return;
+
+        PlayerNode pNode = connectedPlayers[id];
+        pNode.ProcessMode = Node.ProcessModeEnum.Disabled;
+
+        // Store in disc players list
+        Chunk parentChunk = pNode.GetParent<Chunk>();
+        disconnectedPlayers.Add(pNode, parentChunk.GetChunkPosition());
+
+        pNode.GetParent().RemoveChild(pNode);
         connectedPlayers.Remove(id);
     }
 
@@ -31,7 +55,7 @@ public partial class CommManager : Node {
 	}
 
 
-    public CommManager(Node3D _worldNd, FFServerConfig _serverCfg) {
+    public CommManager(WorldManager _worldNd, FFServerConfig _serverCfg) {
         worldNode = _worldNd;
         serverConfig = _serverCfg;
     }
@@ -83,15 +107,15 @@ public partial class CommManager : Node {
         this.Multiplayer.ConnectedToServer += () => { HandleConnectServer(); };
     }
 
+    public void HandleConnectServer() {
+        connectionDetails.isConnected = true;
+        GD.Print("Server connected!");
+    }
+
     public void HandleDisconnectServer() {
         connectionDetails.isConnected = false;
         GD.Print("Server disconnected 💀");
         // FIXME: Reconnect logic
-    }
-
-    public void HandleConnectServer() {
-        connectionDetails.isConnected = true;
-        GD.Print("Server connected :happy:");
     }
 
     public bool RpcIdIfConnected(StringName method, params Variant[] args) {
@@ -130,17 +154,46 @@ public partial class CommManager : Node {
     [Rpc(Godot.MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void RspPlayerID(byte[] guidstr) {
         #if !ISCLIENT
-		GD.Print("recieved pID ", new Guid(guidstr), " from peer ", this.Multiplayer.GetRemoteSenderId());
 
-        // FIXME: CHeck for duplicates 'n shit
-        // TODO: Save players and see the chunk of old pID's
-        var pNode = new PlayerNode(new Guid(guidstr));
-        connectedPlayers[this.Multiplayer.GetRemoteSenderId()] = pNode;
+        System.Guid retrievedGuid = new Guid(guidstr);
 
-        (string, Godot.Vector3) defspawn = serverConfig!.Value.SpawnChunk;
-        pNode.Position = defspawn.Item2;
+		GD.Print("recieved pID ", retrievedGuid, " from peer ", this.Multiplayer.GetRemoteSenderId());
 
-        worldNode!.GetNode(defspawn.Item1).CallDeferred(Node.MethodName.AddChild, pNode);
+        // Check to see if there is an already connected player with the same ID
+        if (connectedPlayers.FirstOrDefault(x => x.Value.playerID == retrievedGuid).Value != null) {
+            (this.Multiplayer.MultiplayerPeer as ENetMultiplayerPeer)?.
+                DisconnectPeer(this.Multiplayer.GetRemoteSenderId());
+        }
+
+        PlayerNode? discCheck = 
+            disconnectedPlayers.FirstOrDefault(x => x.Key.playerID == retrievedGuid).Key;
+
+        if (discCheck != null) {
+            // player is old
+            GD.Print("preexisting player joined");
+            Vector3I chunk = disconnectedPlayers[discCheck];
+            disconnectedPlayers.Remove(discCheck);
+            // we only want to reset inputs when they reconnect, so the server assumes
+            // they keep going with their movement requests
+            Array.Clear(discCheck.movReq); 
+            connectedPlayers.Add(this.Multiplayer.GetRemoteSenderId(), discCheck);
+
+            worldNode!.GetNode(Chunk.GetChunkNameFromPos(chunk)).
+                CallDeferred(Node.MethodName.AddChild, discCheck);
+
+            // Reenable the player
+            discCheck.ProcessMode = Node.ProcessModeEnum.Inherit;
+
+        } else {
+            // If a player is new
+            var pNode = new PlayerNode(new Guid(guidstr));
+            connectedPlayers.Add(this.Multiplayer.GetRemoteSenderId(),pNode);
+
+            (string, Godot.Vector3) defspawn = serverConfig!.Value.SpawnChunk;
+            pNode.Position = defspawn.Item2;
+
+            worldNode!.GetNode(defspawn.Item1).CallDeferred(Node.MethodName.AddChild, pNode);
+        }
         #endif
 	} 
 
@@ -148,8 +201,9 @@ public partial class CommManager : Node {
     // movementtype must be PlayerMovementActions.MovementActionsEnum
     public void CmdPlayerInputs(int movementtp, float strength) {
         #if !ISCLIENT
-        // GD.Print(movementtp, " from ", this.Multiplayer.GetRemoteSenderId(), " strength ", strength);
-        connectedPlayers[this.Multiplayer.GetRemoteSenderId()].movReq[movementtp] = strength;
+        PlayerNode? tmpPnd;
+        if (connectedPlayers.TryGetValue(this.Multiplayer.GetRemoteSenderId(), out tmpPnd))
+            tmpPnd.movReq[movementtp] = strength;
         #endif
     }
 
@@ -161,9 +215,9 @@ public partial class CommManager : Node {
     [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void CmdPlayerID() {
         #if ISCLIENT
-		GD.Print("tried to get pID");
+		GD.Print("tried to get playerID");
         GD.Print( ConfigManager.GetConfig().playerID.ToString());
-        this.RpcId(1, nameof(RspPlayerID), ConfigManager.GetConfig().playerID.ToByteArray());
+        this.RpcId(1, nameof(this.RspPlayerID), ConfigManager.GetConfig().playerID.ToByteArray());
         #endif
 	}
 
@@ -191,7 +245,15 @@ public partial class CommManager : Node {
     } 
 
     
-
+    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    // position is in Kilometres Vector3I.one is 1000m. some imprecision is OK
+    public void CmdUpdateArbitraryModelPos(Vector3 pos, Quaternion rot, long modelID, string path) {
+        #if ISCLIENT
+        GD.Print($"{pos} with {rot} and {modelID} plus {path}");
+        worldNodes[(int) FFRenderLayers.RenderLayersEnum.CloseObjectLayer]
+            .UpdateModelPos(pos, rot, (uint) modelID); 
+        #endif
+    } 
 
 
 

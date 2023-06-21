@@ -12,33 +12,28 @@ public partial class ServerManager : Node
 			ProcessCmdline(cmdline);
 		}
 
-
 		// try to load default config file or allow custom path to a serverconfig
 		GD.Print("Welcome to Forward Frontier Server Edition \n------------------------------------------");
 
 		worldNode = GetNode<WorldManager>("world");
 
-		var enet = new ENetMultiplayerPeer();
-		// Allow for using a STUN or TURN connection
-		enet.CreateServer(9898);
-		this.Multiplayer.MultiplayerPeer = enet;
 
-		this.AddChild(new CommManager(worldNode,serverConfig!.Value));
-
-		this.Multiplayer.PeerConnected += (long id) => {
-			GetNode<CommManager>("CommManager").HandleConnectPeer(id);
-		};
+		// TODO: Allow for using a STUN or TURN connection
+		var commMan = new CommManager(worldNode,serverConfig!.Value);
+		this.AddChild(commMan);
+		commMan.StartServer();
 		
-		this.Multiplayer.PeerDisconnected += (long id) => {
-			GetNode<CommManager>("CommManager").HandleDisconnectPeer(id);
-		};
 
 		var rng = new RandomNumberGenerator();
 		rng.Randomize();
-		worldNode.CreateChunk(rng.Randi(),Vector3I.Zero);
-		
-	}
+		worldNode.DoInitialise(rng.Randi());
+		worldNode.CreateChunk(null,Vector3I.Zero);
 
+		var model = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/space_station.tscn");
+		var station = model.Instantiate<ModelType>();
+		station.Transform = station.Transform with { Origin = new Vector3(-30,10,-140) };
+		worldNode.AddModelToChunk(Vector3I.Zero, station);		
+	}
 
 	private void ProcessCmdline(System.Collections.Generic.List<string> args) {
 		var argdict = new System.Collections.Generic.Dictionary<string,string>();
@@ -75,14 +70,6 @@ public partial class ServerManager : Node
 		}
 
 	}
-
-
-
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)	{
-	}
-
 
 	WorldManager? worldNode;
 	FFServerConfig? serverConfig;

@@ -1,0 +1,47 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://1erf5h6wwbhp"
+path="res://.godot/imported/space_station_3.glb-136dc28ad280b316131fcfe5275aa49b.scn"
+
+[deps]
+
+source_file="res://Assets/Scenes/standard/space_station/space_station_3.glb"
+dest_files=["res://.godot/imported/space_station_3.glb-136dc28ad280b316131fcfe5275aa49b.scn"]
+
+[params]
+
+nodes/root_type="Node3D"
+nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+skins/use_named_skins=true
+animation/import=false
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+import_script/path=""
+_subresources={
+"nodes": {
+"PATH:AnimationPlayer": {
+"import/skip_import": true
+},
+"PATH:Sketchfab_model/root/GLTF_SceneRootNode/SpaceStation001_low_1": {
+"import/skip_import": true
+},
+"PATH:Sketchfab_model/root/GLTF_SceneRootNode/SpaceStation003_low_3": {
+"import/skip_import": true
+},
+"PATH:Sketchfab_model/root/GLTF_SceneRootNode/SpaceStation_low_0/Object_4": {
+"import/skip_import": true
+}
+}
+}
+gltf/embedded_image_handling=1
