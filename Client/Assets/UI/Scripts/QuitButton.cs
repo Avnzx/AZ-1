@@ -10,7 +10,7 @@ public partial class QuitButton : Button
 
 	public override void _Notification(int what) {
     	if (what == NotificationWMCloseRequest)
-        	GetTree().Quit(); // default behavior
+        	GetTree(); //.Quit(); // default behavior
 	}
 
 }

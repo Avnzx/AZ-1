@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6j1hmoff8btp"]
+
+[ext_resource type="Script" path="res://Assets/UI/Scripts/QuitButton.cs" id="3_f3oov"]
+
+[node name="PauseMenu" type="MarginContainer"]
+layout_direction = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/separation = 30
+alignment = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer5"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="ReturnToGame" type="Button" parent="MarginContainer/VBoxContainer5/VBoxContainer3"]
+layout_mode = 2
+text = "Return to Game"
+script = ExtResource("3_f3oov")
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+alignment = 2
+
+[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer5/VBoxContainer4"]
+layout_mode = 2
+text = "Options"
+script = ExtResource("3_f3oov")
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer5/VBoxContainer4"]
+layout_mode = 2
+text = "Quit To Desktop"
+script = ExtResource("3_f3oov")
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer5/VBoxContainer3/ReturnToGame" to="MarginContainer/VBoxContainer5/VBoxContainer3/ReturnToGame" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer5/VBoxContainer4/OptionsButton" to="MarginContainer/VBoxContainer5/VBoxContainer4/OptionsButton" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer5/VBoxContainer4/QuitButton" to="MarginContainer/VBoxContainer5/VBoxContainer4/QuitButton" method="_on_pressed"]

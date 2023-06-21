@@ -15,6 +15,8 @@ public static class ConfigManager {
             var optsstruct = new ConfigOptions();
 
             optsstruct.playerID = System.Guid.NewGuid();
+            optsstruct.useHQAssets = true;
+            optsstruct.mouseSensitivity = 1f;
 
             string serialised = JsonConvert.SerializeObject(optsstruct);
             using var cfgfile = FileAccess.Open(userConfigFile, FileAccess.ModeFlags.Write);
@@ -24,8 +26,18 @@ public static class ConfigManager {
         return cfgopts;
     }
 
+    public static void SetConfig(ConfigOptions cfgopts) {
+        string serialised = JsonConvert.SerializeObject(cfgopts);
+        using var cfgfile = FileAccess.Open(userConfigFile, FileAccess.ModeFlags.Write);
+        cfgfile.StoreString(serialised);
+    }
+
     public struct ConfigOptions {
         public System.Guid playerID;
+        public string lastConnectedHost;
+        public string lastConnectedPort;
+        public bool useHQAssets;
+        public float mouseSensitivity;
     }
 
 

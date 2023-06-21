@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxta7dmjkiga4"
-path="res://.godot/imported/mainbg-alex-conchillos.jpg-0ea655d6b9eebe29cfa56b5c77fdb2d9.ctex"
+uid="uid://bmmtk7nvwe3ah"
+path="res://.godot/imported/pexels-photo-110854.jpeg-5d330097cc2f561f6f680b3927899eeb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/Assets/Backgrounds/mainbg-alex-conchillos.jpg"
-dest_files=["res://.godot/imported/mainbg-alex-conchillos.jpg-0ea655d6b9eebe29cfa56b5c77fdb2d9.ctex"]
+source_file="res://Assets/UI/Assets/Backgrounds/pexels-photo-110854.jpeg"
+dest_files=["res://.godot/imported/pexels-photo-110854.jpeg-5d330097cc2f561f6f680b3927899eeb.ctex"]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/normal_map=2
+compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false
 mipmaps/limit=-1

@@ -53,7 +53,7 @@ public partial class WorldManager : Node3D, ICanInitialize<ulong> {
 
 		// X,Y,Z for each planet :skull:
 		// TODO: Maybe make the number a param
-		var planetpos = new int[3*100];
+		var planetpos = new int[3*50];
 
 		for (int i = 0; i < planetpos.Length; i++){
 			// half needs to be taken away
