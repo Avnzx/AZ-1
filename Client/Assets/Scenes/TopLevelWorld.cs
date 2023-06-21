@@ -38,12 +38,12 @@ public partial class TopLevelWorld : Node3D
 
 
 
-	public void UpdateModelPos(Vector3 position, Quaternion rot, uint modelID) {
+	public void UpdateModelPos(Vector3 position, Quaternion rot, uint modelID, string path) {
 		Node3D? modelref;
 
 		if (!modelList.TryGetValue(modelID, out modelref)) {
 			// by default the planets are at their max size
-			var model = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/highres/space_station/space_station.tscn");
+			var model = ResourceLoader.Load<PackedScene>(path);
 			Node3D mod = model.Instantiate<Node3D>();
 
 			modelList.Add(modelID,mod);

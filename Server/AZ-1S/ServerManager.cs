@@ -31,6 +31,7 @@ public partial class ServerManager : Node
 
 		var model = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/space_station.tscn");
 		var station = model.Instantiate<ModelType>();
+		station.modelPath = "res://Assets/Scenes/highres/space_station/space_station.tscn";
 		station.Transform = station.Transform with { Origin = new Vector3(-30,10,-140) };
 		worldNode.AddModelToChunk(Vector3I.Zero, station);		
 	}

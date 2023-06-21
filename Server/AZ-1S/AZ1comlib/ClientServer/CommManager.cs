@@ -263,9 +263,9 @@ public partial class CommManager : Node {
     public void CmdUpdateArbitraryModelPos(Vector3 pos, Quaternion rot, long modelID, string path) {
         #if ISCLIENT
         worldNodes[(int) FFRenderLayers.RenderLayersEnum.CloseObjectLayer]
-            .UpdateModelPos(pos, rot, (uint) modelID); 
+            .UpdateModelPos(pos, rot, (uint) modelID, path); 
         #endif
-    } 
+    }
 
 
 
