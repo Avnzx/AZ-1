@@ -116,6 +116,10 @@ public partial class CommManager : Node {
         connectionDetails.isConnected = false;
         GD.Print("Server disconnected 💀");
         // FIXME: Reconnect logic
+        Timer timer = new Timer();
+        timer.WaitTime = 0.5;
+        this.AddChild(timer);
+        timer.Start();
     }
 
     public bool RpcIdIfConnected(StringName method, params Variant[] args) {

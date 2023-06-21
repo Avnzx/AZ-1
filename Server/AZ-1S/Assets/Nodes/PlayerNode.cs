@@ -25,7 +25,9 @@ public partial class PlayerNode : RigidBody3D {
         this.GravityScale = 0;
 
         collider.Shape = shape;
-        shape.Size = Vector3.One;
+        shape.Size = new Vector3(3,8,1.2);
+
+        this.Mass = 100;
 
         this.AddChild(collider);
 
@@ -126,6 +128,6 @@ public partial class PlayerNode : RigidBody3D {
 
     }
 
-    Vector3 angularAccelConst = new Vector3(25,10,30); // pitch, yaw, roll
-    Vector3 accelConst = new Vector3(50,100,400); // sideways, vertical, fw / back
+    Vector3 angularAccelConst = new Vector3(2500,4000,8000); // pitch, yaw, roll
+    Vector3 accelConst = new Vector3(5000,10000,40000); // sideways, vertical, fw / back
 }
