@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public partial class Chunk : Node3D {
     public List<PlanetType> planetList = new List<PlanetType>();
     public List<ModelType> modelList = new List<ModelType>();
+    public List<PlayerNode> playerList = new List<PlayerNode>();
 
     // Not global coordinates, in chunks
     public Chunk(Vector3I position) {

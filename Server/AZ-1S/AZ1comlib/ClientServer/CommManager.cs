@@ -246,10 +246,9 @@ public partial class CommManager : Node {
 
     
     [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
-    // position is in Kilometres Vector3I.one is 1000m. some imprecision is OK
+    // Will not work if it is >1M units away, this is intended behaviour
     public void CmdUpdateArbitraryModelPos(Vector3 pos, Quaternion rot, long modelID, string path) {
         #if ISCLIENT
-        GD.Print($"{pos} with {rot} and {modelID} plus {path}");
         worldNodes[(int) FFRenderLayers.RenderLayersEnum.CloseObjectLayer]
             .UpdateModelPos(pos, rot, (uint) modelID); 
         #endif

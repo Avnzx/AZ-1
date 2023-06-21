@@ -16,6 +16,8 @@ public partial class test : Node{
 		commManager.ConnectToServer();
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
+
+		cursor = GetNode<Sprite2D>("UILayer/Cursor");
 	}
 
 
@@ -86,6 +88,12 @@ public partial class test : Node{
 				deltaMouse.LengthSquared() > (0.005*0.005) ? deltaMouse : Vector2.Zero;
 			relativeMouseAccumulator = relativeMouseAccumulator.LimitLength();
 
+			cursor!.Position = (this.GetWindow().Size/2) + relativeMouseAccumulator*200;
+			cursor!.Rotation = (float) Math.PI + Mathf.Atan2( 
+				((float) -relativeMouseAccumulator.X), 
+				((float) relativeMouseAccumulator.Y));
+			(cursor!.Material as ShaderMaterial)!
+				.SetShaderParameter("transparency", relativeMouseAccumulator.LengthSquared());
 
 				float temp = -relativeMouseAccumulator.Y;
 				if (Mathf.Sign(temp) == 1) { 
@@ -106,5 +114,6 @@ public partial class test : Node{
 	}
 	CommManager? commManager;
 	Vector2 relativeMouseAccumulator = new Vector2();
+	Sprite2D? cursor;
 
 }
