@@ -412,6 +412,8 @@ The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) 
 
 \clearpage
 \section{Extensive Algorithm Test Data}
+% world generation module if I finish it, or fallback to the chunk changer
+% could also do the flight assist off algorithm for torque and force
 
 \clearpage
 \section{Error Checking}
@@ -485,12 +487,8 @@ The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) 
 
 \clearpage
 \section{Suitable CASE Tools and VCS}
-
-
-
-
 \subsection{VCS - Git}
-Git is the current industry standard for VCS (Version Control System) software. Due to it's age, wide use (it is the current VCS of the Linux kernel), and stability. Git, unlike other version control systems of its time, is a DCVS (Distributed VCS). Where each machine has an entire copy of the repository, and a central server is not necessary to be able to work on the project, commit changes, or do other repository operations without having to be online. It allows for greater collaboration or as a mental notetaking system as it has advanced algorithms for allowing for the reconciliation of conflicting branches, (two 'commits' changed the same file). Allowing for features from very old or new 'branches' to be quickly integrated into the final product. (This can be seen by the presence of so called 'Merge commits' in the repository of this game). \\
+Git is the current industry standard for VCS (Version Control System) software. Due to it's age, wide use (it is the current VCS of the Linux kernel), and stability. Git, unlike other version control systems of its time, is a DCVS (Distributed VCS). Where each machine has an entire copy of the repository, and a central server is not necessary to be able to work on the project, commit changes, or do other repository operations without having to be online. It allows for greater collaboration or as a mental notetaking system as it has advanced algorithms for allowing for the reconciliation of conflicting branches, (two 'commits' changed the same file). Allowing for features from very old or new 'branches' to be quickly integrated into the final product. (This can be seen by the presence of so called 'Merge commits' in the repository of my game). \\
 
 Git also acts as a bug finding tool. As it is able to quickly and efficiently narrow down a single commit, or group of commits that caused a regression or bug in the software (as commits only contain the difference between versions of a file). Invoked with the "git bisect" command. This and other operations such as the ability to rollback to earlier commits seamlessly allow for bugs to be found and fixed easily.\\
 
@@ -502,7 +500,13 @@ Other features that git provides such as submodules are heavily used by my proje
 \includegraphics[width=\textwidth]{localserverstructure.png}
 \caption{Local directory structure of the Server folder, showing the use of subprojects}
 
+\subsection{Cloud Providers}
+There are many cloud providers for software projects, such as GitHub and GitLab. Which provide a communication platform and code hosting for protocols such as git (GitLab also provides SubVersioN support). These provide services such as acting as a remote sync repository for git, allowing for multiple people to more easily use DCVS' such as Git with increased data security.\\
 
+These entities also generally will provide services such as CI/CD (Continuous Integration and Continuous Deployment) to allow for automated quality assurance testing. They may also provide pipelines to run tools like DOxygen that are able to automatically generate and deploy documentation for public facing API's. For this project I did not utilise the CI/CD or documentation features of these providers.
+
+\includegraphics[width=\textwidth]{cicdpassed.png}
+\caption{A badge showing the successful completion of a CI pipeline for one of my other projects available on GitHub}
 
 
 \clearpage
