@@ -71,7 +71,7 @@ public partial class PlayerNode : RigidBody3D {
 
     public override void _PhysicsProcess(double delta) {
 
-        if ( Convert.ToBoolean(movReq[(int) MovementActionsEnum.PlayerDisableFlightAssist])) {
+        if ( !Convert.ToBoolean(movReq[(int) MovementActionsEnum.PlayerDisableFlightAssist])) {
             var txlX = this.Basis.X * accelConst.X *
                 (movReq[(int) MovementActionsEnum.PlayerMoveRight]-
                 movReq[(int) MovementActionsEnum.PlayerMoveLeft]);
@@ -112,8 +112,8 @@ public partial class PlayerNode : RigidBody3D {
                 movReq[(int) MovementActionsEnum.PlayerRotateRollRight]);
 
 
-            float cmdXtxl = (movReq[(int) MovementActionsEnum.PlayerMoveRight]-
-                movReq[(int) MovementActionsEnum.PlayerMoveLeft]);
+            // float cmdXtxl = (movReq[(int) MovementActionsEnum.PlayerMoveRight]-
+            //     movReq[(int) MovementActionsEnum.PlayerMoveLeft]);
             
             // if(!Convert.ToBoolean(cmdXtxl)) // see if there is a command
                 // this.Basis.X * -accelConst.X * this.LinearVelocity.X
@@ -128,6 +128,6 @@ public partial class PlayerNode : RigidBody3D {
 
     }
 
-    Vector3 angularAccelConst = new Vector3(2500,4000,8000); // pitch, yaw, roll
+    Vector3 angularAccelConst = new Vector3(4000,2500,8000); // pitch, yaw, roll
     Vector3 accelConst = new Vector3(5000,10000,40000); // sideways, vertical, fw / back
 }

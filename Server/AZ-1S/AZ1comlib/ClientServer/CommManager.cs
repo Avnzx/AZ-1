@@ -109,6 +109,10 @@ public partial class CommManager : Node {
 
     public void HandleConnectServer() {
         connectionDetails.isConnected = true;
+        var offlinenode = this.GetNodeOrNull<GridContainer>("../UILayer/offlineindicator"); 
+        if (offlinenode != null)
+            offlinenode.Visible = false;
+
         GD.Print("Server connected!");
     }
 
@@ -116,10 +120,15 @@ public partial class CommManager : Node {
         connectionDetails.isConnected = false;
         GD.Print("Server disconnected 💀");
         // FIXME: Reconnect logic
+        
+        var offlinenode = this.GetNodeOrNull<GridContainer>("../UILayer/offlineindicator"); 
+        if (offlinenode != null)
+            offlinenode.Visible = true;
+        
         Timer timer = new Timer();
         timer.WaitTime = 0.5;
+        timer.Autostart = true;
         this.AddChild(timer);
-        timer.Start();
     }
 
     public bool RpcIdIfConnected(StringName method, params Variant[] args) {

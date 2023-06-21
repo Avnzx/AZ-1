@@ -1,15 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://vwq7wu4ksxx6"]
+[gd_scene load_steps=9 format=3 uid="uid://vwq7wu4ksxx6"]
 
 [ext_resource type="Script" path="res://Assets/Scenes/test.cs" id="1_a6ii2"]
 [ext_resource type="Environment" uid="uid://diage7yiluksp" path="res://Assets/Environments/space_env.tres" id="2_0t2og"]
 [ext_resource type="Script" path="res://Assets/Scenes/TopLevelWorld.cs" id="3_6lp02"]
-[ext_resource type="PackedScene" uid="uid://dmp6romrxiby4" path="res://Assets/Scenes/nores/space_ship/space_ship.glb" id="4_lvqe2"]
 [ext_resource type="Shader" path="res://Assets/Scenes/nores/cursor/cursor.gdshader" id="5_4xx2h"]
 [ext_resource type="Texture2D" uid="uid://vp4ty0laxtvv" path="res://Assets/Scenes/nores/cursor/cursor.svg" id="5_tvjog"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_46kal"]
 shader = ExtResource("5_4xx2h")
 shader_parameter/transparency = 1.0
+
+[sub_resource type="Gradient" id="Gradient_ra040"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.015748)
+colors = PackedColorArray(0.878431, 0, 0, 0.788235)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fctoy"]
+gradient = SubResource("Gradient_ra040")
 
 [node name="main" type="Node"]
 script = ExtResource("1_a6ii2")
@@ -79,9 +86,6 @@ light_indirect_energy = 1.325
 omni_range = 4096.0
 omni_attenuation = 0.34151
 
-[node name="space_ship" parent="CloseObjectLayer/ViewContainer/SubViewport/world" instance=ExtResource("4_lvqe2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.776527, 9.7823, -63.3588)
-
 [node name="UILayer" type="CanvasLayer" parent="."]
 
 [node name="Cursor" type="Sprite2D" parent="UILayer"]
@@ -89,3 +93,25 @@ material = SubResource("ShaderMaterial_46kal")
 position = Vector2(-11, -11)
 scale = Vector2(0.02, 0.02)
 texture = ExtResource("5_tvjog")
+
+[node name="offlineindicator" type="GridContainer" parent="UILayer"]
+layout_direction = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 4
+
+[node name="TextureRect" type="TextureRect" parent="UILayer/offlineindicator"]
+layout_mode = 2
+texture = SubResource("GradientTexture1D_fctoy")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="UILayer/offlineindicator/TextureRect"]
+layout_mode = 0
+offset_right = 123.0
+offset_bottom = 26.0
+text = "OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE   "
