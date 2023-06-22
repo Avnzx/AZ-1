@@ -20,8 +20,9 @@ public partial class ServerBrowser : MarginContainer {
 
 		var res = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/main.tscn");
 		var mainscene = res.Instantiate<MainGameScene>();
-		mainscene.DoInitialise((addr, port));
-		GetNode<SceneManager>("/root/SceneManager").ReplaceNewestScene("res://Assets/Scenes/main.tscn");
+		mainscene.initialiseArgs = (addr, port);
+
+		GetNode<SceneManager>("/root/SceneManager").ReplaceNewestScene(mainscene);
 		// add initialiser method
 	}
 

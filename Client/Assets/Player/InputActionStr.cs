@@ -29,7 +29,8 @@ public static class InputActionStr{
     /*-------------------------------------------------------------------------
      SUBSECTIONINFO: *Advanced* movement actions
     -------------------------------------------------------------------------*/
-    public static readonly StringName PlayerDisableFlightAssist = "PlayerDisableFlightAssist"; 
+    public static readonly StringName PlayerDisableFlightAssist = "PlayerDisableFlightAssist";
+    public static readonly StringName PlayerUseWeapons = "PlayerUseWeapons";  
 
 
 

@@ -2,10 +2,22 @@ using Godot;
 using System;
 using FF.Management;
 
-public partial class MainGameScene : Node, ICanInitialize<(string address, int port)> {
-	// Called when the node enters the scene tree for the first time.
+public partial class MainGameScene : Node {
+	private (string address, int port) _initialiseArgs;
+	public (string address, int port) initialiseArgs {
+		get { return _initialiseArgs;  }
+		set { _initialiseArgs = value; hasBeenInitialised = true; }
+	}
 
-	private (string address, int port) initialiseArgs;
+	CommManager? commManager;
+	Vector2 relativeMouseAccumulator = new Vector2();
+	Sprite2D? cursor;
+	public bool hasBeenInitialised { get; private set; } = false;
+
+
+
+
+
 
 	public override void _Ready(){
 
@@ -16,15 +28,21 @@ public partial class MainGameScene : Node, ICanInitialize<(string address, int p
 		}.ToArray());
 		AddChild(commManager);
 
-		this.commManager!.ConnectToServer("gamingpc.local");
+		// this.commManager!.ConnectToServer();
+		if (!hasBeenInitialised)
+			GD.PushError("MainGameScene has not been initialised properly!");
+		this.commManager!.ConnectToServer(initialiseArgs.address, initialiseArgs.port);
 
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 		cursor = GetNode<Sprite2D>("UILayer/Cursor");
 	}
 
-	async public void DoInitialise((string address, int port) varargs) {
-		await ToSignal(this, "ready");
+
+
+
+
+	public void DoInitialise((string address, int port) varargs) {
 		this.commManager!.ConnectToServer(initialiseArgs.address, initialiseArgs.port);
 		hasBeenInitialised = true;
 		GD.Print("await sucessful");
@@ -87,6 +105,8 @@ public partial class MainGameScene : Node, ICanInitialize<(string address, int p
 		CollectAndSendInput(ev, InputActionStr.PlayerRotateYawLeft);
 		CollectAndSendInput(ev, InputActionStr.PlayerRotateYawRight);
 
+		CollectAndSendInput(ev, InputActionStr.PlayerUseWeapons);
+
 		if (ev is Godot.InputEventMouseMotion) {
 			// Uses screen coordinates (-Y is up)
 
@@ -122,9 +142,4 @@ public partial class MainGameScene : Node, ICanInitialize<(string address, int p
 					SendInput(PlayerMovementActions.MovementActionsEnum.PlayerRotateRollRight, 0f); } 
 		}
 	}
-	CommManager? commManager;
-	Vector2 relativeMouseAccumulator = new Vector2();
-	Sprite2D? cursor;
-	public bool hasBeenInitialised { get; private set; } = false;
-
 }

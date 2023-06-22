@@ -26,24 +26,6 @@ public partial class SceneManager : Node {
 		}
 		this.GetTree().Root.CallDeferred(Node.MethodName.AddChild, scene);
 		sceneQueue.Push(scene);
-		GD.Print($"adding scene {path}, count is {sceneQueue.Count}");
-	}
-
-	public void ReplaceNewestScene(string path) {
-		if (sceneQueue.Count > 0) {
-			Node scene = (sceneQueue.Pop() as Node)!;
-			scene.QueueFree(); // delete old
-		}
-		AddNewSceneActual(path);
-	}
-
-
-	public void ReplaceNewestScene(Node node) {
-		if (sceneQueue.Count > 0) {
-			Node scene = (sceneQueue.Pop() as Node)!;
-			scene.QueueFree(); // delete old
-		}
-		AddNewSceneActual(node);
 	}
 
 	public void AddNewSceneActual(Node node) {
@@ -54,6 +36,26 @@ public partial class SceneManager : Node {
 		this.GetTree().Root.CallDeferred(Node.MethodName.AddChild, node);
 		sceneQueue.Push(node);
 	}
+
+
+
+
+
+
+
+	public void ReplaceNewestScene(string path) {
+		DeleteNewestScene();
+		AddNewSceneActual(path);
+	}
+
+	public void ReplaceNewestScene(Node node) {
+		DeleteNewestScene();
+		AddNewSceneActual(node);
+	}
+
+
+
+
 
 	// Removes the newest scene from the queue and makes the one before it active
 	public bool DeleteNewestScene() {

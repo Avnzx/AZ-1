@@ -41,8 +41,9 @@ public partial class CommManager : Node {
         PlayerNode pNode = connectedPlayers[id];
         pNode.ProcessMode = Node.ProcessModeEnum.Disabled;
 
-        // Store in disc players list
+        // Store in disc players list and remove from play
         Chunk parentChunk = pNode.GetParent<Chunk>();
+        parentChunk.playerList.Remove(pNode);
         disconnectedPlayers.Add(pNode, parentChunk.GetChunkPosition());
 
         pNode.GetParent().RemoveChild(pNode);
@@ -88,7 +89,7 @@ public partial class CommManager : Node {
                             CLIENT LOCAL FUNCTIONS
     -------------------------------------------------------------------------*/
     #else // CLIENT ONLY THINGS GO HERE
-    TopLevelWorld[] worldNodes = new TopLevelWorld[Enum.GetNames(typeof(FFRenderLayers.RenderLayersEnum)).Length];
+    public TopLevelWorld[] worldNodes = new TopLevelWorld[Enum.GetNames(typeof(FFRenderLayers.RenderLayersEnum)).Length];
     (string addr, int port, bool isConnected) connectionDetails;
 
 

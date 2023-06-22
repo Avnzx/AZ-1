@@ -67,6 +67,26 @@ public partial class PlayerNode : RigidBody3D {
                     deltavec, model.Quaternion, model.modelID, model.modelPath );
             }
         }
+
+
+        // send !models! in the chunk
+        foreach (var player in GetParent<Chunk>().playerList) {
+            if (player == this)
+                continue;
+
+            double[] deltapos = new double[3];
+            var deltavec = (player.Position - this.Position);
+            deltavec.Deconstruct(out deltapos[0], out deltapos[1], out deltapos[2]);
+
+            if (Array.TrueForAll(deltapos, (x => Math.Abs(x) < 1000000))) {
+                long id = BitConverter.ToInt64(player.playerID.ToByteArray(), 0);
+
+                commManager.RpcIdIfConnected(this, 
+                // Vector3 pos, Quaternion rot, long modelID
+                    nameof(CommManager.CmdUpdateArbitraryModelPos),
+                    deltavec, player.Quaternion, id, "res://Assets/Scenes/nores/space_ship/space_ship.tscn" );
+            }
+        }
     }
 
     public override void _PhysicsProcess(double delta) {

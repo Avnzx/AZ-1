@@ -15,6 +15,7 @@ public class PlayerMovementActions {
         PlayerRotateRollRight,
         PlayerRotateYawLeft,
         PlayerRotateYawRight,
-        PlayerDisableFlightAssist
+        PlayerDisableFlightAssist,
+        PlayerUseWeapons
     }
 }

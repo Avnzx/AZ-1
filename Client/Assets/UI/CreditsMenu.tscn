@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6sl4o2a8rupd"]
+[gd_scene load_steps=3 format=3 uid="uid://bv4at8myeryh0"]
 
 [ext_resource type="Script" path="res://Assets/UI/Scripts/CreditsMenu.cs" id="1_nrrkn"]
 [ext_resource type="Texture2D" uid="uid://bmmtk7nvwe3ah" path="res://Assets/UI/Assets/Backgrounds/pexels-photo-110854.jpeg" id="2_q8w62"]
