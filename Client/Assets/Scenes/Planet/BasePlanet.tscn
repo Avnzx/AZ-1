@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctnw8cj2cehgy"]
+
+[ext_resource type="Shader" path="res://Assets/Scenes/Planet/csg_sphere_3d.gdshader" id="1_s6uv7"]
+[ext_resource type="Script" path="res://AZ1comlib/Types/PlanetType.cs" id="2_i7vs3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_umlri"]
+render_priority = 0
+shader = ExtResource("1_s6uv7")
+shader_parameter/cities = null
+shader_parameter/time = null
+shader_parameter/resolution = Vector2(380, 380)
+shader_parameter/angle = 0.3
+shader_parameter/rotspeed = 0.009
+shader_parameter/light = 1.9
+shader_parameter/zLight = 0.5
+shader_parameter/modValue = 29.0
+shader_parameter/noiseOffset = null
+shader_parameter/noiseScale = Vector2(11, 8)
+shader_parameter/noiseScale2 = Vector2(200, 200)
+shader_parameter/noiseScale3 = Vector2(50, 50)
+shader_parameter/cloudNoise = Vector2(6, 30)
+shader_parameter/cloudiness = 0.35
+shader_parameter/waterLevel = null
+shader_parameter/rivers = null
+shader_parameter/temperature = null
+shader_parameter/ocean = Vector3(0.5, 0.5, 0.5)
+shader_parameter/ice = Vector3(0.9, 0.9, 0)
+shader_parameter/cold = Vector3(0.5, 0.5, 0.5)
+shader_parameter/temperate = Vector3(0.5, 0.5, 0.5)
+shader_parameter/warm = Vector3(0.5, 0.5, 0.5)
+shader_parameter/hot = Vector3(0.5, 0.5, 0.5)
+shader_parameter/speckle = Vector3(0.5, 0.5, 0.5)
+shader_parameter/clouds = Vector3(0.9, 0.9, 0.9)
+shader_parameter/haze = Vector3(0.1, 0.1, 0.2)
+shader_parameter/lightColor = Vector3(1, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_uhwhl"]
+material = SubResource("ShaderMaterial_umlri")
+radius = 10.0
+height = 20.0
+radial_segments = 15
+rings = 15
+
+[node name="Planet" type="MeshInstance3D"]
+transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, 0, 0, 0)
+gi_lightmap_scale = 1
+mesh = SubResource("SphereMesh_uhwhl")
+script = ExtResource("2_i7vs3")

@@ -47,10 +47,11 @@ far = 900000.0
 script = ExtResource("3_6lp02")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="FarawayLayer/ViewContainer/SubViewport/world"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -56.312, 32.911, -42.652)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5758.22, 32.9115, -4197.67)
 light_color = Color(0.909804, 0.909804, 0.909804, 1)
-light_energy = 2.658
-light_indirect_energy = 2.406
+light_energy = 5.577
+light_indirect_energy = 4.784
+light_size = 1.0
 omni_range = 40000.0
 omni_attenuation = 1e-05
 

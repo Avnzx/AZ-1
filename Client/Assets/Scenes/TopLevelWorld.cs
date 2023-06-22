@@ -26,7 +26,7 @@ public partial class TopLevelWorld : Node3D
 
 		if (!planetList.TryGetValue(planetID, out planetref)) {
 			// by default the planets are at their max size
-			var planet = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/BasePlanet.tscn");
+			var planet = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/Planet/BasePlanet.tscn");
 			var plt = planet.Instantiate<PlanetType>();
 			plt.DoInitialise((planetID, position));
 			planetList.Add(planetID,plt);
