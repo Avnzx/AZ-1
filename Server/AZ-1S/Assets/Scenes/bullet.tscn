@@ -1,9 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://6dc7n8m5r0bm"]
+[gd_scene load_steps=3 format=3 uid="uid://6dc7n8m5r0bm"]
+
+[ext_resource type="Script" path="res://AZ1comlib/Types/BaseBullet.cs" id="1_0prhl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kh2kw"]
 radius = 0.25
 
 [node name="Bullet" type="Area3D"]
+script = ExtResource("1_0prhl")
+modelPath = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 6.12323e-17, -1, 0, 1, 6.12323e-17, 0, 0, 0)

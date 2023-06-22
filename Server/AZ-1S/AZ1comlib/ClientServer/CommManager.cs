@@ -277,14 +277,14 @@ public partial class CommManager : Node {
     }
 
 
-    // [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
-    // // Will not work if it is >1M units away, this is intended behaviour
-    // public void CmdUpdateBulletlPos(Vector3 pos, Quaternion rot, long modelID) {
-    //     #if ISCLIENT
-    //     worldNodes[(int) FFRenderLayers.RenderLayersEnum.CloseObjectLayer]
-    //         .UpdateBulletPos(pos, rot, (uint) modelID); 
-    //     #endif
-    // }
+    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    // Will not work if it is >1M units away, this is intended behaviour
+    public void CmdUpdateBulletlPos(Vector3 pos, Quaternion rot, long modelID) {
+        #if ISCLIENT
+        worldNodes[(int) FFRenderLayers.RenderLayersEnum.CloseObjectLayer]
+            .UpdateBulletPos(pos, rot, (uint) modelID); 
+        #endif
+    }
 
 
 

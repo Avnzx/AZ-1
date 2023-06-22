@@ -13,6 +13,9 @@ public partial class PlayerNode : RigidBody3D {
     private CommManager? commManager;
     public PlayerMovementActions movementActions = new PlayerMovementActions();
 
+    private float shootCooldown = 0.5f;
+    private float shootCooldownRemaining = 0;
+
 
 
 
@@ -39,22 +42,30 @@ public partial class PlayerNode : RigidBody3D {
 
 
     public override void _Process(double delta) {
-        // if (movReq[(int) MovementActionsEnum.PlayerUseWeapons] > 0.5f) {
-        //     Chunk chunk = GetParent<Chunk>();
+        if (movReq[(int) MovementActionsEnum.PlayerUseWeapons] > 0.5f) {
+            shootCooldownRemaining -= (float) delta;
 
-        //     RandomNumberGenerator rng = new RandomNumberGenerator();
-        //     rng.Randomize();
+            if (shootCooldownRemaining <= 0) {
+                shootCooldownRemaining = shootCooldown;
 
-        //     var bulletres = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/bullet.tscn");
-        //     BaseBullet bullet = bulletres.Instantiate<BaseBullet>();
-        //     Vector3 tfx = this.Transform.Origin + 5*this.Transform.Basis.Z;
+                Chunk chunk = GetParent<Chunk>();
 
-        //     bullet.DoInitialise((rng.Randi(), tfx, 
-        //         "res://Assets/Scenes/nores/bullet/bullet.tscn", 30f));
+                RandomNumberGenerator rng = new RandomNumberGenerator();
+                rng.Randomize();
 
-        //     chunk.bulletList.Add(bullet);
-        //     chunk.AddChild(bullet);
-        // }
+                var bulletres = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/bullet.tscn");
+                BaseBullet bullet = bulletres.Instantiate<BaseBullet>();
+                Vector3 tfx = this.Transform.Origin + 5*this.Transform.Basis.Z;
+
+                bullet.DoInitialise((rng.Randi(), tfx, this.Quaternion,
+                    "res://Assets/Scenes/nores/bullet/bullet.tscn", 3f));
+
+                chunk.bulletList.Add(bullet);
+                chunk.AddChild(bullet);
+            }
+
+
+        }
         
 
 
@@ -120,7 +131,7 @@ public partial class PlayerNode : RigidBody3D {
                 commManager.RpcIdIfConnected(this, 
                 // Vector3 pos, Quaternion rot, long modelID
                     nameof(CommManager.CmdUpdateArbitraryModelPos),
-                    deltavec, bullet.Quaternion, id, "res://Assets/Scenes/nores/space_ship/space_ship.tscn" );
+                    deltavec, bullet.Quaternion, id, "res://Assets/Scenes/nores/bullet/bullet.tscn" );
             }
         }
     }
