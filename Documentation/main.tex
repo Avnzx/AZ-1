@@ -424,13 +424,24 @@ The pause menu contains a transparent background, as this is a multiplayer game 
 Throughout the options, credits, join, new game, and pause menu, I keep the main menu button in the same place. This is to increase the intuitiveness of the user interface, as it fits the users expectations of where to click to select a different menu.
 
 
+
+
+
 \clearpage
 \section{EBNF and Railroad Diagrams}
+
+
+
+
+
 
 \clearpage
 \section{Extensive Algorithm Test Data}
 % world generation module if I finish it, or fallback to the chunk changer
 % could also do the flight assist off algorithm for torque and force
+
+
+
 
 \clearpage
 \section{Error Checking}
@@ -452,41 +463,74 @@ Throughout my software I heavily used flags and nullable values to indicate whet
 
 
 
+
+
 \clearpage
 \section{Module Desk Check}
 
+
+
+
+
 \clearpage
 \section{Breakpoints, single line stepping, and traces}
-
+\subsection{Breakpoints}
 \includegraphics[width=\textwidth]{trace1.png}
+Visual studio code can be configured, with the assistance of the Microsoft Omnisharp extension to be able to debug Godot projects. As godot runs the core of the engine and the C sharp runtime separately. Breakpoints greatly assist in discovering errors as they halt code execution where the breakpoint is set. As the above image shows, there was a breakpoint on the OnPlayerConnect signal handler. Which helped me discover a strange error related to the multiplayerAPI being null if used in the wrong order.
+
+\subsection{Single Line Stepping}
 \includegraphics[width=\textwidth]{trace2.png}
+An example of single line stepping can be observed above. It accompanies breakpoints and allows for the execution of one statement of code at a time. Using the godot game engine, single line stepping is able to go into the core game engine components and show exactly where the error ocurred. This was useful in my project to see exactly what function calls would occur after the breakpoint had passed. To see where an error was occurring and why.
+
+\subsection{Traces}
+\includegraphics[width=\textwidth]{truetrace.png}
+The above image shows a stack trace from inside the godot game engine. These traces show all of the functions called leading up to an error. The godot stack traces also allow for an extra level of detail as traces for modules such as ENet show the source code of the game engine method that caused the error. This immensely helped me during the development process as I ran into errors such as an error with ENet that claimed it had 0 network transport channels available. It also allowed me to see where erroring functions where being called from and why they might have been erroring out.
+
+
+
+
+
+
 
 \clearpage
 \section{Readability of Code}
-
-% meaningful variable names 
+\subsection{Meaningful Variable Names} 
 \includegraphics[width=\textwidth]{variablename.png}
 \includegraphics[width=\textwidth]{variablename2.png}
+I utilised camel case for member variables and fields, as well as utilising informative type annotations (such as CommManager being of type CommManager) to ensure the clarity of the purpose of variables. I provided names that allowed for myself and others reading the code to be able to intuitively know what variables purposes were. As this would not be possible with obtuse names such as "a" or "b". Pascal case was also used for functions to differentiate it from variables and fields. \\
 
-% whitespace
+Remote methods that used two way communication between the server and client were also prefixed with Cmd and Rsp to denote which half of the connection they were fulfilling the role of, as well as more easily being able to tell what direction the data flow between the server and client was.
+
+\subsection{Whitespace}
 \includegraphics[width=\textwidth]{whitespace.png}
+Throughout my code I utilise whitespace to separate multiple different responsibilities and categorise functions. This allows for more readable and easily understandable code by logically grouping steps that go together, such as client functions responsible for setting up a connection to a server, or commands from the server to the client. This is mostly evident in the CommManager script as whitespace is used to separate functions that run on the local machines for setting up and managing connections, 
 
-% indentation
+\subsection{Indentation}
 \includegraphics[width=\textwidth]{indentation.png}
+\includegraphics[width=\textwidth]{indentation2.png}
+In all of my scripts indentation is used heavily to imply associativity between statements, i.e. a newline and an indentation after a method signifies that the line continues. It is also used in my scripts as can be seen above for documenting when the scope of control flow changes. E.g. All code in a for loop must be one indentation level above the for loop to allow for greater clarity when reading through the code.
 
-% commenting and docs
+\subsection{Commenting and Documentation}
 \includegraphics[width=\textwidth]{comments.png} % VSC allows for XML documentation strings within comments 
+I used comments to specify the meanings and methods of how things are done, as the purpose of some of the code may be unclear to some developers. In the above code I use a Csharp docstring comment. As it allows for easy viewing of the comments in most integrated development environments. I also utilise interfaces and custom types to document how certain objects must be used and what their purpose is.
 
 
 
 \clearpage
 \section{Discussion of syntax, runtime, and logic errors}
-
+\subsection{Logic Errors}
 \includegraphics[width=\textwidth]{logicerror.png}
+Logic errors are extremely common and difficult to catch, as unlike syntax and runtime errors they generally will not be caught unless the system provides wildly inaccurate data. They occur due to incorrect logic being applied and generally result in the results of algorithms containing the logic errors to be incorrect. During the development process I made several logic errors, such as the above. Because when crossing a chunk border my original implementation would place the player an entire chunk forward, when I only wanted to shift the origin the player was using for calculations.
 
+
+\subsection{Runtime Errors}
 \includegraphics[width=\textwidth]{runtimeerror.png}
+The above screenshot shows an example of a runtime error that the godot engine has reported and caught, due to a Remote Procedure Call not having the same sender and reciever paths, resulting in a failed security checksum. Runtime errors occur as the program is running and result in the interpreter or processor being unable to process more instructions. These can occur due to a large variety of reasons. But like most Game engines Godot in debug mode (running in the editor) is able to sucessfully capture these errors and prevent them from possibly crashing the computer the game was running on.
 
+\subsection{Syntax Errors}
 \includegraphics[width=\textwidth]{syntaxerror.png}
+As programming languages are ratified with strict regulations on what is an is not part of the language. A syntax error occurs when the source code does not adhere to these rules and cannot be correctly compiled (or interpreted). As it is not part of the language it cannot be sucessfully converted into machine code, forcing the compiler or interpreter to crash or return an error condition. I commonly encountered syntax errors such as misspelling variable and method names. Along with more esoteric errors such as the syntax error in the above image, where part of the class was declared incorrectly due to it being partially externally generated (by the engine). 
+
 
 
 
@@ -622,17 +666,17 @@ https://github.com/notakamihe/Unity\-Star\-Systems\-and\-Galaxies \\
 https://github.com/SebLague/Procedural\-Planets \\
 Allows me to start implementing ICE, Interactive Connectivity Establishment, to allow players behind a NAT to access internet games. https://docs.google.com/document/d/10xLhy\-lKzxeNbEQjZ63a5lshe\-\_nfrmTytyNMjp6Ouc \\
 Gave me ideas for how to quickly simulate N body physics https://developer.nvidia.com/gpugems/gpugems3/part\-v\-physics\-simulation/chapter\-31\-fast\-n\-body\-simulation\-cuda
-My planet shader is a heavily modified version of the GenGen shader https://github.com/Zarkonnen/GenGen/
-How to use multiple cameras further down the thread https://github.com/godotengine/godot-proposals/issues/956
-Basic LINQ instructions to help me get started with advanced queries https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/introduction-to-linq-queries
-My use and implementation of the ICanInitialise interface was asissted and inspired by the microsoft implementation. https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.isupportinitialize?view=net-7.0
-Primary source for godot documentation. https://docs.godotengine.org/en/stable/
-All of these blogs gave me the ideas necessary to implement one of the network models described with greater confidence. I ended up implementing the lockstep model due to the complexity and my novice experience with computer networking. https://gafferongames.com/post/udp_vs_tcp/
-Gave me information on other implementations as well as a starting point for how to compile the engine to support double precision numbers. Which is what I ended up doing on the server side for increased precision. https://github.com/godotengine/godot-proposals/issues/892
-3d space station model from https://sketchfab.com/3d-models/space-station-3-a7a6ad10261149cab31aa394bfcf8940
-Some music from Josh Bakaimis https://www.josh-bakaimis-sound.com/download
-3d model for a space ship from Yanix https://sketchfab.com/3d-models/space-ship-356a3acb00164c698d657146caa5ebf3
-https://www.pexels.com/photo/blue-pink-and-white-andromeda-galaxy-way-110854/
+%My planet shader is a heavily modified version of the GenGen shader https://github.com/Zarkonnen/GenGen/
+%How to use multiple cameras further down the thread https://github.com/godotengine/godot-proposals/issues/956
+%Basic LINQ instructions to help me get started with advanced queries https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/introduction-to-linq-queries
+%My use and implementation of the ICanInitialise interface was asissted and inspired by the microsoft implementation. https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.isupportinitialize?view=net-7.0
+%Primary source for godot documentation. https://docs.godotengine.org/en/stable/
+%All of these blogs gave me the ideas necessary to implement one of the network models described with greater confidence. I ended up implementing the lockstep model due to the complexity and my novice experience with computer networking. https://gafferongames.com/post/udp_vs_tcp/
+%Gave me information on other implementations as well as a starting point for how to compile the engine to support double precision numbers. Which is what I ended up doing on the server side for increased precision. https://github.com/godotengine/godot-proposals/issues/892
+%3d space station model from https://sketchfab.com/3d-models/space-station-3-a7a6ad10261149cab31aa394bfcf8940
+%Some music from Josh Bakaimis https://www.josh-bakaimis-sound.com/download
+%3d model for a space ship from Yanix https://sketchfab.com/3d-models/space-ship-356a3acb00164c698d657146caa5ebf3
+%https://www.pexels.com/photo/blue-pink-and-white-andromeda-galaxy-way-110854/
 \end{document}
 %A
 %# Functions and Modules (>=5)
