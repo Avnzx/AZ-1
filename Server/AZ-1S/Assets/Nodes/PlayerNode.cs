@@ -36,6 +36,11 @@ public partial class PlayerNode : RigidBody3D {
 
     }
 
+    public void DoRespawn() {
+        this.Quaternion = Quaternion.Identity;
+        this.Transform = this.Transform with { Origin = Vector3.Zero };
+    }
+
     public override void _EnterTree() {
         commManager = GetNode<CommManager>("/root/main/CommManager");
     }
@@ -58,7 +63,7 @@ public partial class PlayerNode : RigidBody3D {
                 Vector3 tfx = this.Transform.Origin + 5*this.Transform.Basis.Z;
 
                 bullet.DoInitialise((rng.Randi(), tfx, this.Quaternion,
-                    "res://Assets/Scenes/nores/bullet/bullet.tscn", 3f));
+                    "res://Assets/Scenes/nores/bullet/bullet.tscn", 3f, this));
 
                 chunk.bulletList.Add(bullet);
                 chunk.AddChild(bullet);

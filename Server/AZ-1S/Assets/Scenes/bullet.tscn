@@ -12,3 +12,5 @@ modelPath = null
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 6.12323e-17, -1, 0, 1, 6.12323e-17, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_kh2kw")
+
+[connection signal="body_entered" from="." to="." method="OnCollideWithObject"]
