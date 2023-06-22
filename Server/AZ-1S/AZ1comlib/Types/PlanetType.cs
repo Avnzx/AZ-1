@@ -21,7 +21,7 @@ public partial class PlanetType : StaticBody3D, ICanInitialize<(uint,Godot.Vecto
         (this.Mesh as SphereMesh)!.Height = mult*2;
         #else
         var collisionshape = this.GetNode<CollisionShape3D>("PlanetCollider");
-        collisionshape.Scale = collisionshape.Scale*1000*mult;
+        collisionshape.Scale = Vector3.One*100000*mult;
         #endif
     }
 
