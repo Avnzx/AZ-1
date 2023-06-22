@@ -1,0 +1,67 @@
+\documentclass{article}
+
+
+B-rc
+# Choice of UI 
+? Can this be done for a major part of the UI or *all* of the UI
+# EBNF and Railroad diagrams
+? 
+# Unit test
+# Error checking
+# Desk Check
+- evidence of use of breakpoints, traces, single line stepping
+? How should we provide evidence of usage of breakpoints (dated screenshot? and if so how many?)
+# Readability of code
+- annotate 
+? provide evidence
+# Discussion of syntax errors, runtime errors, logic errors
+? what they are or the common ones we experienced
+
+
+
+
+
+B
+# Testing and Evaluation
+## Efficiency and Elegancy of code
+- Give example
+## Final UI design 
+- Screen shot (literal)
+# Maintenance
+## Desc. suitable CASE tools to monitor changes and VCS
+## Explain how you cater to changing user reqs
+# Final Project
+## Working demonstration
+## Documentation
+- User doc
+? *Just* movement and manual things or...?
+- Install docs
+? can the install docs just say "extract and run" with screenshots?
+## Project report
+- Outline what I have learnt from the project dev.
+- Future directions of the software
+- Comparison with original specification
+- **BIBLIOGRAPHY**
+
+
+
+
+\usepackage{subfiles}
+
+
+\section{Final UI Design} % ezpz
+\section{User Manual} % ezpz
+\section{Installation Manual} %ezpz
+What you have learnt
+Future directions
+Comparison with original specification10
+
+
+
+
+TODO: make a bunch of Logbook entries
+TODO: Fix the bibliography
+
+TODO: fix my code
+
+TODO: comment stuff

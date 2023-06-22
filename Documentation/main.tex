@@ -613,14 +613,48 @@ I can also cater for changing requirements by writing Godot CPP modules, as it w
 
 \clearpage
 \section{User Manual}
+\subsection{About the game}
+Forward Frontier is a small multiplayer space racing game. Players control their ships and attempt to take each other out.\\
 
+\noindent It is available at https://github.com/Avnzx/AZ-1 just go to the releases section and you're good to go CMDR. o7 \\
 
+\subsection{How do I get into a game}
+Loading into a game is easy, just press the Join game button if you haven't joined any servers recently, and the Continue game button if you would like to pick up where you left off your last session. 
+
+\subsection{How Do You Win}
+Each player only has one shot of health. The turning rates of all the ships aren't equal so you'll need to plan your moves to catch your opponent in a weak spot.
+
+\subsection{How does the game work}
+Upon loading into the lobby, you are vulnerable but can also fire your main weapon every 0.5 seconds. 
+
+\subsection{Controls}
+WS: thrust forward and back \\
+QE: thrust left and right \\
+RF: thrust up and down\\
+
+\medskip
+
+\noindent Mouse X axis: roll thrusters\\
+Mouse Y axis: pitch thrusters\\
+AD: yaw thrusters\\
+
+\medskip
+
+\noindent X: zero both mouse axes\\
+
+\medskip
+
+\noindent Left Click: shoot projectile in direction of cursor
 
 
 \clearpage
 \section{Installation Manual}
+\subsection{System Requirements}
 
-
+\subsection{Installation instructions}
+Head over to https://github.com/Avnzx/AZ-1 and click on Releases to the right hand side\\\noindent
+Now pick your platform and type (the most common value will be windowsclient)
+Then unzip the zip you have just downloaded and run the .exe file\\
 
 
 \clearpage
@@ -643,11 +677,18 @@ To do this I must carefully plan out the scope and series of any further project
 \subsection{Comparison with original spec}
 The scope of my project changed drasticaly, as I had originally intended to do a space exploration simulator that was singleplayer. With the addition of a building system. I ended up having a flight simulator in space that was multiplayer. This was mainly due to my mismanagement of time and my overconfidence in myself coming into this project.\\
 
-I also originally intended to complete a mining and manufacuturing system akin to factorio, with complex and extensive resource chains. None of this ended up being anywhere in the game. \\
+I also originally intended to complete a mining and manufacuturing system akin to factorio, with complex and extensive resource chains. None of this ended up being anywhere in the game. The original system was intended to create complex supply and logistics chains \\
 
-I was also unable to implement some of the things I had envisioned due to unforseen problems with modern GPU's and the maximum distance a godot camera can successfully render to.
+I was also unable to implement some of the things I had envisioned due to unforseen problems with modern GPU's and the maximum distance a godot camera can successfully render to. \\
 
-
+1. Responsive controls and remapable control scheme \- was partially met, the controls are responsive but non remappable \\
+3. User interface that allows for filtering \- goal was not achieved \\
+5. Ingame tutorial for each major system in the game \- goal was not achieved \\
+6. Personal details are used properly \- goal was achieved as none are used \\
+7. Network connections don't suddenly drop out \- goal partially achieved, certain configurations may cause it to drop out\\
+8. Graphics look nice, are high quality \- partially achieved \\
+9. Audio sounds nice and has volume controls \- not completed \\
+10. Easy to use and intuitive UI \- goal was partially achieved
 
 
 
@@ -690,17 +731,17 @@ Created the godot scene to start the game & & & \\
 2023-03-08 & Fixed the context diagram to fit with the new Structure chart to include external servers. Completed finishing touches and converted logbook to proforma format before submission. & My logbook was not created with the proforma in mind and required a large ammount of effort and a significant ammount of wasted effort to convert it. Next time I need to start the conversion process earlier as well as  & Submit part A & Done \\
     \hline
 
-2023-03-17 & & & & Done \\ \hline
+2023-03-17 & Completed planning for the combat system & Ran into more issues with godot and csharp & Figure out how to listen to signals with godot & Done \\ \hline
 
-2023-04-10 & & & & Done \\ \hline
+2023-04-10 & Check two documentation and start documenting changes & Could have used time better to do other parts of project & Complete Documentation Earlier & Done \\ \hline
 
-2023-04-17 & & & & Done \\ \hline
+2023-04-17 & Enet peer bugs are causing the project to crash every few seconds, needs to be solved before releasing the project & The multitude of godot multiplayer bugs & Continue working on completing the documentation & Done \\ \hline
 
-2023-05-17 & Attempt to debug godot again using visual studio code & & & Done \\ \hline
+2023-04-14 & Attempt to debug godot again using visual studio code & Ran into issues with VSCode, as only microsoft visual studio code is supported to debug CS so I was required to resetup everything. & Take a trace with the tool & Done \\ \hline
 
-2023-05-17 &  & & & Done \\ \hline
+2023-05-17 & Create reflector file for STUN servers & Running into more issues with the networking stack & Finish Implement reconnection handlers due to sporadic bursts of disconnects & Done \\ \hline
 
-2023-06-17 & & & & Non completed \\ \hline
+2023-06-10 & Work on a very basic combat system to add some more flair to the project. Fix issues with planets not appearing the right size & Issues with the projectiles phasing through matter and the transformations required to use them being strange & Finish the combat system & Partially completed \\ \hline
 
 2023-06-23 & Majority of the game has some polish to it and the documentation is completed.  & I behun the documentation far too late and I let the game slip by due to all of the engine errors I was getting. Next time I should not choose the unstable branch of the engine to work on a major project with. & Submit final assessment & Done \\ \hline
 
