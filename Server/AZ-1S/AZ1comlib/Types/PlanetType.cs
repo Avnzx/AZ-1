@@ -27,6 +27,7 @@ public partial class PlanetType : StaticBody3D, ICanInitialize<(uint,Godot.Vecto
 
     #if ISCLIENT
     public override void _Process(double delta) {
+        // FIXME: change the haze
         ShaderMaterial mat = (this.GetActiveMaterial(0) as ShaderMaterial)!;
         float nexttime = (((float) mat.GetShaderParameter("time")) + (float) delta*100f) % 1000000;
         mat.SetShaderParameter("time", nexttime);

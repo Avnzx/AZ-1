@@ -39,6 +39,25 @@ public partial class PlayerNode : RigidBody3D {
 
 
     public override void _Process(double delta) {
+        // if (movReq[(int) MovementActionsEnum.PlayerUseWeapons] > 0.5f) {
+        //     Chunk chunk = GetParent<Chunk>();
+
+        //     RandomNumberGenerator rng = new RandomNumberGenerator();
+        //     rng.Randomize();
+
+        //     var bulletres = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/bullet.tscn");
+        //     BaseBullet bullet = bulletres.Instantiate<BaseBullet>();
+        //     Vector3 tfx = this.Transform.Origin + 5*this.Transform.Basis.Z;
+
+        //     bullet.DoInitialise((rng.Randi(), tfx, 
+        //         "res://Assets/Scenes/nores/bullet/bullet.tscn", 30f));
+
+        //     chunk.bulletList.Add(bullet);
+        //     chunk.AddChild(bullet);
+        // }
+        
+
+
         commManager!.RpcIdIfConnected(this, nameof(CommManager.CmdUpdatePlayerRot), this.Quaternion.Inverse());
 
         // send planets in the chunk
@@ -69,7 +88,7 @@ public partial class PlayerNode : RigidBody3D {
         }
 
 
-        // send !models! in the chunk
+        // send !players! in the chunk
         foreach (var player in GetParent<Chunk>().playerList) {
             if (player == this)
                 continue;
@@ -85,6 +104,23 @@ public partial class PlayerNode : RigidBody3D {
                 // Vector3 pos, Quaternion rot, long modelID
                     nameof(CommManager.CmdUpdateArbitraryModelPos),
                     deltavec, player.Quaternion, id, "res://Assets/Scenes/nores/space_ship/space_ship.tscn" );
+            }
+        }
+
+        // send !players! in the chunk
+        foreach (var bullet in GetParent<Chunk>().bulletList) {
+
+            double[] deltapos = new double[3];
+            var deltavec = (bullet.Position - this.Position);
+            deltavec.Deconstruct(out deltapos[0], out deltapos[1], out deltapos[2]);
+
+            if (Array.TrueForAll(deltapos, (x => Math.Abs(x) < 1000000))) {
+                long id = bullet.modelID;
+
+                commManager.RpcIdIfConnected(this, 
+                // Vector3 pos, Quaternion rot, long modelID
+                    nameof(CommManager.CmdUpdateArbitraryModelPos),
+                    deltavec, bullet.Quaternion, id, "res://Assets/Scenes/nores/space_ship/space_ship.tscn" );
             }
         }
     }

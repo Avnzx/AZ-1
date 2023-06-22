@@ -55,6 +55,23 @@ public partial class TopLevelWorld : Node3D
 	}
 
 
+	// public void UpdateBulletPos(Vector3 position, Quaternion rot, uint modelID) {
+	// 	BaseBullet? modelref;
+
+	// 	if (!bulletList.TryGetValue(modelID, out modelref)) {
+	// 		// by default the planets are at their max size
+	// 		var model = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/nores/bullet/bullet.tscn");
+	// 		BaseBullet mod = model.Instantiate<BaseBullet>();
+
+	// 		bulletList.Add(modelID,mod);
+	// 		this.CallDeferred(Node.MethodName.AddChild, mod);
+	// 	} else {
+	// 		modelref!.Position = position;
+	// 		modelref!.Quaternion = rot;
+	// 	}
+	// }
+
+	Dictionary<uint,BaseBullet> bulletList = new Dictionary<uint, BaseBullet>();
 	Dictionary<uint,PlanetType> planetList = new Dictionary<uint, PlanetType>();
 	Dictionary<uint,Node3D> modelList = new Dictionary<uint, Node3D>();
 	// List<PlayerType>
