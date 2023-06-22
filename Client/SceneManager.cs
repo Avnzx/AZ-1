@@ -4,6 +4,7 @@ using System.Collections;
 
 public partial class SceneManager : Node {
 	Stack sceneQueue = new Stack();
+	public int localServerPID;
 
 	public override void _Ready() {
 		this.Name = "SceneManager";

@@ -429,8 +429,20 @@ Throughout the options, credits, join, new game, and pause menu, I keep the main
 
 \clearpage
 \section{EBNF and Railroad Diagrams}
+\subsection{EBNF}
+IfStatement = if ( (Comparison) ) \{Expr\} [ElseIfStatement] [ElseStatement] \\            
+ElseIfStatement = else IfStatement\\
+ElseStatement = else \{Expr\}         \\
+Comparison = (Expr | DIGIT | LETTER) \{(CompareOperator (Expr | DIGIT | LETTER))\}\\
+Expr = (VariableDeclaration | Arithmetic | AssignArithmetic | IfStatement | MethodCall)\\
+DIGIT = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9\\
+LETTER = \_ | a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z | 
+    A | B | C | D | E | F | G | H | I | J | K | L | M | N | I | J | K | M | N | O | P | Q | R | S | T | U | V | W | X | Y| Z \\
 
+CompareOperator = == | != | < | <= | > | >= | || | \&\&
 
+\subsection{Railroad}
+\includegraphics[width=\textwidth]{railroad.png}
 
 
 
@@ -575,12 +587,12 @@ Git is the current industry standard for VCS (Version Control System) software. 
 Git also acts as a bug finding tool. As it is able to quickly and efficiently narrow down a single commit, or group of commits that caused a regression or bug in the software (as commits only contain the difference between versions of a file). Invoked with the "git bisect" command. This and other operations such as the ability to rollback to earlier commits seamlessly allow for bugs to be found and fixed easily.\\
 
 \includegraphics[width=\textwidth]{godot4commits.png}
-\caption{Commit history from the Godot 4.0 stable branch on GitHub \cite{godotgithub}}
+Commit history from the Godot 4.0 stable branch on GitHub\\
 
 Other features that git provides such as submodules are heavily used by my project, as the server of my project uses my custom version of the godot engine. This uses a git submodule to both reduce the size of the repository as well as retain the ability to fast forward my copy of the engine source code easily and reproducibly on many systems.
 
 \includegraphics[width=\textwidth]{localserverstructure.png}
-\caption{Local directory structure of the Server folder, showing the use of subprojects}
+Local directory structure of the Server folder, showing the use of subprojects\\
 
 \subsection{Cloud Providers}
 There are many cloud providers for software projects, such as GitHub and GitLab. Which provide a communication platform and code hosting for protocols such as git (GitLab also provides SubVersioN support). These provide services such as acting as a remote sync repository for git, allowing for multiple people to more easily use DCVS' such as Git with increased data security.\\
@@ -588,7 +600,7 @@ There are many cloud providers for software projects, such as GitHub and GitLab.
 These entities also generally will provide services such as CI/CD (Continuous Integration and Continuous Deployment) to allow for automated quality assurance testing. They may also provide pipelines to run tools like DOxygen that are able to automatically generate and deploy documentation for public facing API's. For this project I did not utilise the CI/CD or documentation features of these providers.
 
 \includegraphics[width=\textwidth]{cicdpassed.png}
-\caption{A badge showing the successful completion of a CI pipeline for one of my other projects available on GitHub}
+A badge showing the successful completion of a CI pipeline for one of my other projects available on GitHub\\
 
 
 \clearpage
@@ -614,13 +626,26 @@ I can also cater for changing requirements by writing Godot CPP modules, as it w
 \clearpage
 \section{Project Report}
 \subsection{What I've Learnt}
-Csharp preprocessor, LINQ, greater knowledge of computer networks, computer networking models, shaders
+Taking on this project has been a great learning journey for me. As I was able to learn Csharp in depth, using libraries like LinQ and computer networking. I also had little to no knowledge of GPU shaders before this experience. But writing the planet shaders has brought me a great distance. 
+
+I have not attempted a project of this scale before, nor have I attempted a realtime internetworked project. I ended up running into a lot of issues with how the engine worked due to my novice status at using it. Though through this I think I have gained a much more in depth knowledge of how the Godot game engine is put together. 
+
+I am also now far more comfortable with the godot game engine and the UI system. And the interesting ways in which the parts of the low level engine work (Enet misbehaving among other things). This was the first godot project I was successfully able to cross compile for windows, even though the instructions on the godot docs were quite extensive.
+
 
 \subsection{Future Directions}
-flight sim to proper space exploration game that allows you to walk on the planets
+In the future of my software I would aim for a full on flight simulation, where the player is able to leave the vehicle and interact with complex resource chains akin to a game like factorio. Reconstructing my project to better fit in with the Godot 4 ideals or going to another engine such as bevy are in my considerations for this. Due to the limitations of working with godot this may lead to a better end product.\\
+
+I would like to implement many of the features that are currently missing in this released version of the game as it has a solid core of a flight simulation. \\
+
+To do this I must carefully plan out the scope and series of any further projects. 
 
 \subsection{Comparison with original spec}
-significantly reduced from original spec but higher than the spec in terms of flight simulation
+The scope of my project changed drasticaly, as I had originally intended to do a space exploration simulator that was singleplayer. With the addition of a building system. I ended up having a flight simulator in space that was multiplayer. This was mainly due to my mismanagement of time and my overconfidence in myself coming into this project.\\
+
+I also originally intended to complete a mining and manufacuturing system akin to factorio, with complex and extensive resource chains. None of this ended up being anywhere in the game. \\
+
+I was also unable to implement some of the things I had envisioned due to unforseen problems with modern GPU's and the maximum distance a godot camera can successfully render to.
 
 
 
@@ -665,6 +690,21 @@ Created the godot scene to start the game & & & \\
 2023-03-08 & Fixed the context diagram to fit with the new Structure chart to include external servers. Completed finishing touches and converted logbook to proforma format before submission. & My logbook was not created with the proforma in mind and required a large ammount of effort and a significant ammount of wasted effort to convert it. Next time I need to start the conversion process earlier as well as  & Submit part A & Done \\
     \hline
 
+2023-03-17 & & & & Done \\ \hline
+
+2023-04-10 & & & & Done \\ \hline
+
+2023-04-17 & & & & Done \\ \hline
+
+2023-05-17 & Attempt to debug godot again using visual studio code & & & Done \\ \hline
+
+2023-05-17 &  & & & Done \\ \hline
+
+2023-06-17 & & & & Non completed \\ \hline
+
+2023-06-23 & Majority of the game has some polish to it and the documentation is completed.  & I behun the documentation far too late and I let the game slip by due to all of the engine errors I was getting. Next time I should not choose the unstable branch of the engine to work on a major project with. & Submit final assessment & Done \\ \hline
+
+
 % include the MS Vscode requirement for omnisharp debugging somewhere
 
 
@@ -688,19 +728,23 @@ https://www.flecs.dev/flecs \\
 https://godotshaders.com \\
 https://github.com/notakamihe/Unity\-Star\-Systems\-and\-Galaxies \\
 https://github.com/SebLague/Procedural\-Planets \\
-Allows me to start implementing ICE, Interactive Connectivity Establishment, to allow players behind a NAT to access internet games. https://docs.google.com/document/d/10xLhy\-lKzxeNbEQjZ63a5lshe\-\_nfrmTytyNMjp6Ouc \\
-Gave me ideas for how to quickly simulate N body physics https://developer.nvidia.com/gpugems/gpugems3/part\-v\-physics\-simulation/chapter\-31\-fast\-n\-body\-simulation\-cuda
-%My planet shader is a heavily modified version of the GenGen shader https://github.com/Zarkonnen/GenGen/
-%How to use multiple cameras further down the thread https://github.com/godotengine/godot-proposals/issues/956
-%Basic LINQ instructions to help me get started with advanced queries https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/introduction-to-linq-queries
-%My use and implementation of the ICanInitialise interface was asissted and inspired by the microsoft implementation. https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.isupportinitialize?view=net-7.0
-%Primary source for godot documentation. https://docs.godotengine.org/en/stable/
-%All of these blogs gave me the ideas necessary to implement one of the network models described with greater confidence. I ended up implementing the lockstep model due to the complexity and my novice experience with computer networking. https://gafferongames.com/post/udp_vs_tcp/
-%Gave me information on other implementations as well as a starting point for how to compile the engine to support double precision numbers. Which is what I ended up doing on the server side for increased precision. https://github.com/godotengine/godot-proposals/issues/892
-%3d space station model from https://sketchfab.com/3d-models/space-station-3-a7a6ad10261149cab31aa394bfcf8940
-%Some music from Josh Bakaimis https://www.josh-bakaimis-sound.com/download
-%3d model for a space ship from Yanix https://sketchfab.com/3d-models/space-ship-356a3acb00164c698d657146caa5ebf3
-%https://www.pexels.com/photo/blue-pink-and-white-andromeda-galaxy-way-110854/
+Allows me to start implementing ICE. https://docs.google.com/document/d/10xLhy\-lKzxeNbEQjZ63a5lshe\-\_nfrmTytyNMjp6Ouc \\
+Gave me ideas for how to quickly simulate N body physics https://developer.nvidia.com/gpugems/gpugems3/part\-v\-physics\-simulation/chapter\-31\-fast\-n\-body\-simulation\-cuda \\
+My planet shader is a heavily modified version of the GenGen shader https://github.com/Zarkonnen/GenGen/ \\
+How to use multiple cameras further down the thread https://github.com/godotengine/godot\-proposals/issues/956 \\
+Basic LINQ instructions to help me get started with advanced queries https://learn.microsoft.com/en\-us/dotnet/csharp/programming\-guide/concepts/linq/introduction\-to\-linq\-queries \\
+My use and implementation of the ICanInitialise interface was asissted and inspired by the microsoft implementation. \\
+https://learn.microsoft.com/en\-us/dotnet/api/system.componentmodel.isupportinitialize \\
+Primary source for godot documentation. https://docs.godotengine.org/en/stable/ \\
+All of these blogs gave me the ideas necessary to implement one of the network models described with greater confidence. \\
+I ended up implementing the lockstep model due to the complexity and my novice experience with computer networking. \\
+https://gafferongames.com/post/udp\_vs\_tcp/ \\
+Gave me information on other implementations as well as a starting point for how to compile the engine to support double precision numbers.\\
+ Which is what I ended up doing on the server side for increased precision. https://github.com/godotengine/godot\-proposals/issues/892 \\
+3d space station model from https://sketchfab.com/3d\-models/space\-station\-3\-a7a6ad10261149cab31aa394bfcf8940 \\
+Some music from Josh Bakaimis https://www.josh\-bakaimis\-sound.com/download \\
+3d model for a space ship from Yanix https://sketchfab.com/3d\-models/space\-ship\-356a3acb00164c698d657146caa5ebf3 \\
+https://www.pexels.com/photo/blue\-pink\-and\-white\-andromeda\-galaxy\-way\-110854/
 \end{document}
 %A
 %# Functions and Modules (>=5)

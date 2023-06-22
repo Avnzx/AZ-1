@@ -58,6 +58,7 @@ text = "Continue Game"
 layout_mode = 2
 
 [node name="NewGameButton" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+visible = false
 layout_mode = 2
 theme = ExtResource("3_3bxfu")
 text = "New Game"
