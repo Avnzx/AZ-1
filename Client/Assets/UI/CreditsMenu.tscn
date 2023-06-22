@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bv4at8myeryh0"]
+[gd_scene load_steps=3 format=3 uid="uid://c6sl4o2a8rupd"]
 
-[ext_resource type="Script" path="res://Assets/UI/CreditsMenu.cs" id="1_nrrkn"]
+[ext_resource type="Script" path="res://Assets/UI/Scripts/CreditsMenu.cs" id="1_nrrkn"]
 [ext_resource type="Texture2D" uid="uid://bmmtk7nvwe3ah" path="res://Assets/UI/Assets/Backgrounds/pexels-photo-110854.jpeg" id="2_q8w62"]
-[ext_resource type="Script" path="res://Assets/UI/Scripts/QuitButton.cs" id="4_ol312"]
 
 [node name="CreditsMenu" type="MarginContainer"]
 layout_direction = 1
@@ -68,6 +67,5 @@ alignment = 2
 [node name="MainMenuButton" type="Button" parent="MarginContainer/VBoxContainer3"]
 layout_mode = 2
 text = "Return to Main Menu"
-script = ExtResource("4_ol312")
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer3/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

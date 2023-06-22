@@ -126,9 +126,14 @@ public partial class CommManager : Node {
             offlinenode.Visible = true;
         
         Timer timer = new Timer();
-        timer.WaitTime = 0.5;
+        timer.WaitTime = 2;
         timer.Autostart = true;
         this.AddChild(timer);
+        timer.Connect("timeout", new Callable(this, nameof(HandleDisconnectRetryTimer)));
+    }
+
+    public void HandleDisconnectRetryTimer() {
+
     }
 
     public bool RpcIdIfConnected(StringName method, params Variant[] args) {
@@ -206,6 +211,9 @@ public partial class CommManager : Node {
             pNode.Position = defspawn.Item2;
 
             worldNode!.GetNode(defspawn.Item1).CallDeferred(Node.MethodName.AddChild, pNode);
+
+            // Add to list of players in chunk
+            (worldNode!.GetNode(defspawn.Item1) as Chunk)!.playerList.Add(pNode);
         }
         #endif
 	} 

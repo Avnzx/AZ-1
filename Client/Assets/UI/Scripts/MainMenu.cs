@@ -19,14 +19,14 @@ public partial class MainMenu : MarginContainer {
 	}
 
 	public void _on_join_game_button_pressed() {
-		// GetNode<SceneManager>("/root/SceneManager").AddNewScene("res://Assets/UI/ServerBrowser.tscn");
+		GetNode<SceneManager>("/root/SceneManager").AddNewSceneActual("res://Assets/UI/ServerBrowser.tscn");
 	}
 
 	public void _on_option_button_pressed() {
-		// GetNode<SceneManager>("/root/SceneManager").AddNewScene("res://Assets/UI/OptionsMenu.tscn");
+		GetNode<SceneManager>("/root/SceneManager").AddNewSceneActual("res://Assets/UI/OptionsMenu.tscn");
 	}
 
 	public void _on_credits_button_pressed() {
-		// GetNode<SceneManager>("/root/SceneManager").AddNewScene("res://Assets/UI/CreditsMenu.tscn");
+		GetNode<SceneManager>("/root/SceneManager").AddNewSceneActual("res://Assets/UI/CreditsMenu.tscn");
 	}
 }

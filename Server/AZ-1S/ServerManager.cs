@@ -22,11 +22,8 @@ public partial class ServerManager : Node
 		var commMan = new CommManager(worldNode,serverConfig!.Value);
 		this.AddChild(commMan);
 		commMan.StartServer();
-		
 
-		var rng = new RandomNumberGenerator();
-		rng.Randomize();
-		worldNode.DoInitialise(rng.Randi());
+		worldNode.DoInitialise(serverConfig.Value.WorldSeed);
 		worldNode.CreateChunk(null,Vector3I.Zero);
 
 		var model = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/space_station.tscn");
@@ -60,7 +57,8 @@ public partial class ServerManager : Node
 		
 		foreach (var arg in argdict) {
 			switch (arg.Key) {
-				case "ss": case "d":
+				case "ffseed": case "ffs":
+					serverConfig = serverConfig.Value with { WorldSeed = uint.Parse(arg.Value)};
 					break;
 
 				default:

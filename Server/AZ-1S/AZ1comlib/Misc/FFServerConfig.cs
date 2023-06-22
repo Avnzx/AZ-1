@@ -18,6 +18,17 @@ public struct FFServerConfig {
             set { DataDir = DataDirEnum.kCustomDir; _DataDirPath = value; }
         }
 
+        public uint WorldSeed { set { _WorldSeed = value; } 
+        get { 
+            if (_WorldSeed != default(uint)) {
+                return _WorldSeed;
+            } else {
+                var rng = new RandomNumberGenerator();
+		        rng.Randomize();
+                _WorldSeed = rng.Randi();
+                return _WorldSeed;
+            }
+        }}
 
 
 
@@ -26,6 +37,7 @@ public struct FFServerConfig {
 
 
 
+        private uint _WorldSeed = default(uint);
         private string _DataDirPath = "";
 
         public enum DataDirEnum { kExecutableDir, kGDUserDir, kCustomDir};

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bf3gahw8sua8k"]
 
+[ext_resource type="Script" path="res://Assets/UI/Scripts/NewGameMenu.cs" id="1_81omr"]
 [ext_resource type="Texture2D" uid="uid://bmmtk7nvwe3ah" path="res://Assets/UI/Assets/Backgrounds/pexels-photo-110854.jpeg" id="2_d1t5g"]
-[ext_resource type="Script" path="res://Assets/UI/Scripts/QuitButton.cs" id="3_2k80h"]
 
 [node name="NewGameMenu" type="MarginContainer"]
 layout_direction = 1
@@ -14,6 +14,7 @@ theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
+script = ExtResource("1_81omr")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 2
@@ -33,13 +34,15 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 20
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "enter a new seed"
+placeholder_text = "World Seed (optional)"
+alignment = 1
+expand_to_text_length = true
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "share to LAN?"
+text = "Generate New World"
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -50,8 +53,8 @@ alignment = 2
 [node name="MainMenuButton" type="Button" parent="MarginContainer/VBoxContainer3"]
 layout_mode = 2
 text = "Return to Main Menu"
-script = ExtResource("3_2k80h")
 
 [node name="Node" type="Node" parent="."]
 
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="OnGenerateNewWorld"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer3/MainMenuButton" to="MarginContainer/VBoxContainer3/MainMenuButton" method="_on_pressed"]

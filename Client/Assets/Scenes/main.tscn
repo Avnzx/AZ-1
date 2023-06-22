@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://vwq7wu4ksxx6"]
 
-[ext_resource type="Script" path="res://Assets/Scenes/test.cs" id="1_a6ii2"]
+[ext_resource type="Script" path="res://Assets/Scenes/MainGameScene.cs" id="1_boxn4"]
 [ext_resource type="Environment" uid="uid://diage7yiluksp" path="res://Assets/Environments/space_env.tres" id="2_0t2og"]
 [ext_resource type="Script" path="res://Assets/Scenes/TopLevelWorld.cs" id="3_6lp02"]
 [ext_resource type="Shader" path="res://Assets/Scenes/nores/cursor/cursor.gdshader" id="5_4xx2h"]
@@ -19,7 +19,7 @@ colors = PackedColorArray(0.878431, 0, 0, 0.788235)
 gradient = SubResource("Gradient_ra040")
 
 [node name="main" type="Node"]
-script = ExtResource("1_a6ii2")
+script = ExtResource("1_boxn4")
 
 [node name="FarawayLayer" type="CanvasLayer" parent="."]
 

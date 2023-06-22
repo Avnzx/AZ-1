@@ -1,10 +1,13 @@
 using Godot;
 using System;
+using FF.Management;
 
-public partial class test : Node{
+public partial class MainGameScene : Node, ICanInitialize<(string address, int port)> {
 	// Called when the node enters the scene tree for the first time.
+
+	private (string address, int port) initialiseArgs;
+
 	public override void _Ready(){
-		ConfigManager.GetConfig();
 
 		var world = GetNode<TopLevelWorld>("CloseObjectLayer/ViewContainer/SubViewport/world");
 		commManager = new CommManager( new System.Collections.Generic.List<TopLevelWorld>{
@@ -13,11 +16,18 @@ public partial class test : Node{
 		}.ToArray());
 		AddChild(commManager);
 
-		commManager.ConnectToServer();
+		this.commManager!.ConnectToServer("gamingpc.local");
+
 
 		Input.MouseMode = Input.MouseModeEnum.Captured;
-
 		cursor = GetNode<Sprite2D>("UILayer/Cursor");
+	}
+
+	async public void DoInitialise((string address, int port) varargs) {
+		await ToSignal(this, "ready");
+		this.commManager!.ConnectToServer(initialiseArgs.address, initialiseArgs.port);
+		hasBeenInitialised = true;
+		GD.Print("await sucessful");
 	}
 
 
@@ -28,10 +38,6 @@ public partial class test : Node{
 			GetTree().Quit();
 		}
 	}
-
-	public override void _Process(double delta) {
-	}
-
 
 	public void CollectAndSendInput(InputEvent ev, StringName action) {
 		PlayerMovementActions.MovementActionsEnum tmp;
@@ -119,5 +125,6 @@ public partial class test : Node{
 	CommManager? commManager;
 	Vector2 relativeMouseAccumulator = new Vector2();
 	Sprite2D? cursor;
+	public bool hasBeenInitialised { get; private set; } = false;
 
 }

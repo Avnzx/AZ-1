@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dhhshggtg71yd"]
 
+[ext_resource type="Script" path="res://Assets/UI/Scripts/ServerBrowser.cs" id="1_7ig1u"]
 [ext_resource type="Texture2D" uid="uid://bmmtk7nvwe3ah" path="res://Assets/UI/Assets/Backgrounds/pexels-photo-110854.jpeg" id="2_tbvt3"]
-[ext_resource type="Script" path="res://Assets/UI/Scripts/QuitButton.cs" id="3_tbakv"]
 
 [node name="ServerMenu" type="MarginContainer"]
 layout_direction = 1
@@ -14,6 +14,7 @@ theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
+script = ExtResource("1_7ig1u")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 2
@@ -33,6 +34,30 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 20
 
+[node name="DirectConnect" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/DirectConnect"]
+layout_mode = 2
+text = "Direct Connect:"
+uppercase = true
+
+[node name="hostname" type="LineEdit" parent="MarginContainer/VBoxContainer/DirectConnect"]
+layout_mode = 2
+placeholder_text = "Hostname"
+expand_to_text_length = true
+
+[node name="port" type="LineEdit" parent="MarginContainer/VBoxContainer/DirectConnect"]
+layout_mode = 2
+placeholder_text = "Port (optional)"
+expand_to_text_length = true
+
+[node name="connectbutton" type="Button" parent="MarginContainer/VBoxContainer/DirectConnect"]
+layout_mode = 2
+disabled = true
+text = "GO"
+
 [node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
@@ -42,6 +67,7 @@ alignment = 2
 [node name="MainMenuButton" type="Button" parent="MarginContainer/VBoxContainer3"]
 layout_mode = 2
 text = "Return to Main Menu"
-script = ExtResource("3_tbakv")
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer3/MainMenuButton" to="MarginContainer/VBoxContainer3/MainMenuButton" method="_on_pressed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/DirectConnect/hostname" to="." method="_on_hostname_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/DirectConnect/connectbutton" to="." method="_on_connectbutton_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer3/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
