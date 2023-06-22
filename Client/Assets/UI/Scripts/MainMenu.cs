@@ -11,11 +11,15 @@ public partial class MainMenu : MarginContainer {
 	}
 
 	public void _on_continue_button_pressed() {
-		
+		var res = ResourceLoader.Load<PackedScene>("res://Assets/Scenes/main.tscn");
+		var mainscene = res.Instantiate<MainGameScene>();
+		var config = ConfigManager.GetConfig();
+		mainscene.initialiseArgs = (config.lastConnectedHost, config.lastConnectedPort);
+		GetNode<SceneManager>("/root/SceneManager").ReplaceNewestScene(mainscene);
 	}
 
 	public void _on_new_game_button_pressed() {
-		//  ("res://Assets/UI/NewGameMenu.tscn");
+		GetNode<SceneManager>("/root/SceneManager").AddNewSceneActual("res://Assets/UI/NewGameMenu.tscn");
 	}
 
 	public void _on_join_game_button_pressed() {

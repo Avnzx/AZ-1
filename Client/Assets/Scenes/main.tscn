@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://vwq7wu4ksxx6"]
+[gd_scene load_steps=10 format=3 uid="uid://vwq7wu4ksxx6"]
 
 [ext_resource type="Script" path="res://Assets/Scenes/MainGameScene.cs" id="1_boxn4"]
 [ext_resource type="Environment" uid="uid://diage7yiluksp" path="res://Assets/Environments/space_env.tres" id="2_0t2og"]
 [ext_resource type="Script" path="res://Assets/Scenes/TopLevelWorld.cs" id="3_6lp02"]
 [ext_resource type="Shader" path="res://Assets/Scenes/nores/cursor/cursor.gdshader" id="5_4xx2h"]
 [ext_resource type="Texture2D" uid="uid://vp4ty0laxtvv" path="res://Assets/Scenes/nores/cursor/cursor.svg" id="5_tvjog"]
+[ext_resource type="PackedScene" uid="uid://c6j1hmoff8btp" path="res://Assets/UI/PauseMenu.tscn" id="6_yqttm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_46kal"]
 shader = ExtResource("5_4xx2h")
@@ -116,3 +117,7 @@ layout_mode = 0
 offset_right = 123.0
 offset_bottom = 26.0
 text = "OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE       OFFLINE   "
+
+[node name="PauseMenu" parent="UILayer" instance=ExtResource("6_yqttm")]
+visible = false
+focus_mode = 2

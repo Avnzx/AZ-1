@@ -42,7 +42,6 @@ public partial class SceneManager : Node {
 
 
 
-
 	public void ReplaceNewestScene(string path) {
 		DeleteNewestScene();
 		AddNewSceneActual(path);
@@ -57,13 +56,19 @@ public partial class SceneManager : Node {
 
 
 
-	// Removes the newest scene from the queue and makes the one before it active
+	// Removes the newest scene from the queue and MAY make the one before it active
 	public bool DeleteNewestScene() {
-		if (sceneQueue.Count < 1)
+		GD.Print(sceneQueue.Count);
+		if (sceneQueue.Count < 1) {
 			return false;
+		}
 
 		Node scene = (sceneQueue.Pop() as Node)!;
 		scene.QueueFree(); // delete old
+
+		if (sceneQueue.Count == 0)
+			return true;
+
 		GetTree().Root.AddChild((sceneQueue.Peek() as Node)!); // reactivate
 		return true;
 	}

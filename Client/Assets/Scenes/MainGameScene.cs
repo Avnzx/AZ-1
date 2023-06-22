@@ -107,6 +107,12 @@ public partial class MainGameScene : Node {
 
 		CollectAndSendInput(ev, InputActionStr.PlayerUseWeapons);
 
+		if (ev.IsActionPressed("PauseMenu")) {
+			Input.MouseMode = Input.MouseModeEnum.Visible;
+			this.SetProcessUnhandledInput(false);
+			this.GetNode<MarginContainer>("UILayer/PauseMenu").Visible = true;
+		}
+
 		if (ev is Godot.InputEventMouseMotion) {
 			// Uses screen coordinates (-Y is up)
 

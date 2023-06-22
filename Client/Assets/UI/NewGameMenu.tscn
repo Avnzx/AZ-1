@@ -57,4 +57,4 @@ text = "Return to Main Menu"
 [node name="Node" type="Node" parent="."]
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="OnGenerateNewWorld"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer3/MainMenuButton" to="MarginContainer/VBoxContainer3/MainMenuButton" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer3/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

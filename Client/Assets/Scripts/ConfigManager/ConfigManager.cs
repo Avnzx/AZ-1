@@ -35,7 +35,7 @@ public static class ConfigManager {
     public struct ConfigOptions {
         public System.Guid playerID;
         public string lastConnectedHost;
-        public string lastConnectedPort;
+        public int lastConnectedPort;
         public bool useHQAssets;
         public float mouseSensitivity;
     }

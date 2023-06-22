@@ -22,6 +22,12 @@ public partial class ServerBrowser : MarginContainer {
 		var mainscene = res.Instantiate<MainGameScene>();
 		mainscene.initialiseArgs = (addr, port);
 
+
+		var cfgopts = ConfigManager.GetConfig();
+		cfgopts.lastConnectedPort = port; 
+		cfgopts.lastConnectedHost = addr;
+		ConfigManager.SetConfig(cfgopts);
+
 		GetNode<SceneManager>("/root/SceneManager").ReplaceNewestScene(mainscene);
 		// add initialiser method
 	}
