@@ -47,8 +47,8 @@ public partial class PlayerNode : RigidBody3D {
 
 
     public override void _Process(double delta) {
+        shootCooldownRemaining -= (float) delta;
         if (movReq[(int) MovementActionsEnum.PlayerUseWeapons] > 0.5f) {
-            shootCooldownRemaining -= (float) delta;
 
             if (shootCooldownRemaining <= 0) {
                 shootCooldownRemaining = shootCooldown;

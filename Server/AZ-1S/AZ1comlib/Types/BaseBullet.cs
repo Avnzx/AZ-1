@@ -24,7 +24,6 @@ public partial class BaseBullet : Node3D, ICanInitialize<(uint,Vector3,Quaternio
         hasBeenInitialised = true;
     }
 
-    // FIXME: If on the server check if it collides with something and kill em
     public override void _Process(double delta) {
         #if !ISCLIENT
         Vector3 origin = this.Transform.Origin;

@@ -538,11 +538,20 @@ As programming languages are ratified with strict regulations on what is an is n
 
 \clearpage
 \section{Efficiency and Elegancy of Code}
+I heavily utilise the principles of object oriented programming to improve the elegance of my code, the speed of development, and sometimes higher than data driven speed. As I support some interfaces that allow for class polymorphism, and the concept of everyting being a Godot.Node to allow for me to write generic code that is able to handle every entity possible. 
 
 \includegraphics[width=\textwidth]{bitarray.png}
-\includegraphics[width=\textwidth]{vector3g.png}
-\includegraphics[width=\textwidth]{icaninit.png}
+The elegance and efficiency of my code is improved by the rich types available in Csharp. As the BitArray type (the type of xordColld.Item2) allows for booleans to take 8x less space, as they are packed into bits instead of the normally available platform default of one boolean per byte. It also provides elegancy to the code due to the ability to quickly and efficiently see if there are any overlaps between the data, simply by using the .And decorator.
 
+\includegraphics[width=\textwidth]{basebullet.png}
+OOP Allows me to abstract many of the fields and methods away, while providing a common interface to use this object from. Such as the 4x4 basis transformation that every 3D node contains by default. Allowing for generic code.
+
+\includegraphics[width=\textwidth]{vector3g.png}
+Custom Datatypes allow for me to more efficiently store data and provide a container to more easily access things in. Such as when doing node conversions the decorators of this function become useful.
+
+
+\includegraphics[width=\textwidth]{icaninit.png}
+This is an interface that provides each inheriting object a method that allows it to do preinitialization before it enters the scene tree. As well as giving the node and other nodes the ability to see if it has been properly initialised;
 
 
 
@@ -579,7 +588,9 @@ These entities also generally will provide services such as CI/CD (Continuous In
 
 \clearpage
 \section{Changing User Requirements}
+Due to my project being open source software on github, I am able to cater for changing user requirements by allowing for public users to create issues on the repository. This would allow for users interested in a feature to be able to comment on or react to a feature request issue, and would assist me in seeing what the most widely wanted features are. I may also be able to run user surveys in the future to gauge interest in additional support or features or onboard parts of the community onto the development team. \\
 
+I can also cater for changing requirements by writing Godot CPP modules, as it would allow me to add support for new hardware as well as more integration with other services such as steam lobby services. My code can also be modularized more to cater for user requirements changing, as the coupled nature of some of the nodes leads to dependencies on eventually legacy systems. Halting the adoption of users' requests. 
 
 
 
@@ -597,6 +608,14 @@ These entities also generally will provide services such as CI/CD (Continuous In
 
 \clearpage
 \section{Project Report}
+\subsection{What I've Learnt}
+Csharp preprocessor, LINQ, greater knowledge of computer networks, computer networking models
+
+\subsection{Future Directions}
+flight sim to proper space exploration game that allows you to walk on the planets
+
+\subsection{Comparison with original spec}
+significantly reduced from original spec but higher than the spec in terms of flight simulation
 
 
 
