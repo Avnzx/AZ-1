@@ -134,6 +134,21 @@ public partial class CommManager : Node {
     }
 
     public void HandleDisconnectRetryTimer() {
+        if (this.Multiplayer.MultiplayerPeer.GetConnectionStatus() == MultiplayerPeer.ConnectionStatus.Disconnected)
+            this.Multiplayer.MultiplayerPeer.Close();
+
+        if (this.Multiplayer.MultiplayerPeer.GetConnectionStatus() == MultiplayerPeer.ConnectionStatus.Connected) {
+            this.GetParent().RemoveChild(this);
+            this.QueueFree();
+        }
+        
+        if ((this.connectionDetails.addr != default(string) || 
+            this.connectionDetails.addr != "" ||
+            this.connectionDetails.addr != null) && 
+            this.Multiplayer.MultiplayerPeer.GetConnectionStatus() != 
+                MultiplayerPeer.ConnectionStatus.Connecting) {
+            this.ConnectToServer(connectionDetails.addr!, connectionDetails.port);
+        }
 
     }
 
