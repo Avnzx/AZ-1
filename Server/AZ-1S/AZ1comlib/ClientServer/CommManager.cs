@@ -276,7 +276,14 @@ public partial class CommManager : Node {
         #endif
     }
 
-
+    [Rpc(Godot.MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = Godot.MultiplayerPeer.TransferModeEnum.Unreliable)]
+    // Will not work if it is >1M units away, this is intended behaviour
+    public void CmdUpdateArbitraryModelPos(Vector3 pos, Quaternion rot, long modelID, string path) {
+        #if ISCLIENT
+        worldNodes[(int) FFRenderLayers.RenderLayersEnum.CloseObjectLayer]
+            .UpdateModelPos(pos, rot, (uint) modelID, path); 
+        #endif
+    }
 
 
 
