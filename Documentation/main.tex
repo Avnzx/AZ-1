@@ -397,14 +397,31 @@ The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) 
 \section{Justification and Discussion of UI}
 
 \includegraphics[width=\textwidth]{./parta/mainmenu.png}
-\includegraphics[width=\textwidth]{./parta/optionsmenu.png}
-\includegraphics[width=\textwidth]{./parta/creditsmenu.png}
-\includegraphics[width=\textwidth]{./parta/gameview.png}
-\includegraphics[width=\textwidth]{./parta/gameshipmenu.png}
-\includegraphics[width=\textwidth]{./parta/joinmenu.png}
-\includegraphics[width=\textwidth]{./parta/newgamemenu.png}
-\includegraphics[width=\textwidth]{./parta/pausemenu.png}
+As the main menu does not have much purpose other than to present the game, I chose to use only buttons with a large label (containing the name of the game). This is also due to practical purposes as further design would be unreadable on smaller screens or different aspect ratios. Where each button contains a label to show where it goes. Large amounts of space are used between the clusters of buttons to ensure the user does not accidentally quit the game.
 
+\includegraphics[width=\textwidth]{./parta/optionsmenu.png}
+To make the intent of changing the settings clear, after changing all settings there will be no button to apply the changes as they will automatically apply. This allows for more whitespace and allows for the fairly complex settings menu to be decluttered. For important settings there will be a checkbox, as these are settings that may crash the game on some operating systems. Or make it behave unexpectedly. There is a scrollbar on the side as the settings menu may have too many elements to easily navigate without such. Sliders, drop down boxes, and radio buttons are also used to ensure proper data validation as well as to signal to the user what kind of data is expected.
+
+
+\includegraphics[width=\textwidth]{./parta/creditsmenu.png}
+The credits menu is fairly simple, with a scrollbar to the side that will automatically scroll. This is to show the user all of the credits while keeping the widget on screen to make it clear that they are able to interact with the application. There is also whitespace around the borders of the UI to keep it more visually contiguous. Information tiles are used to display information as many users are used to this format due to modern design languages.
+
+\includegraphics[width=\textwidth]{./parta/gameview.png}
+The game view is left uncluttered to provide the user unobstructed views of the gameplay. There is also a small window for notifications and logs in the upper left corner of the screen to allow for important system messages to appear in a consistent place. A log style viewer is also intuitive to most users who will be familiar that it is for text input and output.
+
+\includegraphics[width=\textwidth]{./parta/gameshipmenu.png}
+The ship menu in the game appears similarly to the pause menu. As an overlay on the active gameplay. It also does not contain much information as it only shows the barebones statistics in a textual format of the current ship the player is utilising. The return menu is placed in such a way to be coherent with the chosen design language for this game.
+
+\includegraphics[width=\textwidth]{./parta/joinmenu.png}
+The game join menu contains a return to menu button at the bottom left to comply with the design language of the game. As well as a common UI theme and whitespace around the UI. This menu would contain a list of servers (shown by the shaded boxes), as well as an option for directly connecting to a server, akin to games like minecaft. Due to users' familiarity with such UI designs. It would also allow for official servers to automatically show up with images for previews of what the average game looked like. These servers would be sorted in the order of most recently played on to last, to improve the user experience, as they are more likely to be looking to play on one of their recently used servers.
+
+\includegraphics[width=\textwidth]{./parta/newgamemenu.png}
+The return button is placed in a place consistent with the design language for this game. There is a slider for world size to pre validate the data the user has input into the game. As well as a label for all drop downs and sliders to give the user a short description of what they will be changing. There is a small image preview of what the generated world will look like to ensure the user is happy with their choice. After they are happy with their choice there is a button next to the return menu to signify that it is important to the flow of the UI. This button is greyed out until valid data is chosen by the user to communicate that they will not be able to create a world with their current options.
+
+\includegraphics[width=\textwidth]{./parta/pausemenu.png}
+The pause menu contains a transparent background, as this is a multiplayer game and it cannot be paused, it will allow for them to see their surroundings while in the pause menu. There are relatively few buttons in the pause menu to signify that they are still actively participating in the game.
+
+Throughout the options, credits, join, new game, and pause menu, I keep the main menu button in the same place. This is to increase the intuitiveness of the user interface, as it fits the users expectations of where to click to select a different menu.
 
 
 \clearpage
@@ -417,13 +434,20 @@ The primary requirements are an \texttt{x86\_64} (also known as \texttt{AMD64}) 
 
 \clearpage
 \section{Error Checking}
+\subsection{Stubs}
+\includegraphics[width=\textwidth]{stub.png}
+Throughout developing new features for my software, I utilised stubs such as the one above to ensure that control flow was in the correct order. As well as to allow for me to call functions and flesh them out later, to allow for the software to be developed using a top\-down approach. I also utilised stubs for handling failure conditions, where a print could be used instead of a function call to deal with the error to assist in the development process.
 
+\subsection{Debugging Prints}
 % debugging prints
 \includegraphics[width=\textwidth]{debugprintserver.png}
+Debugging prints were widely utilised throughout my project. As they allow for conditions such as the above to be checked without using single line stepping or breakpoints. They also assist when the use of those tools would not be practical. As due to my client server architecture the usefulness of breakpoints and SLS was severely hindered (client auto disconnection). As well as prints such as the one below which helped me catch logic errors while testing the game in situ.
 \includegraphics[width=\textwidth]{debuggingprint.png}
 
+\subsection{Flags}
 % use of flags
 \includegraphics[width=\textwidth]{flags.png}
+Throughout my software I heavily used flags and nullable values to indicate whether methods and code paths should or should not execute. As they allow for quick debugging and to check whether certain fail conditions are met. (E.g. in my ICanInitialize class where DoInitialize must be called to set a flag, otherwise the object will throw an exception).
 
 
 
