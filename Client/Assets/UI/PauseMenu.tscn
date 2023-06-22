@@ -44,15 +44,10 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 alignment = 2
 
-[node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer5/VBoxContainer4"]
-layout_mode = 2
-text = "Options"
-
 [node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer5/VBoxContainer4"]
 layout_mode = 2
 text = "Quit To Desktop"
 script = ExtResource("3_f3oov")
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer5/VBoxContainer3/ReturnToGame" to="." method="GiveBackControl"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer5/VBoxContainer4/OptionsButton" to="MarginContainer/VBoxContainer5/VBoxContainer4/OptionsButton" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer5/VBoxContainer4/QuitButton" to="MarginContainer/VBoxContainer5/VBoxContainer4/QuitButton" method="_on_pressed"]
